@@ -54,6 +54,6 @@ void main( void )
 	// aic3204_disable();
 	
 	/* End of program */
-	printf( "\n***Program has Terminated***\n" );
-    SW_BREAKPOINT;
+	// printf( "\n***Program has Terminated***\n" );
+    // SW_BREAKPOINT;
 }
