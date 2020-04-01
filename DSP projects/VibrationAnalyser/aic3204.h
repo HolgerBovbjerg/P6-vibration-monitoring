@@ -3,12 +3,12 @@
 
 
 // System addresses
-#define AIC3204_I2C_ADDR 0x18
+#define AIC3204_I2C_ADDR 0x18 // i2c address of AIC3204 module
 
-#define XmitL 0x10
-#define XmitR 0x20
-#define RcvR 0x08
-#define RcvL 0x04
+#define XmitL 0x10 	// register address of
+#define XmitR 0x20	// 
+#define RcvR 0x08	// 
+#define RcvL 0x04	// 
 
 // Function prototypes
 extern void aic3204_init(void);

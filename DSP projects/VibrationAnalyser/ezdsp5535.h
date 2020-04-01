@@ -4,11 +4,7 @@
 
 #ifndef EZDSP5535_H_
 #define EZDSP5535_H_
-/* ------------------------------------------------------------------------ *
- *                                                                          *
- *  Variable types                                                          *
- *                                                                          *
- * ------------------------------------------------------------------------ */
+/* Variable types*/
 
 #define Uint32  unsigned long
 #define Uint16  unsigned short
@@ -17,10 +13,10 @@
 #define Int16   short
 #define Int8    char
 
+/* Software breakpoint difinition */
 #define SW_BREAKPOINT      while(1);
-/* ------------------------------------------------------------------------ *
- *  System Module register addresses                                                          *
- * ------------------------------------------------------------------------ */
+
+/* System Module register addresses  */
 #define SYS_EXBUSSEL       *(volatile ioport Uint16*)(0x1c00) // External bus select
 #define SYS_PCGCR1         *(volatile ioport Uint16*)(0x1c02) // Peripheral clock generator r1
 #define SYS_PCGCR2         *(volatile ioport Uint16*)(0x1c03) // Peripheral clock generator r2
@@ -35,9 +31,7 @@
 #define SYS_OUTDRSTR       *(volatile ioport Uint16*)(0x1c16) // Output Drive Strength Control Register
 #define SYS_SPPDIR         *(volatile ioport Uint16*)(0x1c17) // Pulldown Inhibit Register1
 
-/* ------------------------------------------------------------------------ *
- *  I2C Module register addresses                                           *
- * ------------------------------------------------------------------------ */
+/* I2C Module register addresses */
  
 #define I2C_IER    	       *(volatile ioport Uint16*)(0x1A04) // i2c interrupt mask register
 #define I2C_STR    	       *(volatile ioport Uint16*)(0x1A08) // i2c interrupt status register
@@ -51,9 +45,7 @@
 #define I2C_EDR    	       *(volatile ioport Uint16*)(0x1A2C) // i2c extended mode register
 #define I2C_PSC    	       *(volatile ioport Uint16*)(0x1A30) // i2c prescale register
 
-/* ------------------------------------------------------------------------ *
- *  I2S Module register addresses                                           *
- * ------------------------------------------------------------------------ */
+/* I2S Module register addresses  */
 
 #define I2S0_SRGR          *(volatile ioport Uint16*)(0x2804) // i2s0 serializer control register
 #define I2S0_W0_LSW_W      *(volatile ioport Uint16*)(0x2808) // i2s0 Sample rate generator register
@@ -81,9 +73,8 @@
 #define I2S2_W1_MSW_R      *(volatile ioport Uint16*)(0x2A2D) // i2s2 receive right data register 1
 
 
-/* ------------------------------------------------------------------------ *
- *  Prototype functions                                                              *
- * ------------------------------------------------------------------------ */
+/* Prototype functions */
+
 /* Board Initialization */
 Int16 ezdsp5535_init( );
 

@@ -10,12 +10,18 @@ CG_TOOL_ROOT := C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5
 
 ORDERED_OBJS += \
 $(GEN_CMDS_QUOTED) \
+"./pll.obj" \
 "./main.obj" \
 "./ezdsp_i2c.obj" \
 "./ezdsp5535_led.obj" \
 "./ezdsp5535_gpio.obj" \
 "./ezdsp5535.obj" \
+"./aic3204_init.obj" \
+"./aic3204.obj" \
 -l"rts55h.lib" \
+"../55xdsph.lib" \
+"../lnkx.cmd" \
+"../chip_support_library/CSLc55x5h.lib" \
 
 -include ../makefile.init
 
@@ -25,7 +31,9 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
+-include chip_support_library/subdir_vars.mk
 -include subdir_rules.mk
+-include chip_support_library/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -114,7 +122,7 @@ endif
 all: VibrationAnalyser.out
 
 # Tool invocations
-VibrationAnalyser.out: $(OBJS) $(GEN_CMDS)
+VibrationAnalyser.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Linker'
 	"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/bin/cl55" -v5515 -g --diag_warning=225 --ptrdiff_size=32 --memory_model=huge -z -m"VibrationAnalyser.map" --warn_sections -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/lib" -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/include" --reread_libs --rom_model -o "VibrationAnalyser.out" $(ORDERED_OBJS)
@@ -124,8 +132,8 @@ VibrationAnalyser.out: $(OBJS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(C5500_EXECUTABLE_OUTPUTS__QTD) "VibrationAnalyser.out"
-	-$(RM) ".\ezdsp5535.obj" ".\ezdsp5535_gpio.obj" ".\ezdsp5535_led.obj" ".\ezdsp_i2c.obj" ".\main.obj" 
-	-$(RM) ".\ezdsp5535.pp" ".\ezdsp5535_gpio.pp" ".\ezdsp5535_led.pp" ".\ezdsp_i2c.pp" ".\main.pp" 
+	-$(RM) ".\aic3204.obj" ".\aic3204_init.obj" ".\ezdsp5535.obj" ".\ezdsp5535_gpio.obj" ".\ezdsp5535_led.obj" ".\ezdsp_i2c.obj" ".\main.obj" ".\pll.obj" 
+	-$(RM) ".\aic3204.pp" ".\aic3204_init.pp" ".\ezdsp5535.pp" ".\ezdsp5535_gpio.pp" ".\ezdsp5535_led.pp" ".\ezdsp_i2c.pp" ".\main.pp" ".\pll.pp" 
 	-@echo ' '
 
 .PHONY: all clean dependents
