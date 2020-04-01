@@ -31,12 +31,18 @@ void main( void )
 	/* Setup sampling frequency and gain */
     set_sampling_frequency_and_gain(SAMPLES_PER_SECOND, GAIN);	
     
+	/* Default to XF LED off */
+	asm(" bclr XF"); // Clear register XF
+
     /* Program here 
      * */
-     while(1){
-     	printf("Hello World!");
-     	ezdsp5535_waitusec(1000);
-     }
+	printf("Hello World!");
+	while(1){
+		ezdsp5535_LED_on(0);
+    	ezdsp5535_waitusec(500);
+		ezdsp5535_LED_off(0);
+    	ezdsp5535_waitusec(500);
+    }
      
     /* 
      * 
