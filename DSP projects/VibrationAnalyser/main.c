@@ -1,5 +1,5 @@
 // standard c libraries
-#include "stdio.h"
+#include <stdio.h>
 
 // ezdsp setup libraries
 #include "ezdsp5535.h"
@@ -13,6 +13,8 @@
 
 #define SAMPLES_PER_SECOND 48000
 #define GAIN 30
+
+unsigned long i = 0;
 
 void main( void ) 
 {
@@ -36,13 +38,16 @@ void main( void )
 
     /* Program here 
      * */
-	printf("Hello World!");
-	while(1){
+	printf("Hello World! \n");
+	ezdsp5535_waitusec(500000);
+	i = 0;
+	for ( i = 0  ; i < 20;i++  )
+     {
 		ezdsp5535_LED_on(0);
-    	ezdsp5535_waitusec(500);
+    	ezdsp5535_waitusec(500000);
 		ezdsp5535_LED_off(0);
-    	ezdsp5535_waitusec(500);
-    }
+    	ezdsp5535_waitusec(500000);
+   } 
      
     /* 
      * 
@@ -51,9 +56,9 @@ void main( void )
 	
 	
 	/* Diable i2s and reset AIC3204 codec */
-	// aic3204_disable();
+	 aic3204_disable();
 	
 	/* End of program */
-	// printf( "\n***Program has Terminated***\n" );
-    // SW_BREAKPOINT;
+	 printf( "\n***Program has Terminated***\n" );
+     SW_BREAKPOINT;
 }
