@@ -1,14 +1,17 @@
 // standard c libraries
 #include <stdio.h>
 
-// ezdsp setup libraries
+// ezdsp5535 setup libraries
 #include "ezdsp5535.h"
+
+// On-chip peripheral libraries
 #include "ezdsp5535_gpio.h"
 #include "ezdsp5535_i2c.h"
 #include "ezdsp5535_led.h"
-#include "pll.h"
+#include "ezdsp5535_pll.h"
 
-// board device libraries
+// Board device libraries
+#include "oled.h"
 #include "aic3204.h"
 
 #define SAMPLES_PER_SECOND 48000
@@ -30,8 +33,14 @@ void main( void )
     /* Initialise the AIC3204 codec */
 	aic3204_init(); 
 	
+	/* Initialise oled display */
+	oled_init();
+	oled_display_message("                 ", "                   "); // Clear display
+	
 	/* Setup sampling frequency and gain */
     set_sampling_frequency_and_gain(SAMPLES_PER_SECOND, GAIN);	
+    
+    oled_display_message("Hello              ", "World!             ");
     
 	/* Default to XF LED off */
 	asm(" bclr XF"); // Clear register XF
@@ -41,6 +50,7 @@ void main( void )
 	printf("Hello World! \n");
 	ezdsp5535_waitusec(500000);
 	i = 0;
+	// blink LED 20 times
 	for ( i = 0  ; i < 20;i++  )
      {
 		ezdsp5535_LED_on(0);
@@ -55,10 +65,11 @@ void main( void )
 	
 	
 	
-	/* Diable i2s and reset AIC3204 codec */
+	/* Disable i2s and reset AIC3204 codec */
 	 aic3204_disable();
 	
 	/* End of program */
 	 printf( "\n***Program has Terminated***\n" );
+	 oled_display_message("PROGRAM HAS        ", "TERMINATED        ");
      SW_BREAKPOINT;
 }
