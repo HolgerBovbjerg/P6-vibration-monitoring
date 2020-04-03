@@ -11,10 +11,12 @@ C_SRCS += \
 ../aic3204_init.c \
 ../ezdsp5535.c \
 ../ezdsp5535_gpio.c \
+../ezdsp5535_i2c.c \
 ../ezdsp5535_led.c \
-../ezdsp_i2c.c \
+../ezdsp5535_pll.c \
 ../main.c \
-../pll.c 
+../oled.c \
+../pushbuttons.c 
 
 CMD_SRCS += \
 ../lnkx.cmd 
@@ -24,49 +26,59 @@ OBJS += \
 ./aic3204_init.obj \
 ./ezdsp5535.obj \
 ./ezdsp5535_gpio.obj \
+./ezdsp5535_i2c.obj \
 ./ezdsp5535_led.obj \
-./ezdsp_i2c.obj \
+./ezdsp5535_pll.obj \
 ./main.obj \
-./pll.obj 
+./oled.obj \
+./pushbuttons.obj 
 
 C_DEPS += \
 ./aic3204.pp \
 ./aic3204_init.pp \
 ./ezdsp5535.pp \
 ./ezdsp5535_gpio.pp \
+./ezdsp5535_i2c.pp \
 ./ezdsp5535_led.pp \
-./ezdsp_i2c.pp \
+./ezdsp5535_pll.pp \
 ./main.pp \
-./pll.pp 
+./oled.pp \
+./pushbuttons.pp 
 
 OBJS__QTD += \
 ".\aic3204.obj" \
 ".\aic3204_init.obj" \
 ".\ezdsp5535.obj" \
 ".\ezdsp5535_gpio.obj" \
+".\ezdsp5535_i2c.obj" \
 ".\ezdsp5535_led.obj" \
-".\ezdsp_i2c.obj" \
+".\ezdsp5535_pll.obj" \
 ".\main.obj" \
-".\pll.obj" 
+".\oled.obj" \
+".\pushbuttons.obj" 
 
 C_DEPS__QTD += \
 ".\aic3204.pp" \
 ".\aic3204_init.pp" \
 ".\ezdsp5535.pp" \
 ".\ezdsp5535_gpio.pp" \
+".\ezdsp5535_i2c.pp" \
 ".\ezdsp5535_led.pp" \
-".\ezdsp_i2c.pp" \
+".\ezdsp5535_pll.pp" \
 ".\main.pp" \
-".\pll.pp" 
+".\oled.pp" \
+".\pushbuttons.pp" 
 
 C_SRCS_QUOTED += \
 "../aic3204.c" \
 "../aic3204_init.c" \
 "../ezdsp5535.c" \
 "../ezdsp5535_gpio.c" \
+"../ezdsp5535_i2c.c" \
 "../ezdsp5535_led.c" \
-"../ezdsp_i2c.c" \
+"../ezdsp5535_pll.c" \
 "../main.c" \
-"../pll.c" 
+"../oled.c" \
+"../pushbuttons.c" 
 
 

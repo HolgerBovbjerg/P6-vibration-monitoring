@@ -10,6 +10,14 @@ PLL_Handle hPll;
 
 #if ((defined(CHIP_5505)) || (defined(CHIP_5515)) || (defined(CHIP_C5505_C5515)) )
 
+/* Pll config structures for various frequencies
+ * 
+ * PLL_Config pllCfg_xMHz      =	{iai, 		=> initialise after idle
+ * 									iob, 		=> initialise on break
+ * 									pllmult, 	=> PLL multiply value 
+ * 									div}; 		=> PLL divide value
+ */
+
 PLL_Config pllCfg_1MHz      = {0x8895, 0x8000, 0x0806, 0x0247};
 PLL_Config pllCfg_2MHz      = {0x8895, 0x8000, 0x0806, 0x0223};
 PLL_Config pllCfg_12MHz     = {0x8895, 0x8000, 0x0806, 0x0205};
@@ -38,28 +46,35 @@ PLL_Config pllCfg_120MHz    = {0x8392, 0xA000, 0x0806, 0x0000};
 
 #endif
 
-PLL_Config *pConfigInfo;
+PLL_Config *pConfigInfo; // Pointer to PLL config info
 
 #define CSL_TEST_FAILED         (1)
 #define CSL_TEST_PASSED         (0)
 
+
+/* Function for setting PLL frequency
+ * Uses the Chip Support Library (CSL) for setup of PLL registers
+ * INPUT
+ * frequency: desired frequency in mega hertz
+ * 		possible values are: 1, 2, 12, 40, 60, 75, 98, 100 and 120
+ * 		Defaults to 100 MHz if input is not recognised
+ */
 int pll_frequency_setup(unsigned int frequency)
 {
-    CSL_Status status;
+    CSL_Status status; // Create status variable
 
-    status = PLL_init(&pllObj, CSL_PLL_INST_0);
-    if(CSL_SOK != status)
+    status = PLL_init(&pllObj, CSL_PLL_INST_0); // Initialise PLL
+    if(CSL_SOK != status) // Check status
     {
        printf("PLL init failed \n");
        return (status);
     }
 
-	hPll = (PLL_Handle)(&pllObj);
+	hPll = (PLL_Handle)(&pllObj);  // PLL handle
 
-	PLL_reset(hPll);
+	PLL_reset(hPll); // Reset PLL
 
-   /* Configure the PLL for different frequencies */
-
+   /* Resolve for frequency input */
    if ( frequency == 1)
     {
       pConfigInfo = &pllCfg_1MHz;
@@ -106,21 +121,22 @@ int pll_frequency_setup(unsigned int frequency)
       printf("\nPLL frequency 100 MHz\n");        
    }
 
-   status = PLL_config (hPll, pConfigInfo);
-   if(CSL_SOK != status)
+   status = PLL_config (hPll, pConfigInfo); // Configure PLL 
+   if(CSL_SOK != status) // Check status
    {
        printf("PLL config failed\n");
        return(status);
    }
 
-	status = PLL_getConfig(hPll, &pllCfg1);
-    if(status != CSL_SOK)
+	status = PLL_getConfig(hPll, &pllCfg1); // Get configuration
+    if(status != CSL_SOK) // Check status
 	{
 	    printf("TEST FAILED: PLL get config... Failed.\n");
 		printf ("Reason: PLL_getConfig failed. [status = 0x%x].\n", status);
 		return(status);
 	}
-
+	
+	// Print configuration to console
     printf("REGISTER --- CONFIG VALUES\n");
 
     printf("PLL_CNTRL1   %04x --- %04x\n",pllCfg1.PLLCNTL1,hPll->pllConfig->PLLCNTL1);
@@ -129,15 +145,15 @@ int pll_frequency_setup(unsigned int frequency)
     printf("PLL_CNTRL3   %04x --- %04x\n",pllCfg1.PLLINCNTL,hPll->pllConfig->PLLINCNTL);
     printf("PLL_CNTRL4   %04x --- %04x\n",pllCfg1.PLLOUTCNTL,hPll->pllConfig->PLLOUTCNTL);
 
-   status = PLL_bypass(hPll);
-   if(CSL_SOK != status)
+   status = PLL_bypass(hPll); // Bypass pll 
+   if(CSL_SOK != status) // Check status
    {
        printf("PLL bypass failed:%d\n",CSL_ESYS_BADHANDLE);
        return(status);
    }
 
-   status = PLL_enable(hPll);
-   if(CSL_SOK != status)
+   status = PLL_enable(hPll); // Enable pll and check status
+   if(CSL_SOK != status) 
    {
        printf("PLL enable failed:%d\n",CSL_ESYS_BADHANDLE);
        return(status);

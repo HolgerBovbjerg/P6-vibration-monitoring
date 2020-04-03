@@ -10,10 +10,12 @@ CG_TOOL_ROOT := C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5
 
 ORDERED_OBJS += \
 $(GEN_CMDS_QUOTED) \
-"./pll.obj" \
+"./pushbuttons.obj" \
+"./oled.obj" \
 "./main.obj" \
-"./ezdsp_i2c.obj" \
+"./ezdsp5535_pll.obj" \
 "./ezdsp5535_led.obj" \
+"./ezdsp5535_i2c.obj" \
 "./ezdsp5535_gpio.obj" \
 "./ezdsp5535.obj" \
 "./aic3204_init.obj" \
@@ -132,8 +134,8 @@ VibrationAnalyser.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 # Other Targets
 clean:
 	-$(RM) $(C5500_EXECUTABLE_OUTPUTS__QTD) "VibrationAnalyser.out"
-	-$(RM) ".\aic3204.obj" ".\aic3204_init.obj" ".\ezdsp5535.obj" ".\ezdsp5535_gpio.obj" ".\ezdsp5535_led.obj" ".\ezdsp_i2c.obj" ".\main.obj" ".\pll.obj" 
-	-$(RM) ".\aic3204.pp" ".\aic3204_init.pp" ".\ezdsp5535.pp" ".\ezdsp5535_gpio.pp" ".\ezdsp5535_led.pp" ".\ezdsp_i2c.pp" ".\main.pp" ".\pll.pp" 
+	-$(RM) ".\aic3204.obj" ".\aic3204_init.obj" ".\ezdsp5535.obj" ".\ezdsp5535_gpio.obj" ".\ezdsp5535_i2c.obj" ".\ezdsp5535_led.obj" ".\ezdsp5535_pll.obj" ".\main.obj" ".\oled.obj" ".\pushbuttons.obj" 
+	-$(RM) ".\aic3204.pp" ".\aic3204_init.pp" ".\ezdsp5535.pp" ".\ezdsp5535_gpio.pp" ".\ezdsp5535_i2c.pp" ".\ezdsp5535_led.pp" ".\ezdsp5535_pll.pp" ".\main.pp" ".\oled.pp" ".\pushbuttons.pp" 
 	-@echo ' '
 
 .PHONY: all clean dependents

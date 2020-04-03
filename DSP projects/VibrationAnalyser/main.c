@@ -13,6 +13,7 @@
 // Board device libraries
 #include "oled.h"
 #include "aic3204.h"
+#include "pushbuttons.h"
 
 #define SAMPLES_PER_SECOND 48000
 #define GAIN 30
