@@ -8,8 +8,10 @@ main.obj: ../ezdsp5535.h
 main.obj: ../ezdsp5535_gpio.h
 main.obj: ../ezdsp5535_i2c.h
 main.obj: ../ezdsp5535_led.h
-main.obj: ../pll.h
+main.obj: ../ezdsp5535_pll.h
+main.obj: ../oled.h
 main.obj: ../aic3204.h
+main.obj: ../pushbuttons.h
 
 ../main.c: 
 C:/Program\ Files\ (x86)/Texas\ Instruments/ccsv4/tools/compiler/c5500/include/stdio.h: 
@@ -19,5 +21,7 @@ C:/Program\ Files\ (x86)/Texas\ Instruments/ccsv4/tools/compiler/c5500/include/s
 ../ezdsp5535_gpio.h: 
 ../ezdsp5535_i2c.h: 
 ../ezdsp5535_led.h: 
-../pll.h: 
+../ezdsp5535_pll.h: 
+../oled.h: 
 ../aic3204.h: 
+../pushbuttons.h: 

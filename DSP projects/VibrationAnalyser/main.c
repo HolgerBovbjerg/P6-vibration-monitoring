@@ -13,6 +13,7 @@
 // Board device libraries
 #include "oled.h"
 #include "aic3204.h"
+#include "pushbuttons.h"
 
 #define SAMPLES_PER_SECOND 48000
 #define GAIN 30
@@ -40,7 +41,7 @@ void main( void )
 	/* Setup sampling frequency and gain */
     set_sampling_frequency_and_gain(SAMPLES_PER_SECOND, GAIN);	
     
-    oled_display_message("Hello              ", "World!             ");
+    oled_display_message("Hello             ", "World!            ");
     
 	/* Default to XF LED off */
 	asm(" bclr XF"); // Clear register XF
