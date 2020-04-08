@@ -82,35 +82,128 @@ extern Uint16 RunFilterForL;
 extern Uint16 RunFilterForR;
 
 //----------Start af Dennis kode---------------------------------------------------------------------------------------------------------------------------------------------------------------
-Uint16 fft_length = ;
-Int16 real_part[fft_length] = {};
-Int16 imaginary_part[fft_length] = {};
-Int16 fft_datapoints[2*fft_length];
-
-void main(void)
+void fft_create_datapoint_array(Int16 *real_array, Int16 *imaginary_array, Uint16 fft_length, Int16 *fft_pointer)
 {
-	fft_datapoints =fft_create_darapoint_array()
+	Int16 i;
 	
+	for(i=0 ; i <= fft_length; i = i++)
+	{
+	*(fft_pointer+(i*2)) = *imaginary_array+i;
+	*(fft_pointer+(i*2)+1) = *real_array+i;
+	}
 	
-	
-	
+	return;
 }
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-void fft_create_datapoint_array(real_array, imaginary_array, Uint16 fft_length)
-
-Int16 fft_datapoint_array[2*fft_length];
-Int16 i;
-
+Uint16 fft_fft(Int32 *data, Int32 *scratch, Uint16 fft_falg, Uint16 scale_flag, Uint16 fft_length_1)
 {
-	for(i=0 ; i <= fft_length-1; i = i++)
+	Uint16 data_save_location;
+	
+	if(fft_length_1 == 1024)
 	{
-	fft_datapoint_array[i*2] = imaginary_array[i];
-	fft_datapoint_array[(i*2)+1] = real_array[i];
+		data_save_location = hwafft_1024pts(data, scratch, fft_falg, scale_flag);
+		return data_save_location;
 	}
 	
-	return fft_datapoint_array;
+	if(fft_length_1 == 512)
+	{
+		data_save_location = hwafft_512pts(data, scratch, fft_falg, scale_flag);
+		return data_save_location;
+	}
+	
+	if(fft_length_1 == 256)
+	{
+		data_save_location = hwafft_256pts(data, scratch, fft_falg, scale_flag);
+		return data_save_location;
+	}
+	
+	if(fft_length_1 == 128)
+	{
+		data_save_location = hwafft_128pts(data, scratch, fft_falg, scale_flag);
+		return data_save_location;
+	}
+	
+	if(fft_length_1 == 64)
+	{
+		data_save_location = hwafft_64pts(data, scratch, fft_falg, scale_flag);
+		return data_save_location;
+	}
+	
+	if(fft_length_1 == 32)
+	{
+		data_save_location = hwafft_32pts(data, scratch, fft_falg, scale_flag);
+		return data_save_location;
+	}
+	
+	if(fft_length_1 == 16)
+	{
+		data_save_location = hwafft_16pts(data, scratch, fft_falg, scale_flag);
+		return data_save_location;
+	}
+	
+	if(fft_length_1 == 8)
+	{
+		data_save_location = hwafft_8pts(data, scratch, fft_falg, scale_flag);
+		return data_save_location;
+	}
+	
+	return NULL;
+}
+
+//-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Uint16 fft_length = 8;								//Længde af FFT eller IFFT
+Uint16 fft_save_location;							//Variabel til at holde styr på hvor outputtet af FFT/IFFT er
+Int16 real_part[1024] = {1,2,3,2,1,2,3,2};			//Input array med de reele værdier af signalet
+Int16 imaginary_part[1024] = {0,0,0,0,0,0,0,0};		//Input array med de imaginære værdier af signalet
+Int16 fft_datapoints[2*1024];						//Array der indeholder både reele og imaginære værdier
+Int32 fft_scratch_array[1024];						//Array der indeholder bare reele og imaginære værdier, men indgangende har skiftet plads med bit reverse
+Uint16 ii;											//Variable til at tælle med i et for loop
+Int32 *fft_output_location;							//Indeholder memory location af den array der har outputtet af FFT/IFFT'en
+Uint16 real_freq[1024];								//Array der indeholder de FFT/IFFT transformerede reele værdier
+Uint16 imaginary_freq[1024];						//Array der indeholder de FFT/IFFT transformerede imaginære værdier
+
+#pragma DATA_SECTION(fft_data_bitrev,"data_buf");	//Kommando der placere arrayet med bit reversed pladser et bestemt sted
+#pragma DATA_ALIGN(fft_data_bitrev,2048);			//-||-
+Int32 fft_data_bitrev[1024];						//Array der har sine indgange bit reversed
+
+
+void main(void) //main
+{
+	
+	fft_create_datapoint_array(&real_part[0], &imaginary_part[0], fft_length, &fft_datapoints[0]); //Kommando der sammensætter real_part og imaginary_part sammen til en array, fft_datapoints
+	
+	hwafft_br((Int32 *)&fft_datapoints[0], &fft_data_bitrev[0],fft_length); //Kommando der bit reverser pladserne så de havner i fft_data_bitrev
+	
+	fft_save_location = fft_fft(&fft_data_bitrev[0], &fft_scratch_array[0], 0, 0, fft_length); //Kommando der rent faktisk udfører FFT'en
+	
+	if(fft_save_location == NULL) //Tjekker om FFT'en rent faktisk er blevet udført
+	{
+		printf("FFT NOT executed correctly"); //Hvis ikke, surt show
+	} else {
+		
+		if(fft_save_location == 0) //Tjekker om dataen er i bitrev array
+		{
+			fft_output_location = &fft_data_bitrev[0];
+		}
+		if(fft_save_location == 1) //Tjekker om dataen er i scratch array
+		{
+			fft_output_location = &fft_scratch_array[0];
+		} else {
+			printf("Output array MIA"); //Hvis ikke, surt show
+		}
+		
+		for(ii = 0; ii <= fft_length; ii++) //For loop der splitter den FFT/IFFT transformered array op i reel og imaginær del
+		{
+			real_freq[ii] = (*(fft_output_location+ii)) >> 16; //Reel del
+			imaginary_freq[ii] = (*(fft_output_location+ii)) & 0x0000FFFF; //Imaginær del
+			printf("%d",real_freq[ii]); //Printer output
+			printf("%d",imaginary_freq[ii]); //Printer output
+		}
+	}
+	
 }
 
 //----------Slut af Dennis kode----------------------------------------------------------------------------------------------------------------------------------------------------------------
