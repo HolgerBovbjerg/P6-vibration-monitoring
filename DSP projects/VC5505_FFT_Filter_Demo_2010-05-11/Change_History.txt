@@ -1,0 +1,7 @@
+Change History:
+
+May 11, 2010:                                                                          
+	BugFix: PLL_100M was undefined in main.c, which failed to configure the PLL when
+	running in stand-alone mode. PLL was set to 100MHz by GEL file when 
+	running from Code Composer.
+

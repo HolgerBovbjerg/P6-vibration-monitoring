@@ -1,0 +1,31 @@
+!SESSION 2020-04-08 14:37:03.438 -----------------------------------------------
+eclipse.buildId=4.2.5.00005
+java.version=1.5.0_14
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=win32, ARCH=x86, WS=win32, NL=da_DK
+Command-line arguments:  -data C:\Users\dksan\Desktop\VC5505_FFT_Filter_Demo_2010-05-11 -os win32 -ws win32 -arch x86
+
+!ENTRY org.eclipse.ui.workbench 4 2 2020-04-08 14:37:10.501
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.ui.workbench".
+!STACK 0
+java.lang.NoSuchMethodError: com.ti.ccstudio.product.paths.PathManager.getUtilsDir()Lorg/eclipse/core/runtime/IPath;
+	at com.ti.ccstudio.compatibility.Startup.earlyStartup(Startup.java:28)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.runEarlyStartup(EarlyStartupRunnable.java:87)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.run(EarlyStartupRunnable.java:66)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.ui.internal.Workbench$20.run(Workbench.java:1759)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:58)
+
+!ENTRY org.eclipse.ui 4 4 2020-04-08 14:37:10.510
+!MESSAGE Unhandled Exception
+
+!ENTRY com.ti.ccstudio.compatibility_1 4 0 2020-04-08 14:37:10.510
+!MESSAGE Unable to execute early startup code for an extension
+!STACK 0
+java.lang.NoSuchMethodError: com.ti.ccstudio.product.paths.PathManager.getUtilsDir()Lorg/eclipse/core/runtime/IPath;
+	at com.ti.ccstudio.compatibility.Startup.earlyStartup(Startup.java:28)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.runEarlyStartup(EarlyStartupRunnable.java:87)
+	at org.eclipse.ui.internal.EarlyStartupRunnable.run(EarlyStartupRunnable.java:66)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:37)
+	at org.eclipse.ui.internal.Workbench$20.run(Workbench.java:1759)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:58)

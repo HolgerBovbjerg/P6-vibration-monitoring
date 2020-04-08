@@ -1,0 +1,1 @@
+"../c5505.cmd" "./vector.obj" "./rtc_routines.obj" "./main.obj" "./i2s_routines.obj" "./i2s_register.obj" "./hwafft.obj" "./filter_routines.obj" "./dma_routines.obj" "./configuration.obj" "./codec_routines.obj" -l"rts55h.lib" 
