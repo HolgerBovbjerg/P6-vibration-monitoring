@@ -1,0 +1,1 @@
+"../MMA8451.c" "../aic3204.c" "../aic3204_init.c" "../ezdsp5535.c" "../ezdsp5535_gpio.c" "../ezdsp5535_i2c.c" "../ezdsp5535_led.c" "../main.c" "../pll.c" 
