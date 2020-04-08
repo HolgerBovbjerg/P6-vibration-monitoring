@@ -1,0 +1,1 @@
+"./pll.obj" "./main.obj" "./ezdsp5535_led.obj" "./ezdsp5535_i2c.obj" "./ezdsp5535_gpio.obj" "./ezdsp5535.obj" "./aic3204_init.obj" "./aic3204.obj" "./MMA8451.obj" -l"rts55h.lib" "../lnkx.cmd" "../chip_support/CSLc55x5h.lib" 
