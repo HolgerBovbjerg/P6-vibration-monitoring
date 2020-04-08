@@ -36,8 +36,9 @@ void main( void )
 	
 	/* Initialise oled display */
 	oled_init();
-	oled_display_message("                 ", "                   "); // Clear display
-	
+		SAR_init();
+		oled_display_message("                 ", "                   "); // Clear display
+		
 	/* Setup sampling frequency and gain */
     set_sampling_frequency_and_gain(SAMPLES_PER_SECOND, GAIN);	
     
