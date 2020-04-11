@@ -1,8 +1,11 @@
+%% Clear
 clear 
 clf;
-fs = 20e3;          % Sample Rate (Hz)
+
 
 %% System setup
+fs = 48e3;          % Sample Rate (Hz)
+
 Np = 13;            % Number of teeth on pinion
 Ng = 35;            % Number of teeth on gear
 
@@ -25,7 +28,7 @@ d = 0.002;      % Diameter of rolling elements
 p = 0.010;      % Pitch diameter of bearing
 thetaDeg = 15; % Contact angle in degrees
 
-bpfi = n*fPin/2*(1 + d/p*cosd(thetaDeg)) % Ballpass frequency, inner race
+bpfi = n*fPin/2*(1 + d/p*cosd(thetaDeg)); % Ballpass frequency, inner race
 fImpact = 3000;
 tImpact = 0:1/fs:5e-3-1/fs;
 xImpact = 0.4*sin(2*pi*fImpact*tImpact);
@@ -37,6 +40,8 @@ xComb = zeros(size(t));
 xComb(1:round(fs/bpfi):end) = 1;
 xBper = 0.33*conv(xComb,xImpactWindowed,'same');
 
+
+%% Figures
 figure(1)
 plot(t,xBper)
 xlim([0 0.05])
