@@ -1,1 +1,1 @@
-"../codec_routines.asm" "../configuration.c" "../dma_routines.c" "../filter_routines.c" "../hwafft.asm" "../i2s_register.asm" "../i2s_routines.c" "../main.c" "../rtc_routines.c" "../vector.asm" 
+"../main.c" 

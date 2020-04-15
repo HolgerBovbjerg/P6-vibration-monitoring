@@ -100,4 +100,7 @@ K_DEPS__QTD :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 . \
+I2C_files \
+I2C_files/chip_support \
+FFT_files \
 

@@ -11,17 +11,26 @@ CG_TOOL_ROOT := C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5
 ORDERED_OBJS += \
 $(GEN_CMDS_QUOTED) \
 "../c5505.cmd" \
-"./vector.obj" \
-"./rtc_routines.obj" \
+"./FFT_files/vector.obj" \
+"./FFT_files/rtc_routines.obj" \
+"./FFT_files/i2s_routines.obj" \
+"./FFT_files/i2s_register.obj" \
+"./FFT_files/hwafft.obj" \
+"./FFT_files/filter_routines.obj" \
+"./FFT_files/dma_routines.obj" \
+"./FFT_files/configuration.obj" \
+"./FFT_files/codec_routines.obj" \
+"./I2C_files/pll.obj" \
+"./I2C_files/ezdsp5535_led.obj" \
+"./I2C_files/ezdsp5535_i2c.obj" \
+"./I2C_files/ezdsp5535_gpio.obj" \
+"./I2C_files/ezdsp5535.obj" \
+"./I2C_files/aic3204_init.obj" \
+"./I2C_files/aic3204.obj" \
+"./I2C_files/MMA8451.obj" \
 "./main.obj" \
-"./i2s_routines.obj" \
-"./i2s_register.obj" \
-"./hwafft.obj" \
-"./filter_routines.obj" \
-"./dma_routines.obj" \
-"./configuration.obj" \
-"./codec_routines.obj" \
 -l"rts55h.lib" \
+"../I2C_files/chip_support/CSLc55x5h.lib" \
 
 -include ../makefile.init
 
@@ -31,7 +40,13 @@ RMDIR := RMDIR /S/Q
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
+-include I2C_files/subdir_vars.mk
+-include I2C_files/chip_support/subdir_vars.mk
+-include FFT_files/subdir_vars.mk
 -include subdir_rules.mk
+-include I2C_files/subdir_rules.mk
+-include I2C_files/chip_support/subdir_rules.mk
+-include FFT_files/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -120,19 +135,19 @@ endif
 all: VC5505_FFT_Filter_Demo.out
 
 # Tool invocations
-VC5505_FFT_Filter_Demo.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
+VC5505_FFT_Filter_Demo.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Linker'
-	"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/bin/cl55" -vcpu:3.3 --symdebug:coff --define="_DEBUG" --define="C55X" --diag_warning=225 --ptrdiff_size=32 --algebraic --no_mac_expand --memory_model=huge --asm_source=algebraic -z -m"VC5505_FFT_Filter_Demo.map" --stack_size=1000 --warn_sections -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/lib" -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/include" -i"C:/Program Files (x86)/Texas Instruments/bios_5_41_10_36/packages/ti/rtdx/lib/c5500" -i"C:/Program Files (x86)/Texas Instruments/bios_5_41_10_36/packages/ti/bios/lib" -i"C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP projects/HWAFFT" -i"/lib" --reread_libs --entry_point=reset_isr --rom_model --sys_stacksize=1000 -o "VC5505_FFT_Filter_Demo.out" $(ORDERED_OBJS)
+	"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/bin/cl55" -vcpu:3.3 --symdebug:coff --define="_DEBUG" --define="C55X" --diag_warning=225 --large_memory_model --ptrdiff_size=32 --algebraic --no_mac_expand --memory_model=huge --asm_source=algebraic -z -m"VC5505_FFT_Filter_Demo.map" --stack_size=1000 --warn_sections -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/lib" -i"C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP projects/HWAFFT_I2C/I2C_files" -i"C:/Program Files (x86)/Texas Instruments/ccsv4/tools/compiler/c5500/include" -i"C:/Program Files (x86)/Texas Instruments/bios_5_41_10_36/packages/ti/rtdx/lib/c5500" -i"C:/Program Files (x86)/Texas Instruments/bios_5_41_10_36/packages/ti/bios/lib" -i"C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP projects/HWAFFT_I2C" -i"/lib" --reread_libs --entry_point=reset_isr --rom_model --sys_stacksize=1000 -o "VC5505_FFT_Filter_Demo.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(GEN_CMDS__QTD)$(GEN_SRCS__QTD)$(GEN_MISC_FILES__QTD)$(C5500_EXECUTABLE_OUTPUTS__QTD) "VC5505_FFT_Filter_Demo.out"
-	-$(RM) ".\codec_routines.obj" ".\configuration.obj" ".\dma_routines.obj" ".\filter_routines.obj" ".\hwafft.obj" ".\i2s_register.obj" ".\i2s_routines.obj" ".\main.obj" ".\rtc_routines.obj" ".\vector.obj" 
-	-$(RM) ".\codec_routines.pp" ".\i2s_register.pp" ".\vector.pp" 
-	-$(RM) ".\configuration.pp" ".\dma_routines.pp" ".\filter_routines.pp" ".\i2s_routines.pp" ".\main.pp" ".\rtc_routines.pp" 
+	-$(RM) ".\main.obj" ".\I2C_files\MMA8451.obj" ".\I2C_files\aic3204.obj" ".\I2C_files\aic3204_init.obj" ".\I2C_files\ezdsp5535.obj" ".\I2C_files\ezdsp5535_gpio.obj" ".\I2C_files\ezdsp5535_i2c.obj" ".\I2C_files\ezdsp5535_led.obj" ".\I2C_files\pll.obj" ".\FFT_files\codec_routines.obj" ".\FFT_files\configuration.obj" ".\FFT_files\dma_routines.obj" ".\FFT_files\filter_routines.obj" ".\FFT_files\hwafft.obj" ".\FFT_files\i2s_register.obj" ".\FFT_files\i2s_routines.obj" ".\FFT_files\rtc_routines.obj" ".\FFT_files\vector.obj" 
+	-$(RM) ".\FFT_files\codec_routines.pp" ".\FFT_files\hwafft.pp" ".\FFT_files\i2s_register.pp" ".\FFT_files\vector.pp" 
+	-$(RM) ".\main.pp" ".\I2C_files\MMA8451.pp" ".\I2C_files\aic3204.pp" ".\I2C_files\aic3204_init.pp" ".\I2C_files\ezdsp5535.pp" ".\I2C_files\ezdsp5535_gpio.pp" ".\I2C_files\ezdsp5535_i2c.pp" ".\I2C_files\ezdsp5535_led.pp" ".\I2C_files\pll.pp" ".\FFT_files\configuration.pp" ".\FFT_files\dma_routines.pp" ".\FFT_files\filter_routines.pp" ".\FFT_files\i2s_routines.pp" ".\FFT_files\rtc_routines.pp" 
 	-@echo ' '
 
 .PHONY: all clean dependents

@@ -24,6 +24,9 @@
 </option>
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.INCLUDE_PATH.221926231" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.INCLUDE_PATH" valueType="includePath">
 <listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/include&quot;"/>
+<listOptionValue builtIn="false" value="&quot;C:\Users\claus\Documents\GitHub\P6-vibration-monitoring\DSP projects\HWAFFT_I2C\FFT_files&quot;"/>
+<listOptionValue builtIn="false" value="&quot;C:\Users\claus\Documents\GitHub\P6-vibration-monitoring\DSP projects\HWAFFT_I2C\I2C_files&quot;"/>
+<listOptionValue builtIn="false" value="&quot;C:\Users\claus\Documents\GitHub\P6-vibration-monitoring\DSP projects\HWAFFT_I2C\I2C_files\chip_support&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${PROJECT_BUILD_DIR}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${RTDX_INCLUDE_DIR}&quot;"/>
 </option>
@@ -38,7 +41,7 @@
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.DEBUGGING_MODEL.957328720" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.DEBUGGING_MODEL" value="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.DEBUGGING_MODEL.SYMDEBUG__COFF" valueType="enumerated"/>
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.PTRDIFF_SIZE.1886340738" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.PTRDIFF_SIZE" value="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.PTRDIFF_SIZE.32" valueType="enumerated"/>
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.ASM_SOURCE.942476937" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.ASM_SOURCE" value="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.ASM_SOURCE.algebraic" valueType="enumerated"/>
-<option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.LARGE_MEMORY_MODEL.187690686" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.LARGE_MEMORY_MODEL" value="false" valueType="boolean"/>
+<option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.LARGE_MEMORY_MODEL.187690686" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.LARGE_MEMORY_MODEL" value="true" valueType="boolean"/>
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.NO_MAC_EXPAND.1966274193" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.NO_MAC_EXPAND" value="true" valueType="boolean"/>
 </tool>
 <tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug.1968174359" name="C5500 Linker" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug">
@@ -46,6 +49,7 @@
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.MAP_FILE.468968947" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.MAP_FILE" value="&quot;VC5505_FFT_Filter_Demo.map&quot;" valueType="string"/>
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.SEARCH_PATH.419234013" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.SEARCH_PATH" valueType="stringList">
 <listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/lib&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HWAFFT_I2C/I2C_files}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/include&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${RTDX_LIB_DIR}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${BIOS_LIB_DIR}&quot;"/>
@@ -64,6 +68,15 @@
 </toolChain>
 <resourceConfiguration exclude="false" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.578089850./C5505 FFT Filter Demo/hwafft.asm" name="hwafft.asm" rcbsApplicability="disable" resourcePath="/VC5505 FFT Filter Demo/hwafft.asm" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1376912917./C5505 FFT Filter Demo/hwafft.asm">
 <tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1376912917./C5505 FFT Filter Demo/hwafft.asm" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1376912917"/>
+</resourceConfiguration>
+<resourceConfiguration exclude="true" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.578089850./HWAFFT_I2C/I2C_files/main.c" name="main.c" rcbsApplicability="disable" resourcePath="/HWAFFT_I2C/I2C_files/main.c" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1376912917./HWAFFT_I2C/I2C_files/main.c">
+<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1376912917./HWAFFT_I2C/I2C_files/main.c" name="C5500 Compiler" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.compilerDebug.1376912917"/>
+</resourceConfiguration>
+<resourceConfiguration exclude="true" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.578089850./HWAFFT_I2C/I2C_files/lnkx.cmd" name="lnkx.cmd" rcbsApplicability="disable" resourcePath="/HWAFFT_I2C/I2C_files/lnkx.cmd" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug.1968174359./HWAFFT_I2C/I2C_files/lnkx.cmd">
+<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug.1968174359./HWAFFT_I2C/I2C_files/lnkx.cmd" name="C5500 Linker" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug.1968174359"/>
+</resourceConfiguration>
+<resourceConfiguration exclude="false" id="com.ti.ccstudio.buildDefinitions.C5500.Debug.578089850./HWAFFT_I2C/c5505.cmd" name="c5505.cmd" rcbsApplicability="disable" resourcePath="/HWAFFT_I2C/c5505.cmd" toolsToInvoke="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug.1968174359./HWAFFT_I2C/c5505.cmd">
+<tool id="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug.1968174359./HWAFFT_I2C/c5505.cmd" name="C5500 Linker" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.exe.linkerDebug.1968174359"/>
 </resourceConfiguration>
 </configuration>
 <configuration artifactExtension="out" artifactName="VC5505_FFT_Filter_Demo" description="" id="com.ti.ccstudio.buildDefinitions.C5500.Release.1844043332" name="Release" parent="com.ti.ccstudio.buildDefinitions.C5500.Release">

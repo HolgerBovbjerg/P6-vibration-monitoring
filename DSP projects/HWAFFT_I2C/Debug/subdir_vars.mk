@@ -4,84 +4,30 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../configuration.c \
-../dma_routines.c \
-../filter_routines.c \
-../i2s_routines.c \
-../main.c \
-../rtc_routines.c 
-
-ASM_SRCS += \
-../codec_routines.asm \
-../hwafft.asm \
-../i2s_register.asm \
-../vector.asm 
+../main.c 
 
 CMD_SRCS += \
 ../c5505.cmd 
 
-ASM_DEPS += \
-./codec_routines.pp \
-./i2s_register.pp \
-./vector.pp 
-
 OBJS += \
-./codec_routines.obj \
-./configuration.obj \
-./dma_routines.obj \
-./filter_routines.obj \
-./hwafft.obj \
-./i2s_register.obj \
-./i2s_routines.obj \
-./main.obj \
-./rtc_routines.obj \
-./vector.obj 
+./main.obj 
+
+GEN_MISC_FILES += \
+./c5505.out 
 
 C_DEPS += \
-./configuration.pp \
-./dma_routines.pp \
-./filter_routines.pp \
-./i2s_routines.pp \
-./main.pp \
-./rtc_routines.pp 
+./main.pp 
 
 OBJS__QTD += \
-".\codec_routines.obj" \
-".\configuration.obj" \
-".\dma_routines.obj" \
-".\filter_routines.obj" \
-".\hwafft.obj" \
-".\i2s_register.obj" \
-".\i2s_routines.obj" \
-".\main.obj" \
-".\rtc_routines.obj" \
-".\vector.obj" 
-
-ASM_DEPS__QTD += \
-".\codec_routines.pp" \
-".\i2s_register.pp" \
-".\vector.pp" 
+".\main.obj" 
 
 C_DEPS__QTD += \
-".\configuration.pp" \
-".\dma_routines.pp" \
-".\filter_routines.pp" \
-".\i2s_routines.pp" \
-".\main.pp" \
-".\rtc_routines.pp" 
+".\main.pp" 
 
-ASM_SRCS_QUOTED += \
-"../codec_routines.asm" \
-"../hwafft.asm" \
-"../i2s_register.asm" \
-"../vector.asm" 
+GEN_MISC_FILES__QTD += \
+".\c5505.out" 
 
 C_SRCS_QUOTED += \
-"../configuration.c" \
-"../dma_routines.c" \
-"../filter_routines.c" \
-"../i2s_routines.c" \
-"../main.c" \
-"../rtc_routines.c" 
+"../main.c" 
 
 

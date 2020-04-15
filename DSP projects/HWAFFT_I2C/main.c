@@ -60,6 +60,22 @@
 #include "filter_routines.h"
 
 
+// ezdsp setup libraries
+//#include "ezdsp5535.h"
+//#include "ezdsp5535_gpio.h"
+//#include "ezdsp5535_i2c.h"
+//#include "ezdsp5535_i2c.h"
+//#include "ezdsp5535_led.h"
+#include "pll.h"
+
+// board device libraries
+#include "aic3204.h"
+
+
+//MMA8451
+#include "MMA8451.h"
+
+
 void InitSystem(void);
 void ConfigPort(void);
 void SYS_GlobalIntEnable(void);
@@ -97,55 +113,55 @@ void fft_create_datapoint_array(Int16 *real_array, Int16 *imaginary_array, Uint1
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Uint16 fft_fft(Int32 *data, Int32 *scratch, Uint16 fft_falg, Uint16 scale_flag, Uint16 fft_length_1)
+Uint16 fft_fft(Int32 *fftdata, Int32 *scratch, Uint16 fft_falg, Uint16 scale_flag, Uint16 fft_length_1)
 {
 	Uint16 data_save_location;
 	
 	if(fft_length_1 == 1024)
 	{
-		data_save_location = hwafft_1024pts(data, scratch, fft_falg, scale_flag);
+		data_save_location = hwafft_1024pts(fftdata, scratch, fft_falg, scale_flag);
 		return data_save_location;
 	}
 	
 	if(fft_length_1 == 512)
 	{
-		data_save_location = hwafft_512pts(data, scratch, fft_falg, scale_flag);
+		data_save_location = hwafft_512pts(fftdata, scratch, fft_falg, scale_flag);
 		return data_save_location;
 	}
 	
 	if(fft_length_1 == 256)
 	{
-		data_save_location = hwafft_256pts(data, scratch, fft_falg, scale_flag);
+		data_save_location = hwafft_256pts(fftdata, scratch, fft_falg, scale_flag);
 		return data_save_location;
 	}
 	
 	if(fft_length_1 == 128)
 	{
-		data_save_location = hwafft_128pts(data, scratch, fft_falg, scale_flag);
+		data_save_location = hwafft_128pts(fftdata, scratch, fft_falg, scale_flag);
 		return data_save_location;
 	}
 	
 	if(fft_length_1 == 64)
 	{
-		data_save_location = hwafft_64pts(data, scratch, fft_falg, scale_flag);
+		data_save_location = hwafft_64pts(fftdata, scratch, fft_falg, scale_flag);
 		return data_save_location;
 	}
 	
 	if(fft_length_1 == 32)
 	{
-		data_save_location = hwafft_32pts(data, scratch, fft_falg, scale_flag);
+		data_save_location = hwafft_32pts(fftdata, scratch, fft_falg, scale_flag);
 		return data_save_location;
 	}
 	
 	if(fft_length_1 == 16)
 	{
-		data_save_location = hwafft_16pts(data, scratch, fft_falg, scale_flag);
+		data_save_location = hwafft_16pts(fftdata, scratch, fft_falg, scale_flag);
 		return data_save_location;
 	}
 	
 	if(fft_length_1 == 8)
 	{
-		data_save_location = hwafft_8pts(data, scratch, fft_falg, scale_flag);
+		data_save_location = hwafft_8pts(fftdata, scratch, fft_falg, scale_flag);
 		printf("%d \n", data_save_location);
 		return data_save_location;
 	}
@@ -177,12 +193,17 @@ void main(void) //main
 	int tmp = 0;
 	Uint16 *ptr;
 	Uint16 bitCopy[1024];
+	
+	inits(); // Setting up stuff for I2C	
+	MMAbegin();
+	for(tmp = 0; tmp < 1000; tmp++){
+	MMAread();}
 	fft_create_datapoint_array(&real_part[0], &imaginary_part[0], fft_length, &fft_datapoints[0]); //Kommando der sammensætter real_part og imaginary_part sammen til en array, fft_datapoints
 	//for(tmp = 0; tmp < lengthData; tmp++){ printf("%d \n",fft_datapoints[tmp]);} // FOR DEBUG
 	
 	
 	hwafft_br((Int32 *)&fft_datapoints[0], &fft_data_bitrev[0],fft_length); //Kommando der bit reverser pladserne så de havner i fft_data_bitrev
-	ptr = (Int16 *)&fft_data_bitrev[0];
+	ptr = (Uint16 *)&fft_data_bitrev[0];
 	for(tmp = 0; tmp < 1024; tmp++){bitCopy[tmp] = *(ptr+tmp);}
 	for(tmp = 0; tmp < lengthData; tmp++){ printf("%d \n",*(ptr+tmp));} // FOR DEBUG
 	fft_save_location = fft_fft(&fft_data_bitrev[0], &fft_scratch_array[0], 0, 1, fft_length); //Kommando der rent faktisk udfører FFT'en
