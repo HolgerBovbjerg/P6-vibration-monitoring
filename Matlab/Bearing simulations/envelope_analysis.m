@@ -77,8 +77,8 @@ legend('Bearing w. fault on inner ring','Non faulty bearing')
 xlim([100 20000])
 
 %% Demodulate
-xInnerDemod = abs(xInnerHPfiltered);
-xNoFaultDemod = abs(xNoFaultHPfiltered);
+xInnerDemod = abs(hilbert(xInnerHPfiltered));
+xNoFaultDemod = abs(hilbert(xNoFaultHPfiltered));
 
 figure(4)
 ax3 = tiledlayout(2,1);
@@ -101,8 +101,8 @@ legend('Bearing w. fault on inner ring','Non faulty bearing')
 xlim([0 8000])
 
 %% Low pass filter data
-xInnerLPfiltered = lowpass(xInnerDemod,1000,Fs1);
-xNoFaultLPfiltered = lowpass(xNoFaultDemod,1000,Fs2);
+xInnerLPfiltered = lowpass(xInnerDemod,500,Fs1);
+xNoFaultLPfiltered = lowpass(xNoFaultDemod,500,Fs2);
 figure(5)
 ax4 = tiledlayout(2,1);
 nexttile
