@@ -2,10 +2,13 @@
 clear
 
 %% DSP setup
-f_clock = 2e6;
-Fs = 48e3;
-
+f_clock = 100e6;
+Fs = 0.4e3;
+framelength = 2^10;
 cycles_per_sample = floor(f_clock/Fs);
+cycles_per_frame = cycles_per_sample*framelength;
+frequency_resolution = Fs/framelength;
+
 
 % FIR = inputsize * (3 + no_of_filter_coeffs/2)
 nhFIR1 = 6;
@@ -13,26 +16,20 @@ nhFIR1 = 6;
 nxFIR1 = 1;
 FIR1_cycles = nxFIR1 * (3 + nhFIR1/2);
 
-
-
-% High pass
-
-% Demodulation
-
+% Power
+nxPower = 1024;
+Power_cycles = nxPower-1+12;
 % Low pass
 
 % FFT
-FFT_framelength = 2^10;
-cycles_per_frame = cycles_per_sample*FFT_framelength;
-frequency_resolution = Fs/FFT_framelength;
-
-FFT_total = FFT_cycles(FFT_framelength);
+FFT_total = FFT_cycles(framelength);
 % Alarm
 
 % 
 
 %% Cycles used
-total_used = FFT_total + FIR1_cycles*FFT_framelength;
+total_used = FFT_total + FIR1_cycles*framelength...
+    + Power_cycles;
 %% Budget
 leftover = cycles_per_frame - total_used;
 
