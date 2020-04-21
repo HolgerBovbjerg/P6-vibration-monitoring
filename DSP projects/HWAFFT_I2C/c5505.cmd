@@ -78,7 +78,7 @@ SECTIONS
 // The Bit-Reverse destination buffer data_br_buf requires an address with 
 // at least 4+log2(FFT_LENGTH) least significant binary zeros 
 
-	data_br_buf 	: > DARAM_1		
+	data_br_buf	: > DARAM_1		
 	
     scratch_buf 	: > DARAM_1
 	convolved_buf	: > DARAM_2

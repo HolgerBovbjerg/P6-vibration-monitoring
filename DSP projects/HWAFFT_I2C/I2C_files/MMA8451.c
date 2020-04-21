@@ -63,19 +63,20 @@ void MMAbegin(){
 	ezdsp5535_I2C_write(MMA_I2C_ADDR, MMA8451_REG_CTRL_REG1, 2);
 }
 
-void MMAread(){
+void MMAread(Int16 *save_buffer){
 	
 	
 	Uint16 MMA_I2C_ADDR 			=	0x1D;
 	unsigned char MMA8451_REG_OUT_X_MSB[1];
 	
 	Uint8 MMAdata[6];
-	Uint16 x;
-	Uint16 y;
-	Uint16 z;
+	Uint16 x=0;
+	Uint16 y=0;
+	Uint16 z=0;
 	int i = 0;
 	MMA8451_REG_OUT_X_MSB[0] = 0x01;
 	
+	for(i = 0; i < 1024; i++){
 	
 	// Master transmitter. Set registeraddress
 	ezdsp5535_I2C_write_SR(MMA_I2C_ADDR, MMA8451_REG_OUT_X_MSB, 1);	
@@ -87,12 +88,15 @@ void MMAread(){
 	y = MMAdata[2]; y <<= 8; y |= MMAdata[3]; y >>= 2;
 	z = MMAdata[4]; z <<= 8; z |= MMAdata[5]; z >>= 2;
 	
+	*(save_buffer+i) = y;
+	ezdsp5535_waitusec(25);
+	}
 	printf("%s %d ", "x:   ", x);
 	printf("%s %d ", "		y:   ", y);
-	printf("%s %d \n ", "		z:   ", z);	
+	printf("%s %d \n", "		z:   ", z);	
 	for(i = 0; i < 6; i++){
 	//printf("%d \n",MMAdata[i]);	
 	}
-	ezdsp5535_waitusec(20000);
+	
 //	printf("%s %d \n", "MMA: ", &MMA8451_REG_OUT_X_MSB);
 }
