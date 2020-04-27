@@ -23,12 +23,13 @@ vMesh = sin(2*pi*fMesh*t);      % Gear-mesh waveform
 
 vNoFault = vfIn + vfOut + vMesh;                          
 %% Bearing
-n = 8;         % Number of rolling element bearings
-d = 0.002;      % Diameter of rolling elements 
-p = 0.010;      % Pitch diameter of bearing
-thetaDeg = 15; % Contact angle in degrees
+n = 7;         % Number of rolling element bearings
+d = 0.004;      % Diameter of rolling elements 
+p = 0.015;      % Pitch diameter of bearing
+thetaDeg = 0;
 
 bpfi = n*fPin/2*(1 + d/p*cosd(thetaDeg)); % Ballpass frequency, inner race
+bpfo = n*fPin/2*(1 - d/p*cosd(thetaDeg)); % Ballpass frequency, outer race
 fImpact = 3000;
 tImpact = 0:1/fs:5e-3-1/fs;
 xImpact = 0.4*sin(2*pi*fImpact*tImpact);
@@ -41,7 +42,7 @@ xComb(1:round(fs/bpfi):end) = 1;
 xBper = 0.33*conv(xComb,xImpactWindowed,'same');
 
 
-%% Figures
+%% Figures 
 figure(1)
 plot(t,xBper)
 xlim([0 0.05])
@@ -49,26 +50,60 @@ xlabel('Time (s)')
 ylabel('Acceleration')
 title('Impacts Due to Local Fault on the Inner Race of the Bearing')
 
-vNoBFaultNoisy = vNoFault + randn(size(t))/5;
-vBFaultNoisy = xBper + vNoFault + randn(size(t))/5;
+vBNoFaultNoisy = awgn(vNoFault,45);
+vBFaultNoisy = awgn(xBper + vNoFault,45);
 
 figure(2)
 plot(t,vBFaultNoisy)
+xlim([0 0.05])
+xlabel('Time (s)')
+ylabel('Acceleration')
 
 figure(3)
-pspectrum([vBFaultNoisy' vNoBFaultNoisy' ],fs,'FrequencyResolution',1,'FrequencyLimits',[0 10*bpfi])
+pspectrum([vBFaultNoisy' vBNoFaultNoisy' ],fs,'FrequencyResolution',1,'FrequencyLimits',[0 10*bpfi])
 legend('Damaged','Healthy')
 title('Bearing Vibration Spectra')
 grid off
 
-harmImpact = (0:10)*bpfi;
-[X,Y] = meshgrid(harmImpact,ylim);
+%% Envelope 
+vBFaultNoisyHP = highpass(vBFaultNoisy,1000,fs);
+vBNoFaultNoisyHP = highpass(vBNoFaultNoisy,1000,fs);
+vBFaultNoisyAbs = abs(vBFaultNoisyHP);
+vBNoFaultNoisyAbs = abs(vBNoFaultNoisyHP);
+vBFaultNoisyEnv = lowpass(vBFaultNoisyAbs,500,fs);
+vBNoFaultNoisyEnv = lowpass(vBNoFaultNoisyAbs,500,fs);
 
-hold on
-plot(X/1000,Y,':k')
-legend('Healthy','Damaged','BPFI harmonics')
-xlim([0 10*bpfi]/1000)
-hold off
+BPFIharmImpact = (0:10)*bpfi;
+BPFOharmImpact = (0:10)*bpfo;
+[xBPFI,yBPFI] = meshgrid(BPFIharmImpact,ylim);
+[xBPFO,yBPFO] = meshgrid(BPFOharmImpact,ylim);
 
 figure(4)
-pspectrum(vBFaultNoisy',fs,'FrequencyLimits',[0 10*bpfi], 'spectrogram', 'TimeResolution')
+ax1 = tiledlayout(4,1);
+nexttile
+plot(t,vBFaultNoisy,t,vBNoFaultNoisy)
+xlim([0 0.05])
+nexttile
+plot(t,vBFaultNoisyHP,t,vBNoFaultNoisyHP)
+xlim([0 0.05])
+nexttile
+plot(t,vBFaultNoisyAbs,t,vBNoFaultNoisyAbs)
+xlim([0 0.05])
+nexttile
+plot(t,vBFaultNoisyEnv,t,vBNoFaultNoisyEnv)
+xlim([0 0.05])
+
+figure(5)
+ax1 = tiledlayout(4,1);
+nexttile
+pspectrum([vBFaultNoisy' vBNoFaultNoisy'], fs,'FrequencyResolution',1)
+nexttile
+pspectrum([vBFaultNoisyHP' vBNoFaultNoisyHP'], fs,'FrequencyResolution',1)
+nexttile
+pspectrum([vBFaultNoisyAbs' vBNoFaultNoisyAbs'], fs,'FrequencyResolution',1)
+nexttile
+pspectrum([vBFaultNoisyEnv' vBNoFaultNoisyEnv'], fs,'FrequencyResolution',1,'FrequencyLimits',[0 10*bpfi])
+hold on 
+plot(xBPFI*1e-3,yBPFI,':g')
+plot(xBPFO*1e-3,yBPFO,':r')
+legend('Damaged','Healthy','BPFI harmonics','BPFO harmonics')
