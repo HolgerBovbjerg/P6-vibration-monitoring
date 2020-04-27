@@ -76,10 +76,13 @@ SECTIONS
 	vector		: > DARAM_0		ALIGN = 256 
 
 // The Bit-Reverse destination buffer data_br_buf requires an address with 
-// at least 4+log2(FFT_LENGTH) least significant binary zeros 
+// at least 4+log2(FFT_LENGTH) least significant binary zeros
 
-	data_br_buf	: > DARAM_1		
-	
+	.cio            : > DARAM_0
+	.const			: > DARAM_0
+
+	data_br_buf		: > DARAM_1		
+	fft_data_bitrev	: > SARAM	
     scratch_buf 	: > DARAM_1
 	convolved_buf	: > DARAM_2
 	coeffs_fft_buf	: >	DARAM_2
