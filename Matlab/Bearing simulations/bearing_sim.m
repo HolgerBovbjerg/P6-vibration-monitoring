@@ -30,7 +30,7 @@ thetaDeg = 0;
 
 bpfi = n*fPin/2*(1 + d/p*cosd(thetaDeg)); % Ballpass frequency, inner race
 bpfo = n*fPin/2*(1 - d/p*cosd(thetaDeg)); % Ballpass frequency, outer race
-fImpact = 3000;
+fImpact = 5000;
 tImpact = 0:1/fs:5e-3-1/fs;
 xImpact = 0.4*sin(2*pi*fImpact*tImpact);
 window  = kaiser(length(tImpact),40);
@@ -40,7 +40,7 @@ xImpactWindowed = xImpact.*window';
 xComb = zeros(size(t));
 xComb(1:round(fs/bpfi):end) = 1;
 xBper = 0.33*conv(xComb,xImpactWindowed,'same');
-
+xBper = awgn(xBper,45);
 
 %% Figures 
 figure(1)
