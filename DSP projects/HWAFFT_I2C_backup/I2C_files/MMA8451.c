@@ -13,7 +13,7 @@
 #include "aic3204.h"
 
 #define SAMPLES_PER_SECOND 48000
-#define GAIN 30
+#define GAIN 10
 
 //MMA8451
 #include "MMA8451.h"

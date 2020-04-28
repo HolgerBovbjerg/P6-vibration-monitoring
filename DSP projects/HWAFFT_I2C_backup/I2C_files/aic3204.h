@@ -14,7 +14,7 @@
 extern void aic3204_init(void);
 extern void aic3204_hardware_init(void);
 extern void aic3204_codec_read(Int16* left_input, Int16* right_input);
-extern void aic3204_codec_read_MONO(Int16* left_input, Int16 currentEntry);
+extern void aic3204_codec_read_MONO(Int16* left_input, Int16* right_input, Int16 currentEntry);
 extern void aic3204_codec_write(Int16 left_input, Int16 right_input);
 extern void aic3204_disable(void);
 

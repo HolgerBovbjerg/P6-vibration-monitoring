@@ -93,7 +93,7 @@ void aic3204_codec_read(Int16* left_input, Int16* right_input)
  	        
 }
 
-void aic3204_codec_read_MONO(Int16* left_input, Int16 currentEntry)
+void aic3204_codec_read_MONO(Int16* left_input, Int16* right_input, Int16 currentEntry)
 {
 	volatile Int16 dummy;
 	Int16 localCounter = 0;
@@ -103,12 +103,13 @@ void aic3204_codec_read_MONO(Int16* left_input, Int16 currentEntry)
     while(!(I2S2_IR & RcvR) ) 			// while no interrupt flag register and no 
     {
     	counter1++; // Wait for receive interrupt
+    	//printf("%s \n", "HALLOOOO");
     	
     }	
 	//printf("HERE \n");
     *(left_input+currentEntry) = I2S2_W0_MSW_R;     	// Read Most Significant Word of first channel
      dummy = I2S2_W0_LSW_R;             // Read Least Significant Word (ignore) 
-     dummy = I2S2_W1_MSW_R;       // Read Most Significant Word of second channel
+    *right_input = I2S2_W1_MSW_R;       // Read Most Significant Word of second channel
      dummy = I2S2_W1_LSW_R;             // Read Least Significant Word of second channel (ignore)
  	        
 }

@@ -99,6 +99,8 @@ extern Uint16 CurrentTxR_DMAChannel;
 extern Uint16 RunFilterForL;
 extern Uint16 RunFilterForR;
 
+Int16 dummy1;
+
 //----------Start af Dennis kode---------------------------------------------------------------------------------------------------------------------------------------------------------------
 void fft_create_datapoint_array(Int16 *real_array, Int16 *imaginary_array, Uint16 fft_length, Int16 *fft_pointer)
 {
@@ -205,8 +207,9 @@ void calculate_abs(Int16 real, Int16 imag, Int32 *absolute_ptr, Int16 current_en
 
 void codecRead(Int16 *real, Int16 sampleLength){
 	Int16 i = 0;
+	ezdsp5535_waitusec(250000);
 	for(i = 0; i < sampleLength; i++){
-		 aic3204_codec_read_MONO(&real[0],i);	
+		 aic3204_codec_read_MONO(&real[0], &dummy1,i);	
 	}
 }
 
@@ -220,6 +223,8 @@ Int32 data_br_buf[1024];						//Array der har sine indgange bit reversed
 #pragma DATA_ALIGN(scratch_buf,2048);			//-||-
 Int32 scratch_buf[1024];						//Array der indeholder bare reele og imaginære værdier, men indgangende har skiftet plads med bit reverse
 Int32 absolute_value[1024];
+
+
 
 void main(void) //main
 {			
@@ -237,14 +242,14 @@ void main(void) //main
 	
 	Int32 *addressBitrev;
 	Int32 *addressScratch;
-
+ 	
 
 	inits(); // Setting up stuff for I2C
 	
 	MMAbegin();
 	
-		MMAread(&real_part[0]);
-		//codecRead(&real_part[0], fft_length);	
+		//MMAread(&real_part[0]);
+		codecRead(&real_part[0], 1024);	
 		//for(loopCounter = 0; loopCounter < 1024; loopCounter++){real_part[loopCounter] = loopCounter;}
 		for(loopCounter = 0; loopCounter < 1024; loopCounter++){imaginary_part[loopCounter] = 0;} 
 		
