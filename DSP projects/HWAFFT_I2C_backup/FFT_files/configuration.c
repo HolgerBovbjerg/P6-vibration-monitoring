@@ -82,8 +82,8 @@ Int32 FilterOut[FFT_LENGTH]={0};
 Int16 OverlapL[FFT_LENGTH - WINDOW_SIZE]={0};
 #pragma DATA_SECTION(OverlapR, "OverlapR");
 Int16 OverlapR[FFT_LENGTH - WINDOW_SIZE]={0};
-#pragma DATA_SECTION(scratch_buf, "scratch_buf");
-Int32 scratch_buf[FFT_LENGTH];
+//#pragma DATA_SECTION(scratch_buf, "scratch_buf");
+//Int32 scratch_buf[FFT_LENGTH];
 #pragma DATA_SECTION(convolved_buf, "convolved_buf");
 Int32 convolved_buf[FFT_LENGTH]; 
 #pragma DATA_SECTION(coeffs_fft_buf, "coeffs_fft_buf");
@@ -91,8 +91,8 @@ Int32 coeffs_fft_buf[FFT_LENGTH];
 
 // The Bit-Reverse destination buffer data_br_buf requires an address with 
 // at least 4+log2(FFT_LENGTH) least significant binary zeros 
-#pragma DATA_SECTION(data_br_buf, "data_br_buf"); 
-Int32 data_br_buf[FFT_LENGTH];
+//#pragma DATA_SECTION(data_br_buf, "data_br_buf"); 
+//Int32 data_br_buf[FFT_LENGTH];
 
 
 //////////////////////////////////////////////////////////////////////

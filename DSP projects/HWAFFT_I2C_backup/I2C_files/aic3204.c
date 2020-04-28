@@ -105,7 +105,7 @@ void aic3204_codec_read_MONO(Int16* left_input, Int16 currentEntry)
     	counter1++; // Wait for receive interrupt
     	
     }	
-	printf("HERE \n");
+	//printf("HERE \n");
     *(left_input+currentEntry) = I2S2_W0_MSW_R;     	// Read Most Significant Word of first channel
      dummy = I2S2_W0_LSW_R;             // Read Least Significant Word (ignore) 
      dummy = I2S2_W1_MSW_R;       // Read Most Significant Word of second channel

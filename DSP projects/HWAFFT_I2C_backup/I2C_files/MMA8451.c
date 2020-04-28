@@ -90,9 +90,9 @@ void MMAread(Int16 *save_buffer){
 	x = MMAdata[0]; x <<= 8; x |= MMAdata[1]; x >>= 2;
 	y = MMAdata[2]; y <<= 8; y |= MMAdata[3]; y >>= 2;
 	z = MMAdata[4]; z <<= 8; z |= MMAdata[5]; z >>= 2;
-	printf("%s %d ","x:   " , x);
-	printf("%s %d ", "		y:   ", y);
-	printf("%s %d \n", "		z:   ", z);	
+//	printf("%s %d ","x:   " , x);
+//	printf("%s %d ", "		y:   ", y);
+//	printf("%s %d \n", "		z:   ", z);	
 	*(save_buffer+i) = y;
 	ezdsp5535_waitusec(2500);
 	

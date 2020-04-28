@@ -49,8 +49,14 @@ MEMORY
     DARAM_6 (RW)  : origin = 000c000h length = 002000h	/* on-chip DARAM 6 */
     DARAM_7 (RW)  : origin = 000e000h length = 002000h	/* on-chip DARAM 7 */ 
 
-	SARAM   (RW) : origin = 0010000h length = 040000h	/* on-chip SARAM */
-
+	SARAM   (RW) : origin = 0010000h length = 020000h	/* on-chip SARAM */
+	SARAM_2 (RW) : origin = 0030000h length = 01C000h	/* on-chip SARAM */
+	SARAM_3 (RWIX) : origin = 004C000h length = 001000h	/* on-chip SARAM */
+	SARAM_4 (RWIX) : origin = 004D000h length = 001000h	/* on-chip SARAM */
+	SARAM_5 (RW) : origin = 004E000h length = 001000h	/* on-chip SARAM */
+	SARAM_6 (RW) : origin = 004F000h length = 001000h	/* on-chip SARAM */
+	
+   
     SAROM_0 (RX)  : origin = 0fe0000h length = 008000h 	/* on-chip ROM 0 */
     SAROM_1 (RX)  : origin = 0fe8000h length = 008000h 	/* on-chip ROM 1 */
     SAROM_2 (RX)  : origin = 0ff0000h length = 008000h 	/* on-chip ROM 2 */
@@ -84,7 +90,10 @@ SECTIONS
 	convolved_buf	: > DARAM_2
 	coeffs_fft_buf	: >	DARAM_2
 	abs_freq		: > SARAM
-
+	
+	fft_data_bitrev : > SARAM_3
+	
+	fft_scratch_array : > SARAM_4
 	RcvL1		: > DARAM_3	
 	RcvL2		: > DARAM_3	
 	RcvR1		: > DARAM_4	

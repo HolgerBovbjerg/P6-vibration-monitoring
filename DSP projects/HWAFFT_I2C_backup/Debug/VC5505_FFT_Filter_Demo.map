@@ -1,10 +1,10 @@
 ******************************************************************************
               TMS320C55x Linker PC v4.3.8                      
 ******************************************************************************
->> Linked Mon Apr 27 08:29:07 2020
+>> Linked Tue Apr 28 14:28:23 2020
 
 OUTPUT FILE NAME:   <VC5505_FFT_Filter_Demo.out>
-ENTRY POINT SYMBOL: "reset_isr"  address: 000171f8
+ENTRY POINT SYMBOL: "reset_isr"  address: 00017178
 
 
 MEMORY CONFIGURATION
@@ -13,15 +13,20 @@ MEMORY CONFIGURATION
                         (bytes)   (bytes)    (bytes)   (bytes)
 ----------------------  --------  ---------  --------  --------  ----  --------
   MMR                   00000000   000000c0  00000000  000000c0  RW  
-  DARAM_0               000000c0   00001f40  00001c10  00000330  RW  
+  DARAM_0               000000c0   00001f40  00001e88  000000b8  RW  
   DARAM_1               00002000   00002000  00002000  00000000  RW  
   DARAM_2               00004000   00002000  00002000  00000000  RW  
   DARAM_3               00006000   00002000  00002000  00000000  RW  
   DARAM_4               00008000   00002000  00002000  00000000  RW  
-  DARAM_5               0000a000   00002000  00001fc8  00000038  RW  
-  DARAM_6               0000c000   00002000  00001be8  00000418  RW  
+  DARAM_5               0000a000   00002000  000018f8  00000708  RW  
+  DARAM_6               0000c000   00002000  00001010  00000ff0  RW  
   DARAM_7               0000e000   00002000  00001010  00000ff0  RW  
-  SARAM                 00010000   00040000  0000eba0  00031460  RW  
+  SARAM                 00010000   00020000  0000dae4  0001251c  RW  
+  SARAM_2               00030000   0001c000  00000000  0001c000  RW  
+  SARAM_3               0004c000   00001000  00000000  00001000  RWIX
+  SARAM_4               0004d000   00001000  00000000  00001000  RWIX
+  SARAM_5               0004e000   00001000  00000000  00001000  RW  
+  SARAM_6               0004f000   00001000  00000000  00001000  RW  
   EMIF_CS0              00050000   007b0000  00000000  007b0000  RW  
   EMIF_CS2              00800000   00400000  00000000  00400000  RW  
   EMIF_CS3              00c00000   00200000  00000000  00200000  RW  
@@ -50,23 +55,45 @@ section   page  orgn(bytes) orgn(words) len(bytes) len(words)   input sections
 vector       0     00000900  [ 00000480 ] 00000100          *   
                    00000900  [ 00000480 ] 00000100          *   vector.obj (vector)
 
-.cio         0   [ 00000a00 ]  00000500          *   00000120   UNINITIALIZED
-                 [ 00000a00 ]  00000500          *   00000120   rts55h.lib : trgmsg.obj (.cio)
+.const       0   [ 00000a00 ]  00000500          *   000005d4   
+                 [ 00000a00 ]  00000500          *   00000236   pll.obj (.const:.string)
+                 [ 00000e6c ]  00000736          *   00000174   aic3204_init.obj (.const:.string)
+                 [ 00001154 ]  000008aa          *   00000101   rts55h.lib : ctype.obj (.const:__ctypes_)
+                 [ 00001356 ]  000009ab          *   00000001   --HOLE-- [fill = 0]
+                 [ 00001358 ]  000009ac          *   00000069   main.obj (.const:.string)
+                 [ 0000142a ]  00000a15          *   00000001   --HOLE-- [fill = 0]
+                 [ 0000142c ]  00000a16          *   00000055   MMA8451.obj (.const:.string)
+                 [ 000014d6 ]  00000a6b          *   00000001   --HOLE-- [fill = 0]
+                 [ 000014d8 ]  00000a6c          *   00000024   rts55h.lib : _printfi.obj (.const:.string)
+                 [ 00001520 ]  00000a90          *   0000000c              : _printfi.obj (.const)
+                 [ 00001538 ]  00000a9c          *   0000000a              : ldexp.obj (.const)
+                 [ 0000154c ]  00000aa6          *   0000000a              : sqrt.obj (.const)
+                 [ 00001560 ]  00000ab0          *   00000008              : divd.obj (.const:_initial_approx$1)
+                 [ 00001570 ]  00000ab8          *   00000008              : frexp.obj (.const)
+                 [ 00001580 ]  00000ac0          *   00000002              : fputs.obj (.const:.string)
+                 [ 00001584 ]  00000ac2          *   00000002   MMA8451.obj (.const:_$P$T0$1)
+                 [ 00001588 ]  00000ac4          *   00000002   MMA8451.obj (.const:_$P$T1$2)
+                 [ 0000158c ]  00000ac6          *   00000002   MMA8451.obj (.const:_$P$T2$3)
+                 [ 00001590 ]  00000ac8          *   00000002   MMA8451.obj (.const:_$P$T3$4)
+                 [ 00001594 ]  00000aca          *   00000002   MMA8451.obj (.const:_$P$T4$5)
+                 [ 00001598 ]  00000acc          *   00000002   MMA8451.obj (.const:_$P$T5$6)
+                 [ 0000159c ]  00000ace          *   00000002   MMA8451.obj (.const:_$P$T6$7)
+                 [ 000015a0 ]  00000ad0          *   00000002   rts55h.lib : divd.obj (.const)
+                 [ 000015a4 ]  00000ad2          *   00000002              : fltlid.obj (.const)
 
-vectors      0     00000c40  [ 00000620 ] 00000100          *   NOLOAD SECTION
-                   00000c40  [ 00000620 ] 00000100          *   rts55h.lib : vectors.obj (vectors)
+.sysmem      0   [ 000015a8 ]  00000ad4          *   000003e8   UNINITIALIZED
+                 [ 000015a8 ]  00000ad4          *   000003e8   --HOLE--
 
-fft_data_bitrev 
-*            0   [ 00001000 ]  00000800          *   00000800   UNINITIALIZED
-                 [ 00001000 ]  00000800          *   00000800   main.obj (fft_data_bitrev)
+.cio         0   [ 00001d78 ]  00000ebc          *   00000120   UNINITIALIZED
+                 [ 00001d78 ]  00000ebc          *   00000120   rts55h.lib : trgmsg.obj (.cio)
 
 data_br_buf 
 *            0   [ 00002000 ]  00001000          *   00000800   UNINITIALIZED
-                 [ 00002000 ]  00001000          *   00000800   configuration.obj (data_br_buf)
+                 [ 00002000 ]  00001000          *   00000800   main.obj (data_br_buf)
 
 scratch_buf 
 *            0   [ 00003000 ]  00001800          *   00000800   UNINITIALIZED
-                 [ 00003000 ]  00001800          *   00000800   configuration.obj (scratch_buf)
+                 [ 00003000 ]  00001800          *   00000800   main.obj (scratch_buf)
 
 coeffs_fft_buf 
 *            0   [ 00004000 ]  00002000          *   00000800   UNINITIALIZED
@@ -98,8 +125,8 @@ OverlapL     0   [ 0000b000 ]  00005800          *   000001fe   UNINITIALIZED
 OverlapR     0   [ 0000b3fc ]  000059fe          *   000001fe   UNINITIALIZED
                  [ 0000b3fc ]  000059fe          *   000001fe   configuration.obj (OverlapR)
 
-.sysmem      0   [ 0000b7f8 ]  00005bfc          *   000003e8   UNINITIALIZED
-                 [ 0000b7f8 ]  00005bfc          *   000003e8   --HOLE--
+vectors      0     0000b7f8  [ 00005bfc ] 00000100          *   NOLOAD SECTION
+                   0000b7f8  [ 00005bfc ] 00000100          *   rts55h.lib : vectors.obj (vectors)
 
 XmitL1       0   [ 0000c000 ]  00006000          *   00000404   UNINITIALIZED
                  [ 0000c000 ]  00006000          *   00000404   configuration.obj (XmitL1)
@@ -107,166 +134,132 @@ XmitL1       0   [ 0000c000 ]  00006000          *   00000404   UNINITIALIZED
 XmitL2       0   [ 0000c808 ]  00006404          *   00000404   UNINITIALIZED
                  [ 0000c808 ]  00006404          *   00000404   configuration.obj (XmitL2)
 
-.const       0   [ 0000d010 ]  00006808          *   000005ec   
-                 [ 0000d010 ]  00006808          *   00000236   pll.obj (.const:.string)
-                 [ 0000d47c ]  00006a3e          *   00000174   aic3204_init.obj (.const:.string)
-                 [ 0000d764 ]  00006bb2          *   00000101   rts55h.lib : ctype.obj (.const:__ctypes_)
-                 [ 0000d966 ]  00006cb3          *   00000001   --HOLE-- [fill = 0]
-                 [ 0000d968 ]  00006cb4          *   0000007b   MMA8451.obj (.const:.string)
-                 [ 0000da5e ]  00006d2f          *   00000001   --HOLE-- [fill = 0]
-                 [ 0000da60 ]  00006d30          *   00000053   main.obj (.const:.string)
-                 [ 0000db06 ]  00006d83          *   00000001   --HOLE-- [fill = 0]
-                 [ 0000db08 ]  00006d84          *   00000024   rts55h.lib : _printfi.obj (.const:.string)
-                 [ 0000db50 ]  00006da8          *   0000000c              : _printfi.obj (.const)
-                 [ 0000db68 ]  00006db4          *   0000000a              : ldexp.obj (.const)
-                 [ 0000db7c ]  00006dbe          *   0000000a              : sqrt.obj (.const)
-                 [ 0000db90 ]  00006dc8          *   00000008              : divd.obj (.const:_initial_approx$1)
-                 [ 0000dba0 ]  00006dd0          *   00000008              : frexp.obj (.const)
-                 [ 0000dbb0 ]  00006dd8          *   00000007   aic3204.obj (.const:.string)
-                 [ 0000dbbe ]  00006ddf          *   00000001   --HOLE-- [fill = 0]
-                 [ 0000dbc0 ]  00006de0          *   00000002   rts55h.lib : fputs.obj (.const:.string)
-                 [ 0000dbc4 ]  00006de2          *   00000002   MMA8451.obj (.const:_$P$T0$1)
-                 [ 0000dbc8 ]  00006de4          *   00000002   MMA8451.obj (.const:_$P$T1$2)
-                 [ 0000dbcc ]  00006de6          *   00000002   MMA8451.obj (.const:_$P$T2$3)
-                 [ 0000dbd0 ]  00006de8          *   00000002   MMA8451.obj (.const:_$P$T3$4)
-                 [ 0000dbd4 ]  00006dea          *   00000002   MMA8451.obj (.const:_$P$T4$5)
-                 [ 0000dbd8 ]  00006dec          *   00000002   MMA8451.obj (.const:_$P$T5$6)
-                 [ 0000dbdc ]  00006dee          *   00000002   MMA8451.obj (.const:_$P$T6$7)
-                 [ 0000dbe0 ]  00006df0          *   00000002   rts55h.lib : divd.obj (.const)
-                 [ 0000dbe4 ]  00006df2          *   00000002              : fltlid.obj (.const)
-
 XmitR1       0   [ 0000e000 ]  00007000          *   00000404   UNINITIALIZED
                  [ 0000e000 ]  00007000          *   00000404   configuration.obj (XmitR1)
 
 XmitR2       0   [ 0000e808 ]  00007404          *   00000404   UNINITIALIZED
                  [ 0000e808 ]  00007404          *   00000404   configuration.obj (XmitR2)
 
-.text        0     00010000  [ 00008000 ] 00007a76          *   
+.text        0     00010000  [ 00008000 ] 000079ba          *   
                    00010000  [ 00008000 ] 00001526          *   rts55h.lib : _printfi.obj (.text)
                    00011526  [ 00008a93 ] 00000fe7          *   hwafft.obj (.text)
                    0001250d  [ 00009286+] 0000053a          *   aic3204_init.obj (.text)
                    00012a47  [ 00009523+] 00000538          *   rts55h.lib : trgdrv.obj (.text)
                    00012f7f  [ 000097bf+] 0000052a          *              : memory.obj (.text)
                    000134a9  [ 00009a54+] 00000518          *              : lowlev.obj (.text)
-                   000139c1  [ 00009ce0+] 000004c7          *   main.obj (.text)
-                   00013e88  [ 00009f44 ] 00000493          *   filter_routines.obj (.text)
-                   0001431b  [ 0000a18d+] 00000492          *   dma_routines.obj (.text)
-                   000147ad  [ 0000a3d6+] 00000367          *   rts55h.lib : divd.obj (.text)
-                   00014b14  [ 0000a58a ] 00000340          *   pll.obj (.text)
-                   00014e54  [ 0000a72a ] 000002ef          *   codec_routines.obj (.text)
-                   00015143  [ 0000a8a1+] 000002ad          *   CSLc55x5h.lib : csl_pll.obj (.text)
-                   000153f0  [ 0000a9f8 ] 00000298          *   i2s_register.obj (.text)
-                   00015688  [ 0000ab44 ] 0000026c          *   rts55h.lib : fopen.obj (.text)
-                   000158f4  [ 0000ac7a ] 0000025c          *              : llmpy.obj (.text)
-                   00015b50  [ 0000ada8 ] 00000257          *              : addd.obj (.text)
-                   00015da7  [ 0000aed3+] 0000020b          *   MMA8451.obj (.text)
-                   00015fb2  [ 0000afd9 ] 000001ea          *   rts55h.lib : cmpd.obj (.text)
-                   0001619c  [ 0000b0ce ] 0000019f          *   ezdsp5535_i2c.obj (.text)
-                   0001633b  [ 0000b19d+] 0000018f          *   aic3204.obj (.text)
-                   000164ca  [ 0000b265 ] 0000017b          *   rts55h.lib : fputs.obj (.text)
-                   00016645  [ 0000b322+] 0000016b          *   ezdsp5535_gpio.obj (.text)
-                   000167b0  [ 0000b3d8 ] 0000014b          *   rts55h.lib : mpyd.obj (.text)
-                   000168fb  [ 0000b47d+] 00000118          *              : sqrt.obj (.text)
-                   00016a13  [ 0000b509+] 000000f3          *              : setvbuf.obj (.text)
-                   00016b06  [ 0000b583 ] 000000ee          *              : ldexp.obj (.text)
-                   00016bf4  [ 0000b5fa ] 000000dc          *   rtc_routines.obj (.text)
-                   00016cd0  [ 0000b668 ] 000000da          *   rts55h.lib : _io_perm.obj (.text)
-                   00016daa  [ 0000b6d5 ] 000000cb          *              : frexp.obj (.text)
-                   00016e75  [ 0000b73a+] 000000c8          *              : frcmpyd_div.obj (.text)
-                   00016f3d  [ 0000b79e+] 000000be          *              : trgmsg.obj (.text:CIO_breakpoint)
-                   00016ffb  [ 0000b7fd+] 000000ba          *              : fflush.obj (.text)
-                   000170b5  [ 0000b85a+] 000000a2          *              : fputc.obj (.text)
-                   00017157  [ 0000b8ab+] 000000a0          *              : divul.obj (.text)
-                   000171f7  [ 0000b8fb ] 00000001          *   --HOLE-- [fill = 20]
-                   000171f8  [ 0000b8fc ] 0000007b          *   vector.obj (.text)
-                   00017273  [ 0000b939+] 00000079          *   rts55h.lib : ltoa.obj (.text)
-                   000172ec  [ 0000b976 ] 00000076          *              : fclose.obj (.text)
-                   00017362  [ 0000b9b1 ] 00000076          *              : frcmpyd.obj (.text)
-                   000173d8  [ 0000b9ec ] 00000070          *              : remul.obj (.text)
-                   00017448  [ 0000ba24 ] 0000006e          *              : fixdli.obj (.text)
-                   000174b6  [ 0000ba5b ] 0000006b          *              : trgmsg.obj (.text)
-                   00017521  [ 0000ba90+] 00000068          *              : fseek.obj (.text)
-                   00017589  [ 0000bac4+] 00000067          *              : fltlid.obj (.text)
-                   000175f0  [ 0000baf8 ] 00000059          *              : atoi.obj (.text)
-                   00017649  [ 0000bb24+] 00000056          *              : memcpy.obj (.text)
-                   0001769f  [ 0000bb4f+] 00000054          *   ezdsp5535.obj (.text)
-                   000176f3  [ 0000bb79+] 00000051          *   i2s_routines.obj (.text)
-                   00017744  [ 0000bba2 ] 0000004e          *   rts55h.lib : printf.obj (.text)
-                   00017792  [ 0000bbc9 ] 0000004d          *              : autoinit.obj (.text)
-                   000177df  [ 0000bbef+] 0000004b          *              : remli.obj (.text)
-                   0001782a  [ 0000bc15 ] 00000049          *              : args_main.obj (.text)
-                   00017873  [ 0000bc39+] 00000048          *              : divli.obj (.text)
-                   000178bb  [ 0000bc5d+] 0000003e          *              : exit.obj (.text)
-                   000178f9  [ 0000bc7c+] 0000003c          *              : idiv.obj (.text)
-                   00017935  [ 0000bc9a+] 00000034          *              : boot.obj (.text)
-                   00017969  [ 0000bcb4+] 0000002a          *              : fixdi.obj (.text)
-                   00017993  [ 0000bcc9+] 0000002a          *              : udiv.obj (.text)
-                   000179bd  [ 0000bcde+] 00000022          *              : memccpy.obj (.text)
-                   000179df  [ 0000bcef+] 0000001f          *   ezdsp5535_led.obj (.text)
-                   000179fe  [ 0000bcff ] 0000001b          *   rts55h.lib : isinf.obj (.text)
-                   00017a19  [ 0000bd0c+] 00000014          *              : subd.obj (.text)
-                   00017a2d  [ 0000bd16+] 00000013          *              : lmpy.obj (.text)
-                   00017a40  [ 0000bd20 ] 00000012          *              : _lock.obj (.text)
-                   00017a52  [ 0000bd29 ] 00000010          *              : negd.obj (.text)
-                   00017a62  [ 0000bd31 ] 0000000a          *              : remove.obj (.text)
-                   00017a6c  [ 0000bd36 ] 00000007          *              : exit.obj (.text:CIO_breakpoint)
-                   00017a73  [ 0000bd39+] 00000002          *              : vectors.obj (.text)
-                   00017a75  [ 0000bd3a ] 00000001          *   --HOLE-- [fill = 20]
+                   000139c1  [ 00009ce0+] 000004a3          *   main.obj (.text)
+                   00013e64  [ 00009f32 ] 00000493          *   filter_routines.obj (.text)
+                   000142f7  [ 0000a17b+] 00000492          *   dma_routines.obj (.text)
+                   00014789  [ 0000a3c4+] 00000367          *   rts55h.lib : divd.obj (.text)
+                   00014af0  [ 0000a578 ] 00000340          *   pll.obj (.text)
+                   00014e30  [ 0000a718 ] 000002ef          *   codec_routines.obj (.text)
+                   0001511f  [ 0000a88f+] 000002ad          *   CSLc55x5h.lib : csl_pll.obj (.text)
+                   000153cc  [ 0000a9e6 ] 00000298          *   i2s_register.obj (.text)
+                   00015664  [ 0000ab32 ] 0000026c          *   rts55h.lib : fopen.obj (.text)
+                   000158d0  [ 0000ac68 ] 0000025c          *              : llmpy.obj (.text)
+                   00015b2c  [ 0000ad96 ] 00000257          *              : addd.obj (.text)
+                   00015d83  [ 0000aec1+] 000001ea          *              : cmpd.obj (.text)
+                   00015f6d  [ 0000afb6+] 000001bd          *   MMA8451.obj (.text)
+                   0001612a  [ 0000b095 ] 0000019f          *   ezdsp5535_i2c.obj (.text)
+                   000162c9  [ 0000b164+] 00000182          *   aic3204.obj (.text)
+                   0001644b  [ 0000b225+] 0000017b          *   rts55h.lib : fputs.obj (.text)
+                   000165c6  [ 0000b2e3 ] 0000016b          *   ezdsp5535_gpio.obj (.text)
+                   00016731  [ 0000b398+] 0000014b          *   rts55h.lib : mpyd.obj (.text)
+                   0001687c  [ 0000b43e ] 00000118          *              : sqrt.obj (.text)
+                   00016994  [ 0000b4ca ] 000000f3          *              : setvbuf.obj (.text)
+                   00016a87  [ 0000b543+] 000000ee          *              : ldexp.obj (.text)
+                   00016b75  [ 0000b5ba+] 000000dc          *   rtc_routines.obj (.text)
+                   00016c51  [ 0000b628+] 000000da          *   rts55h.lib : _io_perm.obj (.text)
+                   00016d2b  [ 0000b695+] 000000cb          *              : frexp.obj (.text)
+                   00016df6  [ 0000b6fb ] 000000c8          *              : frcmpyd_div.obj (.text)
+                   00016ebe  [ 0000b75f ] 000000be          *              : trgmsg.obj (.text:CIO_breakpoint)
+                   00016f7c  [ 0000b7be ] 000000ba          *              : fflush.obj (.text)
+                   00017036  [ 0000b81b ] 000000a2          *              : fputc.obj (.text)
+                   000170d8  [ 0000b86c ] 000000a0          *              : divul.obj (.text)
+                   00017178  [ 0000b8bc ] 0000007b          *   vector.obj (.text)
+                   000171f3  [ 0000b8f9+] 00000079          *   rts55h.lib : ltoa.obj (.text)
+                   0001726c  [ 0000b936 ] 00000076          *              : fclose.obj (.text)
+                   000172e2  [ 0000b971 ] 00000076          *              : frcmpyd.obj (.text)
+                   00017358  [ 0000b9ac ] 00000070          *              : remul.obj (.text)
+                   000173c8  [ 0000b9e4 ] 0000006e          *              : fixdli.obj (.text)
+                   00017436  [ 0000ba1b ] 0000006b          *              : trgmsg.obj (.text)
+                   000174a1  [ 0000ba50+] 00000068          *              : fseek.obj (.text)
+                   00017509  [ 0000ba84+] 00000067          *              : fltlid.obj (.text)
+                   00017570  [ 0000bab8 ] 00000059          *              : atoi.obj (.text)
+                   000175c9  [ 0000bae4+] 00000056          *              : memcpy.obj (.text)
+                   0001761f  [ 0000bb0f+] 00000054          *   ezdsp5535.obj (.text)
+                   00017673  [ 0000bb39+] 00000051          *   i2s_routines.obj (.text)
+                   000176c4  [ 0000bb62 ] 0000004e          *   rts55h.lib : printf.obj (.text)
+                   00017712  [ 0000bb89 ] 0000004d          *              : autoinit.obj (.text)
+                   0001775f  [ 0000bbaf+] 0000004b          *              : remli.obj (.text)
+                   000177aa  [ 0000bbd5 ] 00000049          *              : args_main.obj (.text)
+                   000177f3  [ 0000bbf9+] 00000048          *              : divli.obj (.text)
+                   0001783b  [ 0000bc1d+] 0000003e          *              : exit.obj (.text)
+                   00017879  [ 0000bc3c+] 00000034          *              : boot.obj (.text)
+                   000178ad  [ 0000bc56+] 0000002a          *              : fixdi.obj (.text)
+                   000178d7  [ 0000bc6b+] 0000002a          *              : udiv.obj (.text)
+                   00017901  [ 0000bc80+] 00000022          *              : memccpy.obj (.text)
+                   00017923  [ 0000bc91+] 0000001f          *   ezdsp5535_led.obj (.text)
+                   00017942  [ 0000bca1 ] 0000001b          *   rts55h.lib : isinf.obj (.text)
+                   0001795d  [ 0000bcae+] 00000014          *              : subd.obj (.text)
+                   00017971  [ 0000bcb8+] 00000013          *              : lmpy.obj (.text)
+                   00017984  [ 0000bcc2 ] 00000012          *              : _lock.obj (.text)
+                   00017996  [ 0000bccb ] 00000010          *              : negd.obj (.text)
+                   000179a6  [ 0000bcd3 ] 0000000a          *              : remove.obj (.text)
+                   000179b0  [ 0000bcd8 ] 00000007          *              : exit.obj (.text:CIO_breakpoint)
+                   000179b7  [ 0000bcdb+] 00000002          *              : vectors.obj (.text)
+                   000179b9  [ 0000bcdc ] 00000001          *   --HOLE-- [fill = 20]
 
-.bss         0   [ 00017a78 ]  0000bd3c          *   00000d20   UNINITIALIZED
-                 [ 00017a78 ]  0000bd3c          *   00000804   main.obj (.bss)
-                 [ 00018a80 ]  0000c540          *   0000025f   configuration.obj (.bss)
-                 [ 00018f3e ]  0000c79f          *   00000001   ezdsp5535_i2c.obj (.bss)
-                 [ 00018f40 ]  0000c7a0          *   00000119   rts55h.lib : defs.obj (.bss)
-                 [ 00019172 ]  0000c8b9          *   000000d0              : trgdrv.obj (.bss)
-                 [ 00019312 ]  0000c989          *   00000001   rtc_routines.obj (.bss)
-                 [ 00019314 ]  0000c98a          *   00000071   rts55h.lib : lowlev.obj (.bss)
-                 [ 000193f6 ]  0000c9fb          *   00000001              : errno.obj (.bss)
-                 [ 000193f8 ]  0000c9fc          *   00000036   pll.obj (.bss)
-                 [ 00019464 ]  0000ca32          *   00000016   dma_routines.obj (.bss)
-                 [ 00019490 ]  0000ca48          *   00000007   rts55h.lib : memory.obj (.bss)
-                 [ 0001949e ]  0000ca4f          *   00000001              : fopen.obj (.bss)
-                 [ 000194a0 ]  0000ca50          *   00000004              : _lock.obj (.bss)
-                 [ 000194a8 ]  0000ca54          *   00000004              : exit.obj (.bss)
-                 [ 000194b0 ]  0000ca58          *   00000002   aic3204.obj (.bss)
-                 [ 000194b4 ]  0000ca5a          *   00000002   filter_routines.obj (.bss)
+.bss         0   [ 000179bc ]  0000bcde          *   00000d20   UNINITIALIZED
+                 [ 000179bc ]  0000bcde          *   00000804   main.obj (.bss)
+                 [ 000189c4 ]  0000c4e2          *   0000025f   configuration.obj (.bss)
+                 [ 00018e82 ]  0000c741          *   00000001   ezdsp5535_i2c.obj (.bss)
+                 [ 00018e84 ]  0000c742          *   00000119   rts55h.lib : defs.obj (.bss)
+                 [ 000190b6 ]  0000c85b          *   000000d0              : trgdrv.obj (.bss)
+                 [ 00019256 ]  0000c92b          *   00000001   rtc_routines.obj (.bss)
+                 [ 00019258 ]  0000c92c          *   00000071   rts55h.lib : lowlev.obj (.bss)
+                 [ 0001933a ]  0000c99d          *   00000001              : errno.obj (.bss)
+                 [ 0001933c ]  0000c99e          *   00000036   pll.obj (.bss)
+                 [ 000193a8 ]  0000c9d4          *   00000016   dma_routines.obj (.bss)
+                 [ 000193d4 ]  0000c9ea          *   00000007   rts55h.lib : memory.obj (.bss)
+                 [ 000193e2 ]  0000c9f1          *   00000001              : fopen.obj (.bss)
+                 [ 000193e4 ]  0000c9f2          *   00000004              : _lock.obj (.bss)
+                 [ 000193ec ]  0000c9f6          *   00000004              : exit.obj (.bss)
+                 [ 000193f4 ]  0000c9fa          *   00000002   aic3204.obj (.bss)
+                 [ 000193f8 ]  0000c9fc          *   00000002   filter_routines.obj (.bss)
 
 RcvL1_copy 
-*            0   [ 000194b8 ]  0000ca5c          *   00000800   UNINITIALIZED
-                 [ 000194b8 ]  0000ca5c          *   00000800   configuration.obj (RcvL1_copy)
+*            0   [ 000193fc ]  0000c9fe          *   00000800   UNINITIALIZED
+                 [ 000193fc ]  0000c9fe          *   00000800   configuration.obj (RcvL1_copy)
 
 RcvL2_copy 
-*            0   [ 0001a4b8 ]  0000d25c          *   00000800   UNINITIALIZED
-                 [ 0001a4b8 ]  0000d25c          *   00000800   configuration.obj (RcvL2_copy)
+*            0   [ 0001a3fc ]  0000d1fe          *   00000800   UNINITIALIZED
+                 [ 0001a3fc ]  0000d1fe          *   00000800   configuration.obj (RcvL2_copy)
 
 RcvR1_copy 
-*            0   [ 0001b4b8 ]  0000da5c          *   00000800   UNINITIALIZED
-                 [ 0001b4b8 ]  0000da5c          *   00000800   configuration.obj (RcvR1_copy)
+*            0   [ 0001b3fc ]  0000d9fe          *   00000800   UNINITIALIZED
+                 [ 0001b3fc ]  0000d9fe          *   00000800   configuration.obj (RcvR1_copy)
 
 RcvR2_copy 
-*            0   [ 0001c4b8 ]  0000e25c          *   00000800   UNINITIALIZED
-                 [ 0001c4b8 ]  0000e25c          *   00000800   configuration.obj (RcvR2_copy)
+*            0   [ 0001c3fc ]  0000e1fe          *   00000800   UNINITIALIZED
+                 [ 0001c3fc ]  0000e1fe          *   00000800   configuration.obj (RcvR2_copy)
 
-.cinit       0   [ 0001d4b8 ]  0000ea5c          *   00000375   
-                 [ 0001d4b8 ]  0000ea5c          *   00000286   configuration.obj (.cinit)
-                 [ 0001d9c4 ]  0000ece2          *   00000046   pll.obj (.cinit)
-                 [ 0001da50 ]  0000ed28          *   0000002d   rts55h.lib : lowlev.obj (.cinit)
-                 [ 0001daaa ]  0000ed55          *   0000002a              : defs.obj (.cinit)
-                 [ 0001dafe ]  0000ed7f          *   00000018   dma_routines.obj (.cinit)
-                 [ 0001db2e ]  0000ed97          *   0000000c   main.obj (.cinit)
-                 [ 0001db46 ]  0000eda3          *   0000000a   rts55h.lib : _lock.obj (.cinit)
-                 [ 0001db5a ]  0000edad          *   0000000a              : exit.obj (.cinit)
-                 [ 0001db6e ]  0000edb7          *   00000005   filter_routines.obj (.cinit)
-                 [ 0001db78 ]  0000edbc          *   00000004   ezdsp5535_i2c.obj (.cinit)
-                 [ 0001db80 ]  0000edc0          *   00000004   rtc_routines.obj (.cinit)
-                 [ 0001db88 ]  0000edc4          *   00000004   rts55h.lib : errno.obj (.cinit)
-                 [ 0001db90 ]  0000edc8          *   00000004              : fopen.obj (.cinit)
-                 [ 0001db98 ]  0000edcc          *   00000004              : memory.obj (.cinit)
-                 [ 0001dba0 ]  0000edd0          *   00000001   --HOLE-- [fill = 0]
-
-fft_scratch_array 
-*            0   [ 0001e000 ]  0000f000          *   00000800   UNINITIALIZED
-                 [ 0001e000 ]  0000f000          *   00000800   main.obj (fft_scratch_array)
+.cinit       0   [ 0001d3fc ]  0000e9fe          *   00000375   
+                 [ 0001d3fc ]  0000e9fe          *   00000286   configuration.obj (.cinit)
+                 [ 0001d908 ]  0000ec84          *   00000046   pll.obj (.cinit)
+                 [ 0001d994 ]  0000ecca          *   0000002d   rts55h.lib : lowlev.obj (.cinit)
+                 [ 0001d9ee ]  0000ecf7          *   0000002a              : defs.obj (.cinit)
+                 [ 0001da42 ]  0000ed21          *   00000018   dma_routines.obj (.cinit)
+                 [ 0001da72 ]  0000ed39          *   0000000c   main.obj (.cinit)
+                 [ 0001da8a ]  0000ed45          *   0000000a   rts55h.lib : _lock.obj (.cinit)
+                 [ 0001da9e ]  0000ed4f          *   0000000a              : exit.obj (.cinit)
+                 [ 0001dab2 ]  0000ed59          *   00000005   filter_routines.obj (.cinit)
+                 [ 0001dabc ]  0000ed5e          *   00000004   ezdsp5535_i2c.obj (.cinit)
+                 [ 0001dac4 ]  0000ed62          *   00000004   rtc_routines.obj (.cinit)
+                 [ 0001dacc ]  0000ed66          *   00000004   rts55h.lib : errno.obj (.cinit)
+                 [ 0001dad4 ]  0000ed6a          *   00000004              : fopen.obj (.cinit)
+                 [ 0001dadc ]  0000ed6e          *   00000004              : memory.obj (.cinit)
+                 [ 0001dae4 ]  0000ed72          *   00000001   --HOLE-- [fill = 0]
 
 
 GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
@@ -277,30 +270,28 @@ byte addr   word addr   name
 00000002                $TI_capability$C5500$CallingConvention
 00000008                $TI_capability$C5500$MemoryModel
 00000001                $TI_capability_requires_rev3
-            0000bd3c    .bss
+            0000bcde    .bss
 00010000                .text
-00017a6d                C$$EXIT
-00016ff6                C$$IO$$
-000178f9                I$$DIV
-00017a2d                I$$LMPY
-00017918                I$$MOD
-00017993                I$$UDIV
-000179a8                I$$UMOD
-00014e54                _AIC3204_init
-0001633b                _AIC3204_rget
-00016386                _AIC3204_rset
-00014164                _COLA_Output
-00014233                _CPLX_Mul
-00013f57                _Clear_COLA_Overlaps
-00013e28                _ConfigPort
-            0000c989    _Count_RTC
-            0000ca42    _CurrentRxL_DMAChannel
-            0000ca43    _CurrentRxR_DMAChannel
-            0000ca44    _CurrentTxL_DMAChannel
-            0000ca45    _CurrentTxR_DMAChannel
-000145f8                _DMA_Isr
-00013f9e                _FFT_Coeffs
-00014070                _FFT_Filter
+000179b1                C$$EXIT
+00016f77                C$$IO$$
+00017971                I$$LMPY
+000178d7                I$$UDIV
+000178ec                I$$UMOD
+00014e30                _AIC3204_init
+000162c9                _AIC3204_rget
+00016314                _AIC3204_rset
+00014140                _COLA_Output
+0001420f                _CPLX_Mul
+00013f33                _Clear_COLA_Overlaps
+00013e04                _ConfigPort
+            0000c92b    _Count_RTC
+            0000c9e4    _CurrentRxL_DMAChannel
+            0000c9e5    _CurrentRxR_DMAChannel
+            0000c9e6    _CurrentTxL_DMAChannel
+            0000c9e7    _CurrentTxR_DMAChannel
+000145d4                _DMA_Isr
+00013f7a                _FFT_Coeffs
+0001404c                _FFT_Filter
             00005000    _FilterOut
 00012f21                _HOSTclock
 00012eb6                _HOSTclose
@@ -311,183 +302,179 @@ byte addr   word addr   name
 00012bbe                _HOSTtime
 00012b52                _HOSTunlink
 00012ac7                _HOSTwrite
-            0000ca5a    _Hwafft_Func
-00013dc2                _InitSystem
-00015dd5                _MMAbegin
-00015e95                _MMAread
+            0000c9fc    _Hwafft_Func
+00013d9e                _InitSystem
+00015f9b                _MMAbegin
+0001605b                _MMAread
             00005800    _OverlapL
             000059fe    _OverlapR
-00013d90                _PLL_98MHz
-00015335                _PLL_bypass
-000151a5                _PLL_config
-000152ce                _PLL_enable
-0001516d                _PLL_init
-00015384                _PLL_reset
+00013d6c                _PLL_98MHz
+00015311                _PLL_bypass
+00015181                _PLL_config
+000152aa                _PLL_enable
+00015149                _PLL_init
+00015360                _PLL_reset
 00000900                _RST
-00016c4e                _RTC_Isr
+00016bcf                _RTC_Isr
             00003000    _RcvL1
-            0000ca5c    _RcvL1_copy
+            0000c9fe    _RcvL1_copy
             00003800    _RcvL2
-            0000d25c    _RcvL2_copy
+            0000d1fe    _RcvL2_copy
             00004000    _RcvR1
-            0000da5c    _RcvR1_copy
+            0000d9fe    _RcvR1_copy
             00004800    _RcvR2
-            0000e25c    _RcvR2_copy
-00000c40                _Reset
-            0000ca46    _RunFilterForL
-            0000ca47    _RunFilterForR
-            0000ca32    _RxL1_DMA_address
-            0000ca34    _RxL2_DMA_address
-            0000ca36    _RxR1_DMA_address
-            0000ca38    _RxR2_DMA_address
-            0000c73f    _Simulation
-            0000ca3a    _TxL1_DMA_address
-            0000ca3c    _TxL2_DMA_address
-            0000ca3e    _TxR1_DMA_address
-            0000ca40    _TxR2_DMA_address
+            0000e1fe    _RcvR2_copy
+0000b7f8                _Reset
+            0000c9e8    _RunFilterForL
+            0000c9e9    _RunFilterForR
+            0000c9d4    _RxL1_DMA_address
+            0000c9d6    _RxL2_DMA_address
+            0000c9d8    _RxR1_DMA_address
+            0000c9da    _RxR2_DMA_address
+            0000c6e1    _Simulation
+            0000c9dc    _TxL1_DMA_address
+            0000c9de    _TxL2_DMA_address
+            0000c9e0    _TxR1_DMA_address
+            0000c9e2    _TxR2_DMA_address
             00006000    _XmitL1
             00006404    _XmitL2
             00007000    _XmitR1
             00007404    _XmitR2
-00013e88                _Zero_Pad_Inputs
-            00000500    __CIOBUF_
+00013e64                _Zero_Pad_Inputs
+            00000ebc    __CIOBUF_
             00000254    __STACK_END
 000003e8                __STACK_SIZE
 000007d0                __SYSMEM_SIZE
 000003e8                __SYSSTACK_SIZE
 ffffffff                ___binit__
-            0000bd3c    ___bss__
+            0000bcde    ___bss__
 ffffffff                ___c_args__
-            0000ea5c    ___cinit__
-            0000ca5c    ___end__
-00017a76                ___etext__
-000179fe                ___isinf
+            0000e9fe    ___cinit__
+            0000c9fe    ___end__
+000179ba                ___etext__
+00017942                ___isinf
 ffffffff                ___pinit__
 00010000                ___text__
-00015b50                __addd
-0001782a                __args_main
-0001579d                __cleanup
-            0000ca54    __cleanup_ptr
-00016144                __cmpd
-            00006bb2    __ctypes_
-000147cf                __divd
-000178f9                __divi
-00017873                __divli
-00015b1c                __divlli
-00017993                __divu
-00017157                __divul
-00015a28                __divull
-00016ffb                __doflush
-            0000ca56    __dtors_ptr
-00016110                __eqld
-00017969                __fixdi
-00017448                __fixdli
-00017589                __fltlid
-00017362                __frcmpyd
-00016e75                __frcmpyd_div
-            0000c8b8    __ft_end
-            0000c7a0    __ftable
-000160c6                __geqd
-0001607b                __gtrd
-0001602e                __leqd
-            0000ca50    __lock
-00015fe6                __lssd
-000167b0                __mpyd
-00017a2d                __mpyli
-00015971                __mpylli
-00017a52                __negd
-00015fb2                __neqd
-00017a50                __nop
+00015b2c                __addd
+000177aa                __args_main
+00015779                __cleanup
+            0000c9f6    __cleanup_ptr
+00015f15                __cmpd
+            000008aa    __ctypes_
+000147ab                __divd
+000177f3                __divli
+00015af8                __divlli
+000178d7                __divu
+000170d8                __divul
+00015a04                __divull
+00016f7c                __doflush
+            0000c9f8    __dtors_ptr
+00015ee1                __eqld
+000178ad                __fixdi
+000173c8                __fixdli
+00017509                __fltlid
+000172e2                __frcmpyd
+00016df6                __frcmpyd_div
+            0000c85a    __ft_end
+            0000c742    __ftable
+00015e97                __geqd
+00015e4c                __gtrd
+00015dff                __leqd
+            0000c9f2    __lock
+00015db7                __lssd
+00016731                __mpyd
+00017971                __mpyli
+0001594d                __mpylli
+00017996                __negd
+00015d83                __neqd
+00017994                __nop
 00011308                __printfi
-00016d4d                __rd_ok
-00017a48                __register_lock
-00017a40                __register_unlock
-00017918                __remi
-000177df                __remli
-00015942                __remlli
-000179a8                __remu
-000173d8                __remul
-000158f4                __remull
+00016cce                __rd_ok
+0001798c                __register_lock
+00017984                __register_unlock
+0001775f                __remli
+0001591e                __remlli
+000178ec                __remu
+00017358                __remul
+000158d0                __remull
             00000060    __stack
-00017a19                __subd
-            00005bfc    __sys_memory
+0001795d                __subd
+            00000ad4    __sys_memory
             00000254    __sysstack
-            0000c818    __tmpnams
-            0000ca52    __unlock
-00016cd0                __wrt_ok
-00017a6c                _abort
-            0000bd40    _absolute_value
+            0000c7ba    __tmpnams
+            0000c9f4    __unlock
+00016c51                __wrt_ok
+000179b0                _abort
+            0000bce2    _absolute_value
 000138d9                _add_device
-000163f4                _aic3204_codec_read
-0001643a                _aic3204_codec_read_MONO
-0001648e                _aic3204_codec_write
-000163d8                _aic3204_disable
-000163a8                _aic3204_hardware_init
+00016382                _aic3204_codec_read
+000163c8                _aic3204_codec_read_MONO
+0001640f                _aic3204_codec_write
+00016366                _aic3204_disable
+00016336                _aic3204_hardware_init
 0001250d                _aic3204_init
-000175f0                _atoi
-00017792                _auto_init
-0001429b                _buff_copy16
-000142d4                _buff_copy32
-00017935                _c_int00
+00017570                _atoi
+00017712                _auto_init
+00014277                _buff_copy16
+000142b0                _buff_copy32
+00017879                _c_int00
 00013afd                _calculate_abs
 0001345d                _calloc
 00013455                _chkheap
-            0000bd3e    _clearOverlaps
+            0000bce0    _clearOverlaps
 00013869                _close
-00013b6d                _codecRead
-            0000c540    _coeffs
+00013b47                _codecRead
+            0000c4e2    _coeffs
             00002000    _coeffs_fft_buf
             00002800    _convolved_buf
-            0000ca58    _counter1
-            0000ca59    _counter2
+            0000c9fa    _counter1
+            0000c9fb    _counter2
             00001000    _data_br_buf
-00015650                _disable_i2s0
-0001565e                _disable_i2s1
-0001566c                _disable_i2s2
-0001567a                _disable_i2s3
-000145eb                _enable_dma_int
-00015618                _enable_i2s0
-00015626                _enable_i2s1
-00015634                _enable_i2s2
-00015642                _enable_i2s3
-00016bf4                _enable_rtc_second_int
-            0000c9fb    _errno
-000178bb                _exit
-00016751                _ezdsp5535_GPIO_getInput
-00016645                _ezdsp5535_GPIO_init
-00016649                _ezdsp5535_GPIO_setDirection
-000166d4                _ezdsp5535_GPIO_setOutput
-000161bb                _ezdsp5535_I2C_close
-0001619c                _ezdsp5535_I2C_init
-000162c2                _ezdsp5535_I2C_read
-000161c4                _ezdsp5535_I2C_reset
-000161d2                _ezdsp5535_I2C_write
-0001624d                _ezdsp5535_I2C_write_SR
-000179f3                _ezdsp5535_LED_init
-000179e9                _ezdsp5535_LED_off
-000179df                _ezdsp5535_LED_on
-000176e5                _ezdsp5535_init
-0001769f                _ezdsp5535_wait
-000176d3                _ezdsp5535_waitusec
-            0000bd3d    _fBypassOn
-            0000bd3c    _fFilterOn
-000172ec                _fclose
-0001705d                _fflush
+0001562c                _disable_i2s0
+0001563a                _disable_i2s1
+00015648                _disable_i2s2
+00015656                _disable_i2s3
+000145c7                _enable_dma_int
+000155f4                _enable_i2s0
+00015602                _enable_i2s1
+00015610                _enable_i2s2
+0001561e                _enable_i2s3
+00016b75                _enable_rtc_second_int
+            0000c99d    _errno
+0001783b                _exit
+000166d2                _ezdsp5535_GPIO_getInput
+000165c6                _ezdsp5535_GPIO_init
+000165ca                _ezdsp5535_GPIO_setDirection
+00016655                _ezdsp5535_GPIO_setOutput
+00016149                _ezdsp5535_I2C_close
+0001612a                _ezdsp5535_I2C_init
+00016250                _ezdsp5535_I2C_read
+00016152                _ezdsp5535_I2C_reset
+00016160                _ezdsp5535_I2C_write
+000161db                _ezdsp5535_I2C_write_SR
+00017937                _ezdsp5535_LED_init
+0001792d                _ezdsp5535_LED_off
+00017923                _ezdsp5535_LED_on
+00017665                _ezdsp5535_init
+0001761f                _ezdsp5535_wait
+00017653                _ezdsp5535_waitusec
+            0000bcdf    _fBypassOn
+            0000bcde    _fFilterOn
+0001726c                _fclose
+00016fde                _fflush
 000139c1                _fft_create_datapoint_array
-            00000800    _fft_data_bitrev
 00013a12                _fft_fft
-            0000f000    _fft_scratch_array
 00013860                _find_registered_device
-000158bb                _fopen
-000170b5                _fputc
-000164ca                _fputs
+00015897                _fopen
+00017036                _fputc
+0001644b                _fputs
 00012f7f                _free
 000133ee                _free_memory
-000157f5                _freopen
-00016daa                _frexp
-00017521                _fseek
+000157d1                _freopen
+00016d2b                _frexp
+000174a1                _fseek
 00012a47                _getenv
-            0000ca06    _hPll
+            0000c9a8    _hPll
 000122a6                _hwafft_1024pts
 00011c1d                _hwafft_128pts
 00011629                _hwafft_16pts
@@ -497,160 +484,160 @@ ffffffff                ___pinit__
 00011a88                _hwafft_64pts
 0001153a                _hwafft_8pts
 00011526                _hwafft_br
-000153f0                _i2s0_read_CR
-00015438                _i2s0_read_INTR
-0001543e                _i2s0_read_INT_MASK
-0001544a                _i2s0_read_RXL_LSW
-00015456                _i2s0_read_RXL_MSW
-00015462                _i2s0_read_RXR_LSW
-0001546e                _i2s0_read_RXR_MSW
-000153fc                _i2s0_read_SRGR
-00015408                _i2s0_read_TXL_LSW
-00015414                _i2s0_read_TXL_MSW
-00015420                _i2s0_read_TXR_LSW
-0001542c                _i2s0_read_TXR_MSW
-000153f6                _i2s0_write_CR
-00015444                _i2s0_write_INT_MASK
-00015450                _i2s0_write_RXL_LSW
-0001545c                _i2s0_write_RXL_MSW
-00015468                _i2s0_write_RXR_LSW
-00015474                _i2s0_write_RXR_MSW
-00015402                _i2s0_write_SRGR
-0001540e                _i2s0_write_TXL_LSW
-0001541a                _i2s0_write_TXL_MSW
-00015426                _i2s0_write_TXR_LSW
-00015432                _i2s0_write_TXR_MSW
-0001547a                _i2s1_read_CR
-000154c2                _i2s1_read_INTR
-000154c8                _i2s1_read_INT_MASK
-000154d4                _i2s1_read_RXL_LSW
-000154e0                _i2s1_read_RXL_MSW
-000154ec                _i2s1_read_RXR_LSW
-000154f8                _i2s1_read_RXR_MSW
-00015486                _i2s1_read_SRGR
-00015492                _i2s1_read_TXL_LSW
-0001549e                _i2s1_read_TXL_MSW
-000154aa                _i2s1_read_TXR_LSW
-000154b6                _i2s1_read_TXR_MSW
-00015480                _i2s1_write_CR
-000154ce                _i2s1_write_INT_MASK
-000154da                _i2s1_write_RXL_LSW
-000154e6                _i2s1_write_RXL_MSW
-000154f2                _i2s1_write_RXR_LSW
-000154fe                _i2s1_write_RXR_MSW
-0001548c                _i2s1_write_SRGR
-00015498                _i2s1_write_TXL_LSW
-000154a4                _i2s1_write_TXL_MSW
-000154b0                _i2s1_write_TXR_LSW
-000154bc                _i2s1_write_TXR_MSW
-00015504                _i2s2_read_CR
-0001554c                _i2s2_read_INTR
-00015552                _i2s2_read_INT_MASK
-0001555e                _i2s2_read_RXL_LSW
-0001556a                _i2s2_read_RXL_MSW
-00015576                _i2s2_read_RXR_LSW
-00015582                _i2s2_read_RXR_MSW
-00015510                _i2s2_read_SRGR
-0001551c                _i2s2_read_TXL_LSW
-00015528                _i2s2_read_TXL_MSW
-00015534                _i2s2_read_TXR_LSW
-00015540                _i2s2_read_TXR_MSW
-0001550a                _i2s2_write_CR
-00015558                _i2s2_write_INT_MASK
-00015564                _i2s2_write_RXL_LSW
-00015570                _i2s2_write_RXL_MSW
-0001557c                _i2s2_write_RXR_LSW
-00015588                _i2s2_write_RXR_MSW
-00015516                _i2s2_write_SRGR
-00015522                _i2s2_write_TXL_LSW
-0001552e                _i2s2_write_TXL_MSW
-0001553a                _i2s2_write_TXR_LSW
-00015546                _i2s2_write_TXR_MSW
-0001558e                _i2s3_read_CR
-000155d6                _i2s3_read_INTR
-000155dc                _i2s3_read_INT_MASK
-000155e8                _i2s3_read_RXL_LSW
-000155f4                _i2s3_read_RXL_MSW
-00015600                _i2s3_read_RXR_LSW
-0001560c                _i2s3_read_RXR_MSW
-0001559a                _i2s3_read_SRGR
-000155a6                _i2s3_read_TXL_LSW
-000155b2                _i2s3_read_TXL_MSW
-000155be                _i2s3_read_TXR_LSW
-000155ca                _i2s3_read_TXR_MSW
-00015594                _i2s3_write_CR
-000155e2                _i2s3_write_INT_MASK
-000155ee                _i2s3_write_RXL_LSW
-000155fa                _i2s3_write_RXL_MSW
-00015606                _i2s3_write_RXR_LSW
-00015612                _i2s3_write_RXR_MSW
-000155a0                _i2s3_write_SRGR
-000155ac                _i2s3_write_TXL_LSW
-000155b8                _i2s3_write_TXL_MSW
-000155c4                _i2s3_write_TXR_LSW
-000155d0                _i2s3_write_TXR_MSW
-00015da7                _inits
-00016b06                _ldexp
+000153cc                _i2s0_read_CR
+00015414                _i2s0_read_INTR
+0001541a                _i2s0_read_INT_MASK
+00015426                _i2s0_read_RXL_LSW
+00015432                _i2s0_read_RXL_MSW
+0001543e                _i2s0_read_RXR_LSW
+0001544a                _i2s0_read_RXR_MSW
+000153d8                _i2s0_read_SRGR
+000153e4                _i2s0_read_TXL_LSW
+000153f0                _i2s0_read_TXL_MSW
+000153fc                _i2s0_read_TXR_LSW
+00015408                _i2s0_read_TXR_MSW
+000153d2                _i2s0_write_CR
+00015420                _i2s0_write_INT_MASK
+0001542c                _i2s0_write_RXL_LSW
+00015438                _i2s0_write_RXL_MSW
+00015444                _i2s0_write_RXR_LSW
+00015450                _i2s0_write_RXR_MSW
+000153de                _i2s0_write_SRGR
+000153ea                _i2s0_write_TXL_LSW
+000153f6                _i2s0_write_TXL_MSW
+00015402                _i2s0_write_TXR_LSW
+0001540e                _i2s0_write_TXR_MSW
+00015456                _i2s1_read_CR
+0001549e                _i2s1_read_INTR
+000154a4                _i2s1_read_INT_MASK
+000154b0                _i2s1_read_RXL_LSW
+000154bc                _i2s1_read_RXL_MSW
+000154c8                _i2s1_read_RXR_LSW
+000154d4                _i2s1_read_RXR_MSW
+00015462                _i2s1_read_SRGR
+0001546e                _i2s1_read_TXL_LSW
+0001547a                _i2s1_read_TXL_MSW
+00015486                _i2s1_read_TXR_LSW
+00015492                _i2s1_read_TXR_MSW
+0001545c                _i2s1_write_CR
+000154aa                _i2s1_write_INT_MASK
+000154b6                _i2s1_write_RXL_LSW
+000154c2                _i2s1_write_RXL_MSW
+000154ce                _i2s1_write_RXR_LSW
+000154da                _i2s1_write_RXR_MSW
+00015468                _i2s1_write_SRGR
+00015474                _i2s1_write_TXL_LSW
+00015480                _i2s1_write_TXL_MSW
+0001548c                _i2s1_write_TXR_LSW
+00015498                _i2s1_write_TXR_MSW
+000154e0                _i2s2_read_CR
+00015528                _i2s2_read_INTR
+0001552e                _i2s2_read_INT_MASK
+0001553a                _i2s2_read_RXL_LSW
+00015546                _i2s2_read_RXL_MSW
+00015552                _i2s2_read_RXR_LSW
+0001555e                _i2s2_read_RXR_MSW
+000154ec                _i2s2_read_SRGR
+000154f8                _i2s2_read_TXL_LSW
+00015504                _i2s2_read_TXL_MSW
+00015510                _i2s2_read_TXR_LSW
+0001551c                _i2s2_read_TXR_MSW
+000154e6                _i2s2_write_CR
+00015534                _i2s2_write_INT_MASK
+00015540                _i2s2_write_RXL_LSW
+0001554c                _i2s2_write_RXL_MSW
+00015558                _i2s2_write_RXR_LSW
+00015564                _i2s2_write_RXR_MSW
+000154f2                _i2s2_write_SRGR
+000154fe                _i2s2_write_TXL_LSW
+0001550a                _i2s2_write_TXL_MSW
+00015516                _i2s2_write_TXR_LSW
+00015522                _i2s2_write_TXR_MSW
+0001556a                _i2s3_read_CR
+000155b2                _i2s3_read_INTR
+000155b8                _i2s3_read_INT_MASK
+000155c4                _i2s3_read_RXL_LSW
+000155d0                _i2s3_read_RXL_MSW
+000155dc                _i2s3_read_RXR_LSW
+000155e8                _i2s3_read_RXR_MSW
+00015576                _i2s3_read_SRGR
+00015582                _i2s3_read_TXL_LSW
+0001558e                _i2s3_read_TXL_MSW
+0001559a                _i2s3_read_TXR_LSW
+000155a6                _i2s3_read_TXR_MSW
+00015570                _i2s3_write_CR
+000155be                _i2s3_write_INT_MASK
+000155ca                _i2s3_write_RXL_LSW
+000155d6                _i2s3_write_RXL_MSW
+000155e2                _i2s3_write_RXR_LSW
+000155ee                _i2s3_write_RXR_MSW
+0001557c                _i2s3_write_SRGR
+00015588                _i2s3_write_TXL_LSW
+00015594                _i2s3_write_TXL_MSW
+000155a0                _i2s3_write_TXR_LSW
+000155ac                _i2s3_write_TXR_MSW
+00015f6d                _inits
+00016a87                _ldexp
 000137fc                _lseek
-00017273                _ltoa
-00013b9f                _main
+000171f3                _ltoa
+00013b79                _main
 000130c3                _malloc
 00013384                _max_free
-000179bd                _memccpy
-00017649                _memcpy
+00017901                _memccpy
+000175c9                _memcpy
 00013051                _minit
 0001373f                _open
-            0000ca30    _pConfigInfo
-            0000ca02    _pllCfg1
-            0000ca28    _pllCfg_100MHz
-            0000ca2c    _pllCfg_120MHz
-            0000ca10    _pllCfg_12MHz
-            0000ca14    _pllCfg_12p288MHz
-            0000ca08    _pllCfg_1MHz
-            0000ca0c    _pllCfg_2MHz
-            0000ca18    _pllCfg_40MHz
-            0000ca1c    _pllCfg_60MHz
-            0000ca20    _pllCfg_75MHz
-            0000ca24    _pllCfg_98MHz
-            0000c9fc    _pllObj
-00014b8f                _pll_frequency_setup
-00017744                _printf
-000170b5                _putc
-00017148                _putchar
-00016619                _puts
+            0000c9d2    _pConfigInfo
+            0000c9a4    _pllCfg1
+            0000c9ca    _pllCfg_100MHz
+            0000c9ce    _pllCfg_120MHz
+            0000c9b2    _pllCfg_12MHz
+            0000c9b6    _pllCfg_12p288MHz
+            0000c9aa    _pllCfg_1MHz
+            0000c9ae    _pllCfg_2MHz
+            0000c9ba    _pllCfg_40MHz
+            0000c9be    _pllCfg_60MHz
+            0000c9c2    _pllCfg_75MHz
+            0000c9c6    _pllCfg_98MHz
+            0000c99e    _pllObj
+00014b6b                _pll_frequency_setup
+000176c4                _printf
+00017036                _putc
+000170c9                _putchar
+0001659a                _puts
 00013695                _read
-000174b6                _readmsg
+00017436                _readmsg
 000131be                _realloc
-00017a62                _remove
+000179a6                _remove
 00013661                _remove_device
 0001360a                _rename
-00016c00                _reset_RTC
+00016b81                _reset_RTC
             00001800    _scratch_buf
-0001431b                _setDMA_address
-0001447b                _set_dma0_ch0_i2s0_Lout
-00014423                _set_dma0_ch0_stop
-000144d7                _set_dma0_ch1_i2s0_Rout
-00014439                _set_dma0_ch1_stop
-00014533                _set_dma0_ch2_i2s0_Lin
-0001444f                _set_dma0_ch2_stop
-0001458f                _set_dma0_ch3_i2s0_Rin
-00014465                _set_dma0_ch3_stop
-000176f3                _set_i2s0_master
-00017724                _set_i2s0_slave
+000142f7                _setDMA_address
+00014457                _set_dma0_ch0_i2s0_Lout
+000143ff                _set_dma0_ch0_stop
+000144b3                _set_dma0_ch1_i2s0_Rout
+00014415                _set_dma0_ch1_stop
+0001450f                _set_dma0_ch2_i2s0_Lin
+0001442b                _set_dma0_ch2_stop
+0001456b                _set_dma0_ch3_i2s0_Rin
+00014441                _set_dma0_ch3_stop
+00017673                _set_i2s0_master
+000176a4                _set_i2s0_slave
 000126eb                _set_sampling_frequency_and_gain
-00016a13                _setvbuf
-000168fb                _sqrt
-00013e6b                _turnOffLED
-00013e4e                _turnOnLED
+00016994                _setvbuf
+0001687c                _sqrt
+00013e47                _turnOffLED
+00013e2a                _turnOnLED
 000135d6                _unlink
 000134a9                _write
-00016f3d                _writemsg
+00016ebe                _writemsg
 ffffffff                binit
-            0000ea5c    cinit
-            0000ca5c    end
-00017a76                etext
+            0000e9fe    cinit
+            0000c9fe    end
+000179ba                etext
 ffffffff                pinit
-000171f8                reset_isr
+00017178                reset_isr
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -668,9 +655,9 @@ byte addr   word addr   name
             00000254    __sysstack
 000007d0                __SYSMEM_SIZE
 00000900                _RST
-            00000500    __CIOBUF_
-00000c40                _Reset
-            00000800    _fft_data_bitrev
+            000008aa    __ctypes_
+            00000ad4    __sys_memory
+            00000ebc    __CIOBUF_
             00001000    _data_br_buf
             00001800    _scratch_buf
             00002000    _coeffs_fft_buf
@@ -682,10 +669,9 @@ byte addr   word addr   name
             00005000    _FilterOut
             00005800    _OverlapL
             000059fe    _OverlapR
-            00005bfc    __sys_memory
+0000b7f8                _Reset
             00006000    _XmitL1
             00006404    _XmitL2
-            00006bb2    __ctypes_
             00007000    _XmitR1
             00007404    _XmitR2
 00010000                .text
@@ -733,307 +719,302 @@ byte addr   word addr   name
 000139c1                _fft_create_datapoint_array
 00013a12                _fft_fft
 00013afd                _calculate_abs
-00013b6d                _codecRead
-00013b9f                _main
-00013d90                _PLL_98MHz
-00013dc2                _InitSystem
-00013e28                _ConfigPort
-00013e4e                _turnOnLED
-00013e6b                _turnOffLED
-00013e88                _Zero_Pad_Inputs
-00013f57                _Clear_COLA_Overlaps
-00013f9e                _FFT_Coeffs
-00014070                _FFT_Filter
-00014164                _COLA_Output
-00014233                _CPLX_Mul
-0001429b                _buff_copy16
-000142d4                _buff_copy32
-0001431b                _setDMA_address
-00014423                _set_dma0_ch0_stop
-00014439                _set_dma0_ch1_stop
-0001444f                _set_dma0_ch2_stop
-00014465                _set_dma0_ch3_stop
-0001447b                _set_dma0_ch0_i2s0_Lout
-000144d7                _set_dma0_ch1_i2s0_Rout
-00014533                _set_dma0_ch2_i2s0_Lin
-0001458f                _set_dma0_ch3_i2s0_Rin
-000145eb                _enable_dma_int
-000145f8                _DMA_Isr
-000147cf                __divd
-00014b8f                _pll_frequency_setup
-00014e54                _AIC3204_init
-0001516d                _PLL_init
-000151a5                _PLL_config
-000152ce                _PLL_enable
-00015335                _PLL_bypass
-00015384                _PLL_reset
-000153f0                _i2s0_read_CR
-000153f6                _i2s0_write_CR
-000153fc                _i2s0_read_SRGR
-00015402                _i2s0_write_SRGR
-00015408                _i2s0_read_TXL_LSW
-0001540e                _i2s0_write_TXL_LSW
-00015414                _i2s0_read_TXL_MSW
-0001541a                _i2s0_write_TXL_MSW
-00015420                _i2s0_read_TXR_LSW
-00015426                _i2s0_write_TXR_LSW
-0001542c                _i2s0_read_TXR_MSW
-00015432                _i2s0_write_TXR_MSW
-00015438                _i2s0_read_INTR
-0001543e                _i2s0_read_INT_MASK
-00015444                _i2s0_write_INT_MASK
-0001544a                _i2s0_read_RXL_LSW
-00015450                _i2s0_write_RXL_LSW
-00015456                _i2s0_read_RXL_MSW
-0001545c                _i2s0_write_RXL_MSW
-00015462                _i2s0_read_RXR_LSW
-00015468                _i2s0_write_RXR_LSW
-0001546e                _i2s0_read_RXR_MSW
-00015474                _i2s0_write_RXR_MSW
-0001547a                _i2s1_read_CR
-00015480                _i2s1_write_CR
-00015486                _i2s1_read_SRGR
-0001548c                _i2s1_write_SRGR
-00015492                _i2s1_read_TXL_LSW
-00015498                _i2s1_write_TXL_LSW
-0001549e                _i2s1_read_TXL_MSW
-000154a4                _i2s1_write_TXL_MSW
-000154aa                _i2s1_read_TXR_LSW
-000154b0                _i2s1_write_TXR_LSW
-000154b6                _i2s1_read_TXR_MSW
-000154bc                _i2s1_write_TXR_MSW
-000154c2                _i2s1_read_INTR
-000154c8                _i2s1_read_INT_MASK
-000154ce                _i2s1_write_INT_MASK
-000154d4                _i2s1_read_RXL_LSW
-000154da                _i2s1_write_RXL_LSW
-000154e0                _i2s1_read_RXL_MSW
-000154e6                _i2s1_write_RXL_MSW
-000154ec                _i2s1_read_RXR_LSW
-000154f2                _i2s1_write_RXR_LSW
-000154f8                _i2s1_read_RXR_MSW
-000154fe                _i2s1_write_RXR_MSW
-00015504                _i2s2_read_CR
-0001550a                _i2s2_write_CR
-00015510                _i2s2_read_SRGR
-00015516                _i2s2_write_SRGR
-0001551c                _i2s2_read_TXL_LSW
-00015522                _i2s2_write_TXL_LSW
-00015528                _i2s2_read_TXL_MSW
-0001552e                _i2s2_write_TXL_MSW
-00015534                _i2s2_read_TXR_LSW
-0001553a                _i2s2_write_TXR_LSW
-00015540                _i2s2_read_TXR_MSW
-00015546                _i2s2_write_TXR_MSW
-0001554c                _i2s2_read_INTR
-00015552                _i2s2_read_INT_MASK
-00015558                _i2s2_write_INT_MASK
-0001555e                _i2s2_read_RXL_LSW
-00015564                _i2s2_write_RXL_LSW
-0001556a                _i2s2_read_RXL_MSW
-00015570                _i2s2_write_RXL_MSW
-00015576                _i2s2_read_RXR_LSW
-0001557c                _i2s2_write_RXR_LSW
-00015582                _i2s2_read_RXR_MSW
-00015588                _i2s2_write_RXR_MSW
-0001558e                _i2s3_read_CR
-00015594                _i2s3_write_CR
-0001559a                _i2s3_read_SRGR
-000155a0                _i2s3_write_SRGR
-000155a6                _i2s3_read_TXL_LSW
-000155ac                _i2s3_write_TXL_LSW
-000155b2                _i2s3_read_TXL_MSW
-000155b8                _i2s3_write_TXL_MSW
-000155be                _i2s3_read_TXR_LSW
-000155c4                _i2s3_write_TXR_LSW
-000155ca                _i2s3_read_TXR_MSW
-000155d0                _i2s3_write_TXR_MSW
-000155d6                _i2s3_read_INTR
-000155dc                _i2s3_read_INT_MASK
-000155e2                _i2s3_write_INT_MASK
-000155e8                _i2s3_read_RXL_LSW
-000155ee                _i2s3_write_RXL_LSW
-000155f4                _i2s3_read_RXL_MSW
-000155fa                _i2s3_write_RXL_MSW
-00015600                _i2s3_read_RXR_LSW
-00015606                _i2s3_write_RXR_LSW
-0001560c                _i2s3_read_RXR_MSW
-00015612                _i2s3_write_RXR_MSW
-00015618                _enable_i2s0
-00015626                _enable_i2s1
-00015634                _enable_i2s2
-00015642                _enable_i2s3
-00015650                _disable_i2s0
-0001565e                _disable_i2s1
-0001566c                _disable_i2s2
-0001567a                _disable_i2s3
-0001579d                __cleanup
-000157f5                _freopen
-000158bb                _fopen
-000158f4                __remull
-00015942                __remlli
-00015971                __mpylli
-00015a28                __divull
-00015b1c                __divlli
-00015b50                __addd
-00015da7                _inits
-00015dd5                _MMAbegin
-00015e95                _MMAread
-00015fb2                __neqd
-00015fe6                __lssd
-0001602e                __leqd
-0001607b                __gtrd
-000160c6                __geqd
-00016110                __eqld
-00016144                __cmpd
-0001619c                _ezdsp5535_I2C_init
-000161bb                _ezdsp5535_I2C_close
-000161c4                _ezdsp5535_I2C_reset
-000161d2                _ezdsp5535_I2C_write
-0001624d                _ezdsp5535_I2C_write_SR
-000162c2                _ezdsp5535_I2C_read
-0001633b                _AIC3204_rget
-00016386                _AIC3204_rset
-000163a8                _aic3204_hardware_init
-000163d8                _aic3204_disable
-000163f4                _aic3204_codec_read
-0001643a                _aic3204_codec_read_MONO
-0001648e                _aic3204_codec_write
-000164ca                _fputs
-00016619                _puts
-00016645                _ezdsp5535_GPIO_init
-00016649                _ezdsp5535_GPIO_setDirection
-000166d4                _ezdsp5535_GPIO_setOutput
-00016751                _ezdsp5535_GPIO_getInput
-000167b0                __mpyd
-000168fb                _sqrt
-00016a13                _setvbuf
-00016b06                _ldexp
-00016bf4                _enable_rtc_second_int
-00016c00                _reset_RTC
-00016c4e                _RTC_Isr
-00016cd0                __wrt_ok
-00016d4d                __rd_ok
-00016daa                _frexp
-00016e75                __frcmpyd_div
-00016f3d                _writemsg
-00016ff6                C$$IO$$
-00016ffb                __doflush
-0001705d                _fflush
-000170b5                _fputc
-000170b5                _putc
-00017148                _putchar
-00017157                __divul
-000171f8                reset_isr
-00017273                _ltoa
-000172ec                _fclose
-00017362                __frcmpyd
-000173d8                __remul
-00017448                __fixdli
-000174b6                _readmsg
-00017521                _fseek
-00017589                __fltlid
-000175f0                _atoi
-00017649                _memcpy
-0001769f                _ezdsp5535_wait
-000176d3                _ezdsp5535_waitusec
-000176e5                _ezdsp5535_init
-000176f3                _set_i2s0_master
-00017724                _set_i2s0_slave
-00017744                _printf
-00017792                _auto_init
-000177df                __remli
-0001782a                __args_main
-00017873                __divli
-000178bb                _exit
-000178f9                I$$DIV
-000178f9                __divi
-00017918                I$$MOD
-00017918                __remi
-00017935                _c_int00
-00017969                __fixdi
-00017993                I$$UDIV
-00017993                __divu
-000179a8                I$$UMOD
-000179a8                __remu
-000179bd                _memccpy
-000179df                _ezdsp5535_LED_on
-000179e9                _ezdsp5535_LED_off
-000179f3                _ezdsp5535_LED_init
-000179fe                ___isinf
-00017a19                __subd
-00017a2d                I$$LMPY
-00017a2d                __mpyli
-00017a40                __register_unlock
-00017a48                __register_lock
-00017a50                __nop
-00017a52                __negd
-00017a62                _remove
-00017a6c                _abort
-00017a6d                C$$EXIT
-00017a76                ___etext__
-00017a76                etext
-            0000bd3c    .bss
-            0000bd3c    ___bss__
-            0000bd3c    _fFilterOn
-            0000bd3d    _fBypassOn
-            0000bd3e    _clearOverlaps
-            0000bd40    _absolute_value
-            0000c540    _coeffs
-            0000c73f    _Simulation
-            0000c7a0    __ftable
-            0000c818    __tmpnams
-            0000c8b8    __ft_end
-            0000c989    _Count_RTC
-            0000c9fb    _errno
-            0000c9fc    _pllObj
-            0000ca02    _pllCfg1
-            0000ca06    _hPll
-            0000ca08    _pllCfg_1MHz
-            0000ca0c    _pllCfg_2MHz
-            0000ca10    _pllCfg_12MHz
-            0000ca14    _pllCfg_12p288MHz
-            0000ca18    _pllCfg_40MHz
-            0000ca1c    _pllCfg_60MHz
-            0000ca20    _pllCfg_75MHz
-            0000ca24    _pllCfg_98MHz
-            0000ca28    _pllCfg_100MHz
-            0000ca2c    _pllCfg_120MHz
-            0000ca30    _pConfigInfo
-            0000ca32    _RxL1_DMA_address
-            0000ca34    _RxL2_DMA_address
-            0000ca36    _RxR1_DMA_address
-            0000ca38    _RxR2_DMA_address
-            0000ca3a    _TxL1_DMA_address
-            0000ca3c    _TxL2_DMA_address
-            0000ca3e    _TxR1_DMA_address
-            0000ca40    _TxR2_DMA_address
-            0000ca42    _CurrentRxL_DMAChannel
-            0000ca43    _CurrentRxR_DMAChannel
-            0000ca44    _CurrentTxL_DMAChannel
-            0000ca45    _CurrentTxR_DMAChannel
-            0000ca46    _RunFilterForL
-            0000ca47    _RunFilterForR
-            0000ca50    __lock
-            0000ca52    __unlock
-            0000ca54    __cleanup_ptr
-            0000ca56    __dtors_ptr
-            0000ca58    _counter1
-            0000ca59    _counter2
-            0000ca5a    _Hwafft_Func
-            0000ca5c    _RcvL1_copy
-            0000ca5c    ___end__
-            0000ca5c    end
-            0000d25c    _RcvL2_copy
-            0000da5c    _RcvR1_copy
-            0000e25c    _RcvR2_copy
-            0000ea5c    ___cinit__
-            0000ea5c    cinit
-            0000f000    _fft_scratch_array
+00013b47                _codecRead
+00013b79                _main
+00013d6c                _PLL_98MHz
+00013d9e                _InitSystem
+00013e04                _ConfigPort
+00013e2a                _turnOnLED
+00013e47                _turnOffLED
+00013e64                _Zero_Pad_Inputs
+00013f33                _Clear_COLA_Overlaps
+00013f7a                _FFT_Coeffs
+0001404c                _FFT_Filter
+00014140                _COLA_Output
+0001420f                _CPLX_Mul
+00014277                _buff_copy16
+000142b0                _buff_copy32
+000142f7                _setDMA_address
+000143ff                _set_dma0_ch0_stop
+00014415                _set_dma0_ch1_stop
+0001442b                _set_dma0_ch2_stop
+00014441                _set_dma0_ch3_stop
+00014457                _set_dma0_ch0_i2s0_Lout
+000144b3                _set_dma0_ch1_i2s0_Rout
+0001450f                _set_dma0_ch2_i2s0_Lin
+0001456b                _set_dma0_ch3_i2s0_Rin
+000145c7                _enable_dma_int
+000145d4                _DMA_Isr
+000147ab                __divd
+00014b6b                _pll_frequency_setup
+00014e30                _AIC3204_init
+00015149                _PLL_init
+00015181                _PLL_config
+000152aa                _PLL_enable
+00015311                _PLL_bypass
+00015360                _PLL_reset
+000153cc                _i2s0_read_CR
+000153d2                _i2s0_write_CR
+000153d8                _i2s0_read_SRGR
+000153de                _i2s0_write_SRGR
+000153e4                _i2s0_read_TXL_LSW
+000153ea                _i2s0_write_TXL_LSW
+000153f0                _i2s0_read_TXL_MSW
+000153f6                _i2s0_write_TXL_MSW
+000153fc                _i2s0_read_TXR_LSW
+00015402                _i2s0_write_TXR_LSW
+00015408                _i2s0_read_TXR_MSW
+0001540e                _i2s0_write_TXR_MSW
+00015414                _i2s0_read_INTR
+0001541a                _i2s0_read_INT_MASK
+00015420                _i2s0_write_INT_MASK
+00015426                _i2s0_read_RXL_LSW
+0001542c                _i2s0_write_RXL_LSW
+00015432                _i2s0_read_RXL_MSW
+00015438                _i2s0_write_RXL_MSW
+0001543e                _i2s0_read_RXR_LSW
+00015444                _i2s0_write_RXR_LSW
+0001544a                _i2s0_read_RXR_MSW
+00015450                _i2s0_write_RXR_MSW
+00015456                _i2s1_read_CR
+0001545c                _i2s1_write_CR
+00015462                _i2s1_read_SRGR
+00015468                _i2s1_write_SRGR
+0001546e                _i2s1_read_TXL_LSW
+00015474                _i2s1_write_TXL_LSW
+0001547a                _i2s1_read_TXL_MSW
+00015480                _i2s1_write_TXL_MSW
+00015486                _i2s1_read_TXR_LSW
+0001548c                _i2s1_write_TXR_LSW
+00015492                _i2s1_read_TXR_MSW
+00015498                _i2s1_write_TXR_MSW
+0001549e                _i2s1_read_INTR
+000154a4                _i2s1_read_INT_MASK
+000154aa                _i2s1_write_INT_MASK
+000154b0                _i2s1_read_RXL_LSW
+000154b6                _i2s1_write_RXL_LSW
+000154bc                _i2s1_read_RXL_MSW
+000154c2                _i2s1_write_RXL_MSW
+000154c8                _i2s1_read_RXR_LSW
+000154ce                _i2s1_write_RXR_LSW
+000154d4                _i2s1_read_RXR_MSW
+000154da                _i2s1_write_RXR_MSW
+000154e0                _i2s2_read_CR
+000154e6                _i2s2_write_CR
+000154ec                _i2s2_read_SRGR
+000154f2                _i2s2_write_SRGR
+000154f8                _i2s2_read_TXL_LSW
+000154fe                _i2s2_write_TXL_LSW
+00015504                _i2s2_read_TXL_MSW
+0001550a                _i2s2_write_TXL_MSW
+00015510                _i2s2_read_TXR_LSW
+00015516                _i2s2_write_TXR_LSW
+0001551c                _i2s2_read_TXR_MSW
+00015522                _i2s2_write_TXR_MSW
+00015528                _i2s2_read_INTR
+0001552e                _i2s2_read_INT_MASK
+00015534                _i2s2_write_INT_MASK
+0001553a                _i2s2_read_RXL_LSW
+00015540                _i2s2_write_RXL_LSW
+00015546                _i2s2_read_RXL_MSW
+0001554c                _i2s2_write_RXL_MSW
+00015552                _i2s2_read_RXR_LSW
+00015558                _i2s2_write_RXR_LSW
+0001555e                _i2s2_read_RXR_MSW
+00015564                _i2s2_write_RXR_MSW
+0001556a                _i2s3_read_CR
+00015570                _i2s3_write_CR
+00015576                _i2s3_read_SRGR
+0001557c                _i2s3_write_SRGR
+00015582                _i2s3_read_TXL_LSW
+00015588                _i2s3_write_TXL_LSW
+0001558e                _i2s3_read_TXL_MSW
+00015594                _i2s3_write_TXL_MSW
+0001559a                _i2s3_read_TXR_LSW
+000155a0                _i2s3_write_TXR_LSW
+000155a6                _i2s3_read_TXR_MSW
+000155ac                _i2s3_write_TXR_MSW
+000155b2                _i2s3_read_INTR
+000155b8                _i2s3_read_INT_MASK
+000155be                _i2s3_write_INT_MASK
+000155c4                _i2s3_read_RXL_LSW
+000155ca                _i2s3_write_RXL_LSW
+000155d0                _i2s3_read_RXL_MSW
+000155d6                _i2s3_write_RXL_MSW
+000155dc                _i2s3_read_RXR_LSW
+000155e2                _i2s3_write_RXR_LSW
+000155e8                _i2s3_read_RXR_MSW
+000155ee                _i2s3_write_RXR_MSW
+000155f4                _enable_i2s0
+00015602                _enable_i2s1
+00015610                _enable_i2s2
+0001561e                _enable_i2s3
+0001562c                _disable_i2s0
+0001563a                _disable_i2s1
+00015648                _disable_i2s2
+00015656                _disable_i2s3
+00015779                __cleanup
+000157d1                _freopen
+00015897                _fopen
+000158d0                __remull
+0001591e                __remlli
+0001594d                __mpylli
+00015a04                __divull
+00015af8                __divlli
+00015b2c                __addd
+00015d83                __neqd
+00015db7                __lssd
+00015dff                __leqd
+00015e4c                __gtrd
+00015e97                __geqd
+00015ee1                __eqld
+00015f15                __cmpd
+00015f6d                _inits
+00015f9b                _MMAbegin
+0001605b                _MMAread
+0001612a                _ezdsp5535_I2C_init
+00016149                _ezdsp5535_I2C_close
+00016152                _ezdsp5535_I2C_reset
+00016160                _ezdsp5535_I2C_write
+000161db                _ezdsp5535_I2C_write_SR
+00016250                _ezdsp5535_I2C_read
+000162c9                _AIC3204_rget
+00016314                _AIC3204_rset
+00016336                _aic3204_hardware_init
+00016366                _aic3204_disable
+00016382                _aic3204_codec_read
+000163c8                _aic3204_codec_read_MONO
+0001640f                _aic3204_codec_write
+0001644b                _fputs
+0001659a                _puts
+000165c6                _ezdsp5535_GPIO_init
+000165ca                _ezdsp5535_GPIO_setDirection
+00016655                _ezdsp5535_GPIO_setOutput
+000166d2                _ezdsp5535_GPIO_getInput
+00016731                __mpyd
+0001687c                _sqrt
+00016994                _setvbuf
+00016a87                _ldexp
+00016b75                _enable_rtc_second_int
+00016b81                _reset_RTC
+00016bcf                _RTC_Isr
+00016c51                __wrt_ok
+00016cce                __rd_ok
+00016d2b                _frexp
+00016df6                __frcmpyd_div
+00016ebe                _writemsg
+00016f77                C$$IO$$
+00016f7c                __doflush
+00016fde                _fflush
+00017036                _fputc
+00017036                _putc
+000170c9                _putchar
+000170d8                __divul
+00017178                reset_isr
+000171f3                _ltoa
+0001726c                _fclose
+000172e2                __frcmpyd
+00017358                __remul
+000173c8                __fixdli
+00017436                _readmsg
+000174a1                _fseek
+00017509                __fltlid
+00017570                _atoi
+000175c9                _memcpy
+0001761f                _ezdsp5535_wait
+00017653                _ezdsp5535_waitusec
+00017665                _ezdsp5535_init
+00017673                _set_i2s0_master
+000176a4                _set_i2s0_slave
+000176c4                _printf
+00017712                _auto_init
+0001775f                __remli
+000177aa                __args_main
+000177f3                __divli
+0001783b                _exit
+00017879                _c_int00
+000178ad                __fixdi
+000178d7                I$$UDIV
+000178d7                __divu
+000178ec                I$$UMOD
+000178ec                __remu
+00017901                _memccpy
+00017923                _ezdsp5535_LED_on
+0001792d                _ezdsp5535_LED_off
+00017937                _ezdsp5535_LED_init
+00017942                ___isinf
+0001795d                __subd
+00017971                I$$LMPY
+00017971                __mpyli
+00017984                __register_unlock
+0001798c                __register_lock
+00017994                __nop
+00017996                __negd
+000179a6                _remove
+000179b0                _abort
+000179b1                C$$EXIT
+000179ba                ___etext__
+000179ba                etext
+            0000bcde    .bss
+            0000bcde    ___bss__
+            0000bcde    _fFilterOn
+            0000bcdf    _fBypassOn
+            0000bce0    _clearOverlaps
+            0000bce2    _absolute_value
+            0000c4e2    _coeffs
+            0000c6e1    _Simulation
+            0000c742    __ftable
+            0000c7ba    __tmpnams
+            0000c85a    __ft_end
+            0000c92b    _Count_RTC
+            0000c99d    _errno
+            0000c99e    _pllObj
+            0000c9a4    _pllCfg1
+            0000c9a8    _hPll
+            0000c9aa    _pllCfg_1MHz
+            0000c9ae    _pllCfg_2MHz
+            0000c9b2    _pllCfg_12MHz
+            0000c9b6    _pllCfg_12p288MHz
+            0000c9ba    _pllCfg_40MHz
+            0000c9be    _pllCfg_60MHz
+            0000c9c2    _pllCfg_75MHz
+            0000c9c6    _pllCfg_98MHz
+            0000c9ca    _pllCfg_100MHz
+            0000c9ce    _pllCfg_120MHz
+            0000c9d2    _pConfigInfo
+            0000c9d4    _RxL1_DMA_address
+            0000c9d6    _RxL2_DMA_address
+            0000c9d8    _RxR1_DMA_address
+            0000c9da    _RxR2_DMA_address
+            0000c9dc    _TxL1_DMA_address
+            0000c9de    _TxL2_DMA_address
+            0000c9e0    _TxR1_DMA_address
+            0000c9e2    _TxR2_DMA_address
+            0000c9e4    _CurrentRxL_DMAChannel
+            0000c9e5    _CurrentRxR_DMAChannel
+            0000c9e6    _CurrentTxL_DMAChannel
+            0000c9e7    _CurrentTxR_DMAChannel
+            0000c9e8    _RunFilterForL
+            0000c9e9    _RunFilterForR
+            0000c9f2    __lock
+            0000c9f4    __unlock
+            0000c9f6    __cleanup_ptr
+            0000c9f8    __dtors_ptr
+            0000c9fa    _counter1
+            0000c9fb    _counter2
+            0000c9fc    _Hwafft_Func
+            0000c9fe    _RcvL1_copy
+            0000c9fe    ___end__
+            0000c9fe    end
+            0000d1fe    _RcvL2_copy
+            0000d9fe    _RcvR1_copy
+            0000e1fe    _RcvR2_copy
+            0000e9fe    ___cinit__
+            0000e9fe    cinit
 ffffffff                ___binit__
 ffffffff                ___c_args__
 ffffffff                ___pinit__
 ffffffff                binit
 ffffffff                pinit
 
-[377 symbols]
+[371 symbols]
