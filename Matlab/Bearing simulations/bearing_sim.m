@@ -13,6 +13,7 @@ fPin = 30;        % Pinion (Input) shaft frequency (Hz)
 
 fGear = fPin*Np/Ng; % Gear (Output) shaft frequency (Hz)
 
+
 fMesh = fPin*Np;    % Gear Mesh frequency (Hz)
 
 t = 0:1/fs:20-1/fs;
@@ -33,15 +34,31 @@ bpfo = n*fPin/2*(1 - d/p*cosd(thetaDeg)); % Ballpass frequency, outer race
 fImpact = 5000;
 tImpact = 0:1/fs:5e-3-1/fs;
 xImpact = 0.4*sin(2*pi*fImpact*tImpact);
+AImpact = 1;
 window  = kaiser(length(tImpact),40);
 
 xImpactWindowed = xImpact.*window';
 
 xComb = zeros(size(t));
 xComb(1:round(fs/bpfi):end) = 1;
-xBper = 0.33*conv(xComb,xImpactWindowed,'same');
-xBper = awgn(xBper,45);
+xBper = AImpact*conv(xComb,xImpactWindowed,'same');
+snr = 20;
+xBper = awgn(xBper,snr);
 
+%% Envelope
+N=2^10;
+figure(99)
+ax1 = tiledlayout(2,2);
+for i = 1:4
+    nexttile
+    deltaf = fs/N;
+    stem((0:N-1)*deltaf,abs(fft(highpass(lowpass(abs(highpass(xBper(1:N), 1000, fs)),1000, fs),50,fs)))/N)
+    xlim([0 10*bpfi])
+    xlabel('Frequency [Hz]')
+    ylabel('Amplitude [g]')
+    title([N + "-point FFT of envelope signal"])
+    N = N*2;
+end
 %% Figures 
 figure(1)
 plot(t,xBper)
