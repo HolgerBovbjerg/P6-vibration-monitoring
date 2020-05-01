@@ -29,6 +29,7 @@ Int16 left_input;
 Int16 right_input;
 
 DATA x;
+
 #define SIZE 1024
 Uint8 ch[SIZE]; /* Declare a char[1024]
 array for experiment */
@@ -39,7 +40,7 @@ void main( void )
 	FILE *fp;
 	Uint32 i;
 	
-	fopen("codec_data.csv", "wb");
+	fp = fopen("codec_data.csv", "wb");
 	
 	/* Initialise system clocks */
 	ezdsp5535_init();
