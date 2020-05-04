@@ -185,18 +185,20 @@ Uint16 fft_fft(Int32 *fftdata, Int32 *scratch, Uint16 fft_falg, Uint16 scale_fla
 void calculate_abs(Int16 real, Int16 imag, Int32 *absolute_ptr, Int16 current_entry){
 	Int32 real_squared = 0;
 	Int32 imag_squared = 0;
-	
+	Int32 absV = 0;
+	imag = imag >>5;
+	real = real >>5;
 	//real_squared = *(real);
 	//THIS IS UTTERLY FUCKING RETARDED	
 //	---------------------------------------------------------------------
-	real_squared = (real/1)*(real/1);
-	imag_squared = (imag/1)*(imag/1);
+	real_squared = (Int32)(real)*(Int32)(real);
+	imag_squared = (Int32)(imag)*(Int32)(imag);
 	
 	
 	//real_squared = ((real/1000)*(real/1000));
 	//imag_squared = ((imag/1000)*(imag/1000));
-	
-	*(absolute_ptr+current_entry) = sqrt(real_squared+imag_squared);
+	absV = sqrt(real_squared+imag_squared);
+	*(absolute_ptr+current_entry) = absV;
 
 //----------------------------------------------------------------------- 	
 
@@ -210,6 +212,7 @@ void codecRead(Int16 *real, Int16 sampleLength){
 	ezdsp5535_waitusec(250000);
 	for(i = 0; i < sampleLength; i++){
 		 aic3204_codec_read_MONO(&real[0], &dummy1,i);	
+		 
 	}
 }
 
@@ -224,7 +227,7 @@ Int32 data_br_buf[1024];						//Array der har sine indgange bit reversed
 Int32 scratch_buf[1024];						//Array der indeholder bare reele og imaginære værdier, men indgangende har skiftet plads med bit reverse
 Int32 absolute_value[1024];
 
-
+FILE *fp;
 
 void main(void) //main
 {			
@@ -242,14 +245,18 @@ void main(void) //main
 	
 	Int32 *addressBitrev;
 	Int32 *addressScratch;
- 	
+
 
 	inits(); // Setting up stuff for I2C
+	
+	
+	
+	fp = fopen("C:\Users\claus\Desktop\6. semester\piezoData.txt","w+");
 	
 	MMAbegin();
 	
 		//MMAread(&real_part[0]);
-		codecRead(&real_part[0], 1024);	
+		codecRead(&real_part[0], 1024);
 		//for(loopCounter = 0; loopCounter < 1024; loopCounter++){real_part[loopCounter] = loopCounter;}
 		for(loopCounter = 0; loopCounter < 1024; loopCounter++){imaginary_part[loopCounter] = 0;} 
 		
@@ -264,7 +271,7 @@ void main(void) //main
 	hwafft_br((Int32 *)&fft_datapoints[0], &data_br_buf[0],fft_length); //Kommando der bit reverser pladserne så de havner i data_br_buf
 	
 
-	fft_save_location = hwafft_1024pts(&data_br_buf[0], &scratch_buf[0],0,0);
+	fft_save_location = hwafft_1024pts(&data_br_buf[0], &scratch_buf[0],0,1); //Sidste værdi er skalering (1 uden skalering, 0 med)
 
 // ----------------------------------------------------------------------------------------------
 	if(fft_save_location == 17857){ 								//Tjekker om FFT'en rent faktisk er blevet udført
@@ -283,7 +290,7 @@ void main(void) //main
 		real_freq[loopCounter] = (*(fft_output_location+loopCounter)) >> 16; 						//Reel del
 				
 		calculate_abs(real_freq[loopCounter], imaginary_freq[loopCounter], &absolute_value[0], loopCounter);
-		
+		//printf("%ld \n", absolute_value[loopCounter]);
 		}
 //		for(loopCounter = 0; loopCounter < fft_length; loopCounter++){ 
 //			printf("%d \n", real_part[loopCounter]);
