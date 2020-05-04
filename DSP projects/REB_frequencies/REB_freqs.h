@@ -1,6 +1,9 @@
 #ifndef REB_FREQS_H_
 #define REB_FREQS_H_
 
+#include "tms320.h"
+
+
 #define RPM_MIN 2000
 #define RPM_MAX 3700
 
@@ -9,6 +12,22 @@ n = 7;         // Number of rolling element bearings
 d = 0.004;      // Diameter of rolling elements 
 p = 0.015;      // Pitch diameter of bearing
 */
+
+DATA calcBPFO(DATA rpm) {
+	DATA bpfo;
+	bpfo = (rpm * 7645) >> 15;
+	bpfo = (bpfo * 24066 ) >> 14; 
+	return bpfo;
+}
+
+DATA calcBPFI(DATA rpm) {
+	DATA bpfo;
+	bpfo = (rpm * 7645) >> 15;
+	bpfo = (bpfo * 20753) >> 14; 
+	return bpfo;
+}
+
+
 const DATA rpm[RPM_MAX-RPM_MIN] = {
 2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019,
 2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030, 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039,
