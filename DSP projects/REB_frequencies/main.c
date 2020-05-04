@@ -27,6 +27,7 @@
 #define RPM_MAX 3700
 
 unsigned long i = 0;
+Uint16 index = 0;
 
 Int16 left_input;
 Int16 right_input;
@@ -68,21 +69,21 @@ void main( void )
 	ezdsp5535_waitusec(500000);
    	
    	// Prints constant rpm, bpfi bpfo lookup values
-   	printf( "Prints constant rpm, bpfi bpfo lookup values\n"); 
+   	printf( "Prints constant rpm, bpfi bpfo lookup values and calculated values \n"); 
    	i = 0;
+   	index = 0;
 	for ( i = 0  ; i < (RPM_MAX-RPM_MIN);i++  )
     {
-		printf( "Index %d\n", i);
-	    bpfoCalc = ( ( (rpm[i]*7645) >> 15 ) * 24066 ) >> 15;
-	    printf( "BPFO at %d: %d Hz\n", rpm[i], bpfo[i]);
-	    printf( "Calculated %d: %d Hz\n", rpm[i], bpfoCalc);
-	    bpfiCalc = ( ( (rpm[i]*7645) >> 15 ) * 20753 ) >> 14;
-	    printf( "BPFI at %d: %d Hz\n\n", rpm[i], bpfi[i] );
-	    printf( "Calculated at %d: %d Hz\n", rpm[i], bpfiCalc);
-	    
+		printf( "Index %d\n", index);
+	    bpfoCalc = calcBPFO(rpm[index]);
+	    printf( "BPFO at %d RPM is: %d Hz\n", rpm[index], bpfo[index]);
+	    printf( "Calculated to %d: %d Hz\n", rpm[index], bpfoCalc);
+	    bpfiCalc = calcBPFI(rpm[index]);
+	    printf( "BPFI at %d RPM is: %d Hz\n", rpm[index], bpfi[index] );
+	    printf( "Calculated to %d: %d Hz\n\n", rpm[index], bpfiCalc);
+	    index++;
     }
     
-	
 	/* Program end here */
 	
 	/* Disable i2s and reset AIC3204 codec */
