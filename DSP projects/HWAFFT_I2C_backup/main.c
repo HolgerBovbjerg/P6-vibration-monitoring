@@ -186,8 +186,8 @@ void calculate_abs(Int16 real, Int16 imag, Int32 *absolute_ptr, Int16 current_en
 	Int32 real_squared = 0;
 	Int32 imag_squared = 0;
 	Int32 absV = 0;
-	imag = imag >>5;
-	real = real >>5;
+	//imag = imag >>3;
+	//real = real >>3;
 	//real_squared = *(real);
 	//THIS IS UTTERLY FUCKING RETARDED	
 //	---------------------------------------------------------------------
@@ -198,6 +198,7 @@ void calculate_abs(Int16 real, Int16 imag, Int32 *absolute_ptr, Int16 current_en
 	//real_squared = ((real/1000)*(real/1000));
 	//imag_squared = ((imag/1000)*(imag/1000));
 	absV = sqrt(real_squared+imag_squared);
+	//absV = absV << 6;
 	*(absolute_ptr+current_entry) = absV;
 
 //----------------------------------------------------------------------- 	
@@ -271,7 +272,7 @@ void main(void) //main
 	hwafft_br((Int32 *)&fft_datapoints[0], &data_br_buf[0],fft_length); //Kommando der bit reverser pladserne så de havner i data_br_buf
 	
 
-	fft_save_location = hwafft_1024pts(&data_br_buf[0], &scratch_buf[0],0,1); //Sidste værdi er skalering (1 uden skalering, 0 med)
+	fft_save_location = hwafft_1024pts(&data_br_buf[0], &scratch_buf[0],0,0); //Sidste værdi er skalering (1 uden skalering, 0 med)
 
 // ----------------------------------------------------------------------------------------------
 	if(fft_save_location == 17857){ 								//Tjekker om FFT'en rent faktisk er blevet udført
