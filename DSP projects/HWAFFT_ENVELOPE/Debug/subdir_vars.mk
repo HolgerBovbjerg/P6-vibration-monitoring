@@ -3,6 +3,9 @@
 ################################################################################
 
 # Add inputs and outputs from these tool invocations to the build variables 
+LIB_SRCS += \
+../55xdsph.lib 
+
 C_SRCS += \
 ../main.c 
 
