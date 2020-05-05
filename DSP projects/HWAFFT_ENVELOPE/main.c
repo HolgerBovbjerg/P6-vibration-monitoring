@@ -63,7 +63,7 @@
 #include "FIR_HP_coeffs.h"
 #include "TMS320.H"
 #include "dsplib5535.h"
-
+#include "LPcoeffs.h"
 
 // ezdsp setup libraries
 //#include "ezdsp5535.h"
@@ -267,6 +267,20 @@ void main(void) //main
 		
 		firflag = fir2(real_part, FIR_HP_1000Hz, xfilter, dBufferer_ptr, 1024, 121);
 		
+		for(loopCounter = 0; loopCounter < 1024; loopCounter++){
+			if(xfilter[loopCounter] < 0)
+			{
+				xfilter[loopCounter] = xfilter[loopCounter] * -1;
+			}	
+		}
+		
+		firflag = fir2(xfilter, LP, real_part, dBufferer_ptr, 1024, 121);
+				
+		for(loopCounter = 0; loopCounter < 1024; loopCounter++){printf("%d \n", real_part[loopCounter]);}
+
+		printf("%s \n", "STOP");
+		for(loopCounter = 0; loopCounter < 1024; loopCounter++){printf("%d \n", xfilter[loopCounter]);}
+		
 /*
  * 	FFT FUNCTIONS BELOW
  *----------------------------------------------------------------------------------------------
@@ -278,7 +292,7 @@ void main(void) //main
 	hwafft_br((Int32 *)&fft_datapoints[0], &data_br_buf[0],fft_length); //Kommando der bit reverser pladserne så de havner i data_br_buf
 	
 
-	fft_save_location = hwafft_1024pts(&data_br_buf[0], &scratch_buf[0],0,0); //Sidste værdi er skalering (1 uden skalering, 0 med)
+	fft_save_location = hwafft_1024pts(&data_br_buf[0], &scratch_buf[0],0,1); //Sidste værdi er skalering (1 uden skalering, 0 med)
 
 // ----------------------------------------------------------------------------------------------
 	if(fft_save_location == 17857){ 								//Tjekker om FFT'en rent faktisk er blevet udført

@@ -22,6 +22,7 @@ main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/
 main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_ENVELOPE/FFT_files/FIR_HP_coeffs.h
 main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_ENVELOPE/I2C_files/TMS320.H
 main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_ENVELOPE/FFT_files/dsplib5535.h
+main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_ENVELOPE/FFT_files/LPcoeffs.h
 main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_ENVELOPE/I2C_files/pll.h
 main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_ENVELOPE/I2C_files/aic3204.h
 main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_ENVELOPE/I2C_files/MMA8451.h
@@ -48,6 +49,7 @@ C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_ENV
 C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_ENVELOPE/FFT_files/FIR_HP_coeffs.h: 
 C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_ENVELOPE/I2C_files/TMS320.H: 
 C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_ENVELOPE/FFT_files/dsplib5535.h: 
+C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_ENVELOPE/FFT_files/LPcoeffs.h: 
 C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_ENVELOPE/I2C_files/pll.h: 
 C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_ENVELOPE/I2C_files/aic3204.h: 
 C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_ENVELOPE/I2C_files/MMA8451.h: 
