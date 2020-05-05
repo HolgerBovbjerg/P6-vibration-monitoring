@@ -6,6 +6,8 @@
 void inits();
 void MMAbegin();
 void MMAread();
+void requestFromArduino(Int16 flag);
+void rpmReadI2C(Int16 *rpmdata);
 /*
 #define MMA8451_REG_OUT_X_MSB     0x01
 #define MMA8451_REG_SYSMOD        0x0B

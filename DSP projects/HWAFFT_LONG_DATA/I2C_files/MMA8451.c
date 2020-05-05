@@ -64,7 +64,28 @@ void MMAbegin(){
 	ezdsp5535_I2C_write(MMA_I2C_ADDR, MMA8451_REG_PL_CFG, 2);
 	ezdsp5535_I2C_write(MMA_I2C_ADDR, MMA8451_REG_CTRL_REG1, 2);
 }
+void requestFromArduino(Int16 flag){
+		Uint16 MMA_I2C_ADDR 			=	0x08;
+		unsigned char MMA8451_REG_OUT_X_MSB[1];
+		ezdsp5535_waitusec(250000);
+		if(flag == 0){
+		MMA8451_REG_OUT_X_MSB[0] = 0x10;}
+		else if(flag == 1){
+		MMA8451_REG_OUT_X_MSB[0] = 0x09;}
+		ezdsp5535_I2C_reset();
+		ezdsp5535_I2C_write(MMA_I2C_ADDR, MMA8451_REG_OUT_X_MSB, 1);	
+		
 
+}
+
+void rpmReadI2C(Int16 *rpmdata){
+	Uint16 MMA_I2C_ADDR 			=	0x08;
+	Uint8 rpmdatabuff[2];
+	ezdsp5535_waitusec(250000);
+	ezdsp5535_I2C_reset();
+	ezdsp5535_I2C_read( MMA_I2C_ADDR, rpmdatabuff, 2 );
+	*rpmdata = rpmdatabuff[0] << 8; *rpmdata |= rpmdatabuff[1];
+}
 void MMAread(Int16 *save_buffer){
 	
 	

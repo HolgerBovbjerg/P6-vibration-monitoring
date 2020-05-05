@@ -60,7 +60,11 @@
 #include "configuration.h"
 #include "hwafft.h"
 #include "filter_routines.h"
-
+#include "FIR_HP_coeffs.h"
+#include "TMS320.H"
+#include "dsplib5535.h"
+#include "LPcoeffs.h"
+#include "MMA8451.h"
 
 // ezdsp setup libraries
 //#include "ezdsp5535.h"
@@ -128,8 +132,14 @@ Int32 absolute_value[1024];
 
 void main(void) //main
 {			
-	Int16 real_part[8192];								//Array der indeholder de reelle datapunkter i tidsdomænet
+	Int16 real_part[10240];								//Array der indeholder de reelle datapunkter i tidsdomænet
 	Int16 i = 0;
+	Int16 rpm = 0;
+	//Int16 xfilter[8192];
+	Int16 dBuffer[121+2];
+	Int16 *dBufferer_ptr = &dBuffer[0];
+	Uint16 firflag = 0;
+	
 	inits(); // Setting up stuff for I2C
 	
 	
@@ -137,13 +147,26 @@ void main(void) //main
 	MMAbegin();
 		
 		//MMAread(&real_part[0]);
-		codecRead(&real_part[0], 2048);
+	for(i = 0; i < 100; i++){
+		requestFromArduino(0); // START
 		codecRead(&real_part[2048], 2048);
 		codecRead(&real_part[4096], 2048);
 		codecRead(&real_part[6144], 2048);
+		codecRead(&real_part[8192], 2048);
+		requestFromArduino(1); // STOP
+		rpmReadI2C(&rpm);
+		printf("%hd \n", rpm);}
+		firflag = fir2(&real_part[2048], FIR_HP_1000Hz, &real_part[1024], dBufferer_ptr, 8192, 121);
+		for(i = 1024; i < 9216; i++){
+			if(real_part[i] < 0)
+			{
+				real_part[i] = real_part[i] * -1;
+			}	
+		}
+		firflag = fir2(&real_part[1024], LP, &real_part[0], dBufferer_ptr, 8192, 121);
 			//ezdsp5535_waitusec(250000);
 			//printf("%s \n", "STARTING");
-		for(i = 0; i < 1024; i++){ printf("%hd \n", real_part[i]);}
+	/*	for(i = 0; i < 1024; i++){ printf("%hd \n", real_part[i]);}
 		
 		//while( i < 8192) { printf("%d \n", real_part[i]); i++; }
 		for(i = 1024; i < 2048; i++){ printf("%hd \n", real_part[i]);}
@@ -152,7 +175,7 @@ void main(void) //main
 		for(i = 4096; i < 5120; i++){ printf("%hd \n", real_part[i]);}
 		for(i = 5120; i < 6144; i++){ printf("%hd \n", real_part[i]);}
 		for(i = 6144; i < 7168; i++){ printf("%hd \n", real_part[i]);}
-		for(i = 7168; i < 8192; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 7168; i < 8192; i++){ printf("%hd \n", real_part[i]);}*/
 		//for(loopCounter = 0; loopCounter < 1024; loopCounter++){real_part[loopCounter] = loopCounter;}
 		//for(loopCounter = 0; loopCounter < 1024; loopCounter++){imaginary_part[loopCounter] = 0;} 
 		

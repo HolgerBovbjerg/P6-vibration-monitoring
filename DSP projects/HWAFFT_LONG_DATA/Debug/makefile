@@ -30,6 +30,7 @@ $(GEN_CMDS_QUOTED) \
 "./I2C_files/MMA8451.obj" \
 "./main.obj" \
 -l"rts55h.lib" \
+"../55xdsph.lib" \
 "../I2C_files/chip_support/CSLc55x5h.lib" \
 
 -include ../makefile.init
