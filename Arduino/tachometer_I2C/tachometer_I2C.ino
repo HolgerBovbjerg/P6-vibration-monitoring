@@ -14,7 +14,7 @@ long currenttime = 0;
 
 const int pinIR = 8;
 const int pinLED = 13;
-
+unsigned long safetytimer = 0;
 void setup()
 {
   Serial.begin(9600);
@@ -32,8 +32,6 @@ void loop()
 
   if(stopTime != 0){
     rpm = (revolutions*60000)/(stopTime-startTime);
-    //B1MSB = rpm >> 3;
-    //B2 = rpm >> 2;
     buff[0] = (rpm >> 8) & 0xff;
     buff[1] = rpm  & 0xff;
     Serial.println(rpm);
@@ -51,8 +49,10 @@ void loop()
  */
 void RPMCount()                                
 {
-  revolutions++;                                         
+                                          
 
+  if(millis()-safetytimer > 7){
+     revolutions++;
   if (led == LOW)
   {
 
@@ -64,20 +64,21 @@ void RPMCount()
   }
   digitalWrite(pinLED, led);
 }
-
+safetytimer = millis();
+}
 void requestEvent() {
   
-  Wire.write(buff,2);
-  // as expected by master
+  Wire.write(buff,2); // Send the 2 bytes stored in buffer to the DSP
+ 
 }
 
 void receiveEvent(int howMany) {
   while (1 < Wire.available()) { // loop through all but the last
     char c = Wire.read(); // receive byte as a character
-    Serial.print(c);         // print the character
+    //Serial.print(c);         // print the character
   }
   int x = Wire.read();    // receive byte as an integer
-  Serial.println(x);         // print the integer
+  //Serial.println(x);         // print the integer
 
   if(x == 16){
     stopTime = 0;

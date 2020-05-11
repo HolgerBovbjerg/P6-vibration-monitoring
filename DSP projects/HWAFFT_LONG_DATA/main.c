@@ -147,7 +147,7 @@ void main(void) //main
 	MMAbegin();
 		
 		//MMAread(&real_part[0]);
-	for(i = 0; i < 100; i++){
+	for(i = 0; i < 1; i++){
 		requestFromArduino(0); // START
 		codecRead(&real_part[2048], 2048);
 		codecRead(&real_part[4096], 2048);
