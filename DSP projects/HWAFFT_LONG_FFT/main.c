@@ -119,25 +119,23 @@ void fft_create_datapoint_array(Int16 *real_array, Uint16 fft_length, Int16 *fft
 	}
 }
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Int16 RMS(Int16 *data, Int32 *result, Int16 length)
+Int16 RMS(Int16 *data, Int16 length)
 {
 	Int16 i;
 	Int16 j = 0;
+	Int32 intermediateResult = 0;
+	
 	for(i = 0; i < length; i++)
-	{
-			*(result+i) = ((Int32)*(data+i))*((Int32)*(data+i));
+	{		
+			intermediateResult = intermediateResult + ((Int32)*(data+i))*((Int32)*(data+i));
 	}
-	*(result+length+1) = 0;
-	for(i = 0; i < length; i++)
-	{
-		*(result+length+1) = *(result+length+1) + *(result+i);
-	}
+
 	
-	*(result+length+1) = (*(result+length+1))/length;
+	intermediateResult = intermediateResult/length;
 	
-	*(result+length+1) = sqrt(*(result+length+1));
+	intermediateResult = sqrt(intermediateResult);
 	
-	return *(result+length+1);
+	return (Int16)intermediateResult;
 }
 
 
@@ -185,14 +183,20 @@ Int16 peakDetect(Int16 *data,Int16 *peakArray, Int16 length, Int16 limit)
 	return nrPeaks;
 }
 
-void printErrorMessages(Int32 expBits, Int32 fractionBits, Int16 rms){
+void printErrorMessages(Int32 expBits, Int32 fractionBits, Int16 rms, Int16 HZ, Int16 peakF, Int16 crest){
 	printf("%s \n \n", "---------------- TIME DOMAIN ANALYSIS ------------------");
-	printf("%s %ld%s%ld \n \n","For each peak detected, this many revolutions had occured:  ", expBits,".",fractionBits);
+		
+	printf("%s %d %s \n", "The shaft frequency is: ", HZ, "Hz");
 	
+	printf("%s %d %s \n", "The peak frequency is: ", peakF, "Hz");
+	
+	printf("%s %ld%s%ld \n \n","The shaft frequency to peak frequency ratio is:  ", expBits,".",fractionBits);
+	
+	printf("%s %d \n", "The crest factor is: ", peakF);
 	
 	printf("%s %d \n", "The measured RMS value is: ", rms);
-	if(rms > 150) { printf("Bearing condition critical. Please do further inspection to locate the fault. Replacement of bad part is needed! \n");}
-	else if (rms > 100 && rms < 150){ printf("Bearing condition mediocre. Consider changing the bearing \n");}
+	if(rms > 150) { printf("Bearing condition critical. Please do further inspection to locate the fault. Replacement of bad part is needed! \n \n");}
+	else if (rms > 100 && rms < 150){ printf("Bearing condition mediocre. Consider changing the bearing \n \n");}
 	else if (rms < 100){ printf("Bearing condition good. No further action needed \n \n");}
 		
 	printf("%s \n \n", "-------------- END OF TIME DOMAIN ANALYSIS -------------");
@@ -275,7 +279,7 @@ void main(void) //main
 	Uint16 fft_save_location;	
 	Int16 rmsValue = 0;
 	Int16 maxValue = 0;
-	
+	Int16 rmsValueRaw = 0;
 	Int16 CrestFactor = 0;
 	
 	Int32 peakFreq = 0;
@@ -299,6 +303,19 @@ void main(void) //main
 		requestFromArduino(1); // STOP
 		rpmReadI2C(&rpm);
 		//printf("%d \n", rpm);}
+		for(i = 0; i < 2048; i++)
+		{
+			real_part[1024+i] = real_part[1024+i] + 360;
+			real_part[3072+i] = real_part[3072+i] + 180;
+			real_part[5120+i] = real_part[5120+i] + 60;
+		}
+		
+		for(i = 0; i < 1024; i++){
+			real_part[0+i] = real_part[1024+i*8];
+		}
+		
+		rmsValueRaw = RMS(&real_part[0], fft_length);
+		
 		firflag = fir2(&real_part[1024], FIR_HP_1000Hz, &real_part[512], dBufferer_ptr, 8192, 121);
 		for(i = 512; i < 8704; i++){
 			if(real_part[i] < 0)
@@ -329,7 +346,7 @@ void main(void) //main
  *  ---------------------------------------------------------------------------------------------
  */	 
 
-	rmsValue = RMS(&real_part[8192], (Int32 *)&real_part[0], fft_length);
+	rmsValue = RMS(&real_part[8192], fft_length);
 	
 	nrOfPeaks = peakDetect(&real_part[8192], &peakIndices[0], fft_length, rmsValue*2);
 	
@@ -396,7 +413,7 @@ void main(void) //main
 		errorFlag |= 0x01;
 	}
 	//printf("%s \n", "GFUJNERFEON");
-	printErrorMessages(expBits, fractionBits, rmsValue);
+	printErrorMessages(expBits, fractionBits, rmsValue, rpm/60, nrOfPeaks*6, CrestFactor);
   printf("Breakpoint reached \n");
 }
 }
@@ -492,7 +509,6 @@ void SYS_GlobalIntEnable(void)
 {
     asm(" BIT (ST1, #ST1_INTM) = #0");
 }
-
 void SYS_GlobalIntDisable(void)
 {
     asm(" BIT (ST1, #ST1_INTM) = #1");
