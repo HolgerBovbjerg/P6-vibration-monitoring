@@ -36,9 +36,11 @@ LP = 200;
 envelope_data = lowpass(abs(highpass(lowpass(data(1:N),Nyq,fs), HP, fs)),LP, fs);
 figure
 plot(t,data,t,envelope_data);
+xlabel('Time [s]')
 figure
 plot(f,abs(fft(envelope_data))./N);
 xlim([0 500])
+xlabel('Frequency [Hz]')
 
 
 %%

@@ -42,14 +42,15 @@ envelope_dataHP = highpass(envelope_dataLP, HP, fs);
 envelope_dataABS = abs(envelope_dataHP);
 envelope_data = filter(LPnum,1,envelope_dataABS);
 envelope_data = bitsra(envelope_data,15);
-%% Spectrum
-figure
-pspectrum([data envelope_data], fs,'FrequencyResolution', 16, 'FrequencyLimits',[0 10*LP])
-
 %% Figures
 figure
 plot(t,data,t,envelope_data);
+xlabel('Time [s]')
 figure
 plot(f,abs(fft(envelope_data))./N);
 xlim([0 500])
+xlabel('Frequency [Hz]')
 
+%% Spectrum
+figure
+pspectrum([data envelope_data], fs,'FrequencyResolution', 16, 'FrequencyLimits',[0 10*LP])

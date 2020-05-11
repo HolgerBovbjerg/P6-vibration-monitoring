@@ -54,6 +54,10 @@ envelope_dataABS = abs(envelope_dataHP);
 
 envelope_data = filter(LPnum,1,envelope_dataABS);
 
+
+%plot(envelope_data)
+pspectrum(envelope_data, fs,'FrequencyResolution', 16, 'FrequencyLimits',[0 LP])
+
 tiledlayout(4,1)
 nexttile
 plot(data2)

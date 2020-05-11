@@ -3,7 +3,7 @@ clear
 close all
 
 %% REB freqs
-rpmPin = (2000:3699);        % Pinion (Input) shaft frequency (Hz)
+rpmPin = (2000:3700);        % Pinion (Input) shaft frequency (Hz)
 fPin = rpmPin./60;
 n = 7;         % Number of rolling element bearings
 d = 0.004;      % Diameter of rolling elements 
@@ -14,6 +14,7 @@ bpfi = round(n*fPin/2*(1 + d/p*cosd(thetaDeg))); % Ballpass frequency, inner rac
 bpfo = round(n*fPin/2*(1 - d/p*cosd(thetaDeg))); % Ballpass frequency, outer race
 
 
+%% Export
 fileID = fopen('freqPin.txt','w');
 for i = 1:length(fPin)
     fprintf(fileID,'%d',fPin(1,i));
