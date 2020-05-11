@@ -23,9 +23,9 @@
 <listOptionValue builtIn="false" value="225"/>
 </option>
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.INCLUDE_PATH.221926231" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.compilerID.INCLUDE_PATH" valueType="includePath">
-<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HWAFFT_I2C_backup/FFT_files}&quot;"/>
-<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HWAFFT_I2C_backup/I2C_files}&quot;"/>
-<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HWAFFT_I2C_backup/I2C_files/chip_support}&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HWAFFT_ENVELOPE/FFT_files}&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HWAFFT_ENVELOPE/I2C_files}&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HWAFFT_ENVELOPE/I2C_files/chip_support}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/include&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${PROJECT_BUILD_DIR}&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${RTDX_INCLUDE_DIR}&quot;"/>
@@ -61,6 +61,7 @@
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.SYS_STACKSIZE.142261172" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.SYS_STACKSIZE" value="1000" valueType="string"/>
 <option id="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.LIBRARY.1031804476" superClass="com.ti.ccstudio.buildDefinitions.C5500_4.3.linkerID.LIBRARY" valueType="libs">
 <listOptionValue builtIn="false" value="&quot;rts55h.lib&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HWAFFT_ENVELOPE/I2C_files/chip_support/CSLc55x5h.lib}&quot;"/>
 </option>
 </tool>
 <tool id="com.ti.rtsc.buildDefinitions.DSPBIOS_5.40.tool.316676319" name="TConf Script Compiler" superClass="com.ti.rtsc.buildDefinitions.DSPBIOS_5.40.tool"/>

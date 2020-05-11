@@ -60,7 +60,10 @@
 #include "configuration.h"
 #include "hwafft.h"
 #include "filter_routines.h"
-
+#include "FIR_HP_coeffs.h"
+#include "TMS320.H"
+#include "dsplib5535.h"
+#include "LPcoeffs.h"
 
 // ezdsp setup libraries
 //#include "ezdsp5535.h"
@@ -228,7 +231,6 @@ Int32 data_br_buf[1024];						//Array der har sine indgange bit reversed
 Int32 scratch_buf[1024];						//Array der indeholder bare reele og imaginære værdier, men indgangende har skiftet plads med bit reverse
 Int32 absolute_value[1024];
 
-FILE *fp;
 
 void main(void) //main
 {			
@@ -247,19 +249,37 @@ void main(void) //main
 	Int32 *addressBitrev;
 	Int32 *addressScratch;
 
-
+	Int16 xfilter[1024];
+	Int16 dBuffer[121+2];
+	Int16 *dBufferer_ptr = &dBuffer[0];
+	Uint16 firflag = 0;
 	inits(); // Setting up stuff for I2C
 	
 	
 	
-	fp = fopen("C:\Users\claus\Desktop\6. semester\piezoData.txt","w+");
-	
+
 	MMAbegin();
 	
 		//MMAread(&real_part[0]);
 		codecRead(&real_part[0], 1024);
 		//for(loopCounter = 0; loopCounter < 1024; loopCounter++){real_part[loopCounter] = loopCounter;}
 		for(loopCounter = 0; loopCounter < 1024; loopCounter++){imaginary_part[loopCounter] = 0;} 
+		
+		firflag = fir2(real_part, FIR_HP_1000Hz, xfilter, dBufferer_ptr, 1024, 121);
+		
+		for(loopCounter = 0; loopCounter < 1024; loopCounter++){
+			if(xfilter[loopCounter] < 0)
+			{
+				xfilter[loopCounter] = xfilter[loopCounter] * -1;
+			}	
+		}
+		
+		firflag = fir2(xfilter, LP, real_part, dBufferer_ptr, 1024, 121);
+				
+		for(loopCounter = 0; loopCounter < 1024; loopCounter++){printf("%d \n", real_part[loopCounter]);}
+
+		printf("%s \n", "STOP");
+		for(loopCounter = 0; loopCounter < 1024; loopCounter++){printf("%d \n", xfilter[loopCounter]);}
 		
 /*
  * 	FFT FUNCTIONS BELOW
@@ -272,7 +292,7 @@ void main(void) //main
 	hwafft_br((Int32 *)&fft_datapoints[0], &data_br_buf[0],fft_length); //Kommando der bit reverser pladserne så de havner i data_br_buf
 	
 
-	fft_save_location = hwafft_1024pts(&data_br_buf[0], &scratch_buf[0],0,0); //Sidste værdi er skalering (1 uden skalering, 0 med)
+	fft_save_location = hwafft_1024pts(&data_br_buf[0], &scratch_buf[0],0,1); //Sidste værdi er skalering (1 uden skalering, 0 med)
 
 // ----------------------------------------------------------------------------------------------
 	if(fft_save_location == 17857){ 								//Tjekker om FFT'en rent faktisk er blevet udført

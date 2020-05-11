@@ -19,17 +19,18 @@ opts.ConsecutiveDelimitersRule = "join";
 opts.LeadingDelimitersRule = "ignore";
 
 % Import the data
-innerRing = readtable("innerRing.csv", opts);
-
+innerRing = readtable("timedataLP.csv", opts);
+meas = csvread('xFilterLP.csv');
 %% Clear temporary variables
 clear opts
 
 
 NYQnum = importdata('NYQnum.mat');
 LPnum = importdata('LPnum.mat');
-HPnum = importdata('HPnum.mat');
+HPnum = importdata('HPfilter120.mat');
 
 data = table2array(innerRing);
+data2 = table2array(innerRing);
 N = length(data);
 fs = 48e3;
 t = (0:N-1)*1/fs;
@@ -53,5 +54,20 @@ envelope_dataABS = abs(envelope_dataHP);
 
 envelope_data = filter(LPnum,1,envelope_dataABS);
 
+
 %plot(envelope_data)
 pspectrum(envelope_data, fs,'FrequencyResolution', 16, 'FrequencyLimits',[0 LP])
+
+tiledlayout(4,1)
+nexttile
+plot(data2)
+title('Raw data')
+nexttile
+plot(envelope_dataHP)
+title('MATLAB HP')
+nexttile
+plot(meas)
+title('CCS HP')
+nexttile
+plot(envelope_data)
+title('LP')
