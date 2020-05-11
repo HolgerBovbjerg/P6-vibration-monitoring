@@ -35,9 +35,9 @@ fs = 48e3;
 t = (0:N-1)*1/fs;
 f = fs/N*(0:length(data)-1)';
 
-Nyq = 2e3;
-HP = 500;
-LP = 500;
+Nyq = 20e3;
+HP = 1000;
+LP = 1000;
 
 % envelope_dataLP = lowpass(data, Nyq, fs);
 % envelope_dataHP = highpass(envelope_dataLP, HP, fs);
@@ -53,4 +53,5 @@ envelope_dataABS = abs(envelope_dataHP);
 
 envelope_data = filter(LPnum,1,envelope_dataABS);
 
-plot(envelope_data)
+%plot(envelope_data)
+pspectrum(envelope_data, fs,'FrequencyResolution', 16, 'FrequencyLimits',[0 LP])

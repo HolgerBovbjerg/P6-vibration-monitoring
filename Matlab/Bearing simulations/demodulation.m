@@ -32,10 +32,10 @@ xBper = awgn(xBper,snr);
 
 [Envupper,Envlower] = envelope(xBper);
 absxBper = abs(xBper);
-hilbertxBper = abs(xBper) + abs(hilbert(xBper));
+hilbertxBper = abs(hilbert(xBper));
 prodxBper = xBper.*xBper;
 EnvDemodabs = lowpass(absxBper,1000,fs);
-EnvDemodHilbert = lowpass(absxBper,1000,fs);
+EnvDemodHilbert = lowpass(hilbertxBper,1000,fs);
 EnvDemodProd = real(sqrt(lowpass(prodxBper,1000,fs)));
 %% Figure
 fig1 = figure;
@@ -125,7 +125,6 @@ plot(t,Envupper,...
 )  
 xlim([1/bpfi-0.0025 4/bpfi-0.0025])
 title('Non-coherent Full-Wave Envelope Detection')
-xlabel('time [s]')
 ylabel('acceleration [g]')
 legend('True envelope','Input signal','Demodulated signal', 'Lowpass filtered', 'Location', 'bestoutside')
 
@@ -139,7 +138,6 @@ plot(t,Envupper,...
     
 xlim([1/bpfi-0.0025 4/bpfi-0.0025])
 title('Non-coherent Complex Envelope Detection')
-xlabel('time [s]')
 ylabel('acceleration [g]')
 legend('True envelope','Input signal','Demodulated signal', 'Lowpass filtered','Location', 'bestoutside')
 
@@ -154,7 +152,6 @@ plot(t,Envupper,...
 xlim([1/bpfi-0.0025 4/bpfi-0.0025])
 title('Non-coherent Real Square-Law Envelope Detection')
 legend('True envelope','Input signal','Demodulated signal', ['Lowpass filtered' newline 'and Squareroot'],'Location', 'bestoutside')
-xlabel('time [s]')
 ylabel('acceleration [g]')
 
 exportgraphics(fig4,'combined_demod_example.pdf','ContentType','vector')
