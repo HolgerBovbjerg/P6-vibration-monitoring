@@ -208,6 +208,13 @@ void calculate_abs(Int16 real, Int16 imag, Int32 *absolute_ptr, Int16 current_en
 
 
 }
+
+// Alternative to calculate_abs - Faster than using squareroot and does not use branching 
+unsigned int getAbs(int n) 
+{ 
+    int const bitmask = n >> (sizeof(int) - 1); // Generate bitmask (0 for positive number, -1 for negative)
+    return ((n ^ bitmask) - bitmask);  // number XORed with bitmask. Bitmask subtracted afterwards
+} 
 //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -228,23 +235,23 @@ Int32 data_br_buf[1024];						//Array der har sine indgange bit reversed
 
 #pragma DATA_SECTION(scratch_buf,"scratch_buf");	//Kommando der placere arrayet med bit reversed pladser et bestemt sted
 #pragma DATA_ALIGN(scratch_buf,2048);			//-||-
-Int32 scratch_buf[1024];						//Array der indeholder bare reele og imaginære værdier, men indgangende har skiftet plads med bit reverse
+Int32 scratch_buf[1024];						//Array der indeholder bare reele og imaginï¿½re vï¿½rdier, men indgangende har skiftet plads med bit reverse
 Int32 absolute_value[1024];
 
 
 void main(void) //main
 {			
-	Int16 imaginary_part[1024];							//Array der indeholder de imaginære datapunkter i tidsdomænet
-	Int16 real_part[1024];								//Array der indeholder de reelle datapunkter i tidsdomænet
-	Int16 fft_datapoints[1024*2];						//Array der indeholder både reele og imaginære værdier
-	Int16 real_freq[1024];								//Array der indeholder de FFT/IFFT transformerede reele værdier
-	Int16 imaginary_freq[1024];							//Array der indeholder de FFT/IFFT transformerede imaginære værdier
+	Int16 imaginary_part[1024];							//Array der indeholder de imaginï¿½re datapunkter i tidsdomï¿½net
+	Int16 real_part[1024];								//Array der indeholder de reelle datapunkter i tidsdomï¿½net
+	Int16 fft_datapoints[1024*2];						//Array der indeholder bï¿½de reele og imaginï¿½re vï¿½rdier
+	Int16 real_freq[1024];								//Array der indeholder de FFT/IFFT transformerede reele vï¿½rdier
+	Int16 imaginary_freq[1024];							//Array der indeholder de FFT/IFFT transformerede imaginï¿½re vï¿½rdier
 
-	Uint16 loopCounter = 0;								//Variable til at tælle med i et for loop
+	Uint16 loopCounter = 0;								//Variable til at tï¿½lle med i et for loop
 	
 	Int32 *fft_output_location;							//Indeholder memory location af den array der har outputtet af FFT/IFFT'en
-	const Uint16 fft_length = 1024;								//Længde af FFT eller IFFT
-	Uint16 fft_save_location;							//Variabel til at holde styr på hvor outputtet af FFT/IFFT er
+	const Uint16 fft_length = 1024;								//Lï¿½ngde af FFT eller IFFT
+	Uint16 fft_save_location;							//Variabel til at holde styr pï¿½ hvor outputtet af FFT/IFFT er
 	
 	Int32 *addressBitrev;
 	Int32 *addressScratch;
@@ -288,14 +295,14 @@ void main(void) //main
  	printf("%ld %s %ld \n", &data_br_buf[2], "   :   ", &fft_datapoints[0]);
 	addressBitrev = &data_br_buf[0];
 	addressScratch = &scratch_buf[0];
-	fft_create_datapoint_array(&real_part[0], &imaginary_part[0], fft_length, &fft_datapoints[0]); //Kommando der sammensætter real_part og imaginary_part sammen til en array, fft_datapoints
-	hwafft_br((Int32 *)&fft_datapoints[0], &data_br_buf[0],fft_length); //Kommando der bit reverser pladserne så de havner i data_br_buf
+	fft_create_datapoint_array(&real_part[0], &imaginary_part[0], fft_length, &fft_datapoints[0]); //Kommando der sammensï¿½tter real_part og imaginary_part sammen til en array, fft_datapoints
+	hwafft_br((Int32 *)&fft_datapoints[0], &data_br_buf[0],fft_length); //Kommando der bit reverser pladserne sï¿½ de havner i data_br_buf
 	
 
-	fft_save_location = hwafft_1024pts(&data_br_buf[0], &scratch_buf[0],0,1); //Sidste værdi er skalering (1 uden skalering, 0 med)
+	fft_save_location = hwafft_1024pts(&data_br_buf[0], &scratch_buf[0],0,1); //Sidste vï¿½rdi er skalering (1 uden skalering, 0 med)
 
 // ----------------------------------------------------------------------------------------------
-	if(fft_save_location == 17857){ 								//Tjekker om FFT'en rent faktisk er blevet udført
+	if(fft_save_location == 17857){ 								//Tjekker om FFT'en rent faktisk er blevet udfï¿½rt
 		printf("FFT NOT executed correctly");}						//Hvis ikke, surt show
 	else {		
 		if(fft_save_location == 0){ 								//Tjekker om dataen er i bitrev array
@@ -306,8 +313,8 @@ void main(void) //main
 	
 
 		// This is utterly fucking retarded
-	for(loopCounter = 0; loopCounter < fft_length; loopCounter++){ 							//For loop der splitter den FFT/IFFT transformered array op i reel og imaginær del	
-		imaginary_freq[loopCounter] = (*(fft_output_location+loopCounter+1)) & 0x0000FFFF; 	//Imaginær del
+	for(loopCounter = 0; loopCounter < fft_length; loopCounter++){ 							//For loop der splitter den FFT/IFFT transformered array op i reel og imaginï¿½r del	
+		imaginary_freq[loopCounter] = (*(fft_output_location+loopCounter+1)) & 0x0000FFFF; 	//Imaginï¿½r del
 		real_freq[loopCounter] = (*(fft_output_location+loopCounter)) >> 16; 						//Reel del
 				
 		calculate_abs(real_freq[loopCounter], imaginary_freq[loopCounter], &absolute_value[0], loopCounter);
