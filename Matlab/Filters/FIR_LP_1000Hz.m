@@ -30,6 +30,6 @@ set(Hd, 'Arithmetic', 'fixed', ...
     'FilterInternals',  'FullPrecision');
 denormalize(Hd);
 
-fvtool(Hd);
+%fvtool(Hd);
 
 %fcfwrite(Hd,'FIR_HP_1000Hz.fcf');
