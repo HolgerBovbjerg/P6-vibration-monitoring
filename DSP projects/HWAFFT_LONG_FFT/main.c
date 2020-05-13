@@ -63,7 +63,8 @@
 #include "FIR_HP_coeffs.h"
 #include "TMS320.H"
 #include "dsplib5535.h"
-#include "LPcoeffs.h"
+#include "LP_coeffs.h"
+#include "HPcoeffs.h"
 #include "MMA8451.h"
 
 // ezdsp setup libraries
@@ -314,22 +315,68 @@ void main(void) //main
 			real_part[0+i] = real_part[1024+i*8];
 		}
 		
+		printf("%s \n \n","----------RAW---------");
+		for(i = 0; i < 1024; i++){ printf("%hd \n", real_part[i]);}
+		/*for(i = 2048; i < 3072; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 3072; i < 4096; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 4096; i < 5120; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 5120; i < 6144; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 6144; i < 7168; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 7168; i < 8192; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 8192; i < 8192+1024; i++){ printf("%hd \n", real_part[i]);}*/
+		
+		
 		rmsValueRaw = RMS(&real_part[0], fft_length);
 		
-		firflag = fir2(&real_part[1024], FIR_HP_1000Hz, &real_part[512], dBufferer_ptr, 8192, 121);
-		for(i = 512; i < 8704; i++){
+		firflag = fir2(&real_part[0], HP_coeffs, &real_part[1024], dBufferer_ptr, 1024, 121);
+		
+		printf("%s \n \n","----------HP---------");
+		for(i = 1024; i < 2048; i++){ printf("%hd \n", real_part[i]);}
+		/*for(i = 2048-512; i < 3072-512; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 3072-512; i < 4096-512; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 4096-512; i < 5120-512; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 5120-512; i < 6144-512; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 6144-512; i < 7168-512; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 7168-512; i < 8192-512; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 8192-512; i < 8192+1024-512; i++){ printf("%hd \n", real_part[i]);}*/
+		
+		for(i = 1024; i < 2048; i++){
 			if(real_part[i] < 0)
 			{
 				real_part[i] = real_part[i] * -1;
 			}	
 		}
-		firflag = fir2(&real_part[512], LP, &real_part[0], dBufferer_ptr, 8192, 121);
+		printf("%s \n \n","----------ABS---------");
+		for(i = 1024; i < 2048; i++){ printf("%hd \n", real_part[i]);}
+		/*for(i = 2048-512; i < 3072-512; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 3072-512; i < 4096-512; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 4096-512; i < 5120-512; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 5120-512; i < 6144-512; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 6144-512; i < 7168-512; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 7168-512; i < 8192-512; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 8192-512; i < 8192+1024-512; i++){ printf("%hd \n", real_part[i]);}*/
+		
+		firflag = fir2(&real_part[1024], lowpass, &real_part[2048], dBufferer_ptr, 1024, 121);
+		
+		printf("%s \n \n","----------LP---------");
+		for(i = 1024+1024; i < 2048+1024; i++){ printf("%hd \n", real_part[i]);}
+		/*for(i = 2048-1024; i < 3072-1024; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 3072-1024; i < 4096-1024; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 4096-1024; i < 5120-1024; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 5120-1024; i < 6144-1024; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 6144-1024; i < 7168-1024; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 7168-1024; i < 8192-1024; i++){ printf("%hd \n", real_part[i]);}
+		for(i = 8192; i < 8192+1024-1024; i++){ printf("%hd \n", real_part[i]);}*/
+		
 			//ezdsp5535_waitusec(250000);
 			//printf("%s \n", "STARTING");
 		//for(i = 0; i < 1024; i++){ printf("%hd \n", real_part[i]);}
 		for(i = 0; i < 1024; i++){
 			real_part[8192+i] = real_part[i*8];
 		}
+		//printf("%s \n \n","----------DS---------");
+		//for(i = 8192; i < 8192+1024; i++){ printf("%hd \n", real_part[i]);}
+		
 		//while( i < 8192) { printf("%d \n", real_part[i]); i++; }
 	/*	for(i = 1024; i < 2048; i++){ printf("%hd \n", real_part[i]);}
 		for(i = 2048; i < 3072; i++){ printf("%hd \n", real_part[i]);}
@@ -346,9 +393,9 @@ void main(void) //main
  *  ---------------------------------------------------------------------------------------------
  */	 
 
-	rmsValue = RMS(&real_part[8192], fft_length);
+	rmsValue = RMS(&real_part[2048], fft_length);
 	
-	nrOfPeaks = peakDetect(&real_part[8192], &peakIndices[0], fft_length, rmsValue*2);
+	nrOfPeaks = peakDetect(&real_part[2048], &peakIndices[0], fft_length, rmsValue*2);
 	
 	peakFreq = peaksPerRev(nrOfPeaks, rpm);
 	fraction = 123;
@@ -377,7 +424,7 @@ void main(void) //main
  * 	FFT FUNCTIONS BELOW
  *----------------------------------------------------------------------------------------------
  */
-	fft_create_datapoint_array(&real_part[8192], fft_length, &fft_datapoints[0]); //Kommando der sammensætter real_part og imaginary_part sammen til en array, fft_datapoints
+	fft_create_datapoint_array(&real_part[2048], fft_length, &fft_datapoints[0]); //Kommando der sammensætter real_part og imaginary_part sammen til en array, fft_datapoints
 	hwafft_br((Int32 *)&fft_datapoints[0], &data_br_buf[0],fft_length); //Kommando der bit reverser pladserne så de havner i data_br_buf
 	
 
@@ -406,6 +453,8 @@ void main(void) //main
 //			printf("%d \n", real_part[loopCounter]);
 //		}
 	}
+	printf("%s \n \n","----------FFT---------");
+	for(i = 0; i < 1024; i++){ printf("%ld \n", absolute_value[i]);}
 	CrestFactor = maxValue/rmsValue;
 	if(CrestFactor > 3)
 	{

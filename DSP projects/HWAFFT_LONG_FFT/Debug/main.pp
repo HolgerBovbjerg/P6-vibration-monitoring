@@ -22,7 +22,8 @@ main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/
 main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_LONG_DATA/FFT_files/FIR_HP_coeffs.h
 main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_LONG_DATA/I2C_files/TMS320.H
 main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_LONG_DATA/FFT_files/dsplib5535.h
-main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_LONG_DATA/FFT_files/LPcoeffs.h
+main.obj: ../LP_coeffs.h
+main.obj: ../HPcoeffs.h
 main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_LONG_DATA/I2C_files/MMA8451.h
 main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_LONG_DATA/I2C_files/pll.h
 main.obj: C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_LONG_DATA/I2C_files/aic3204.h
@@ -49,7 +50,8 @@ C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_LON
 C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_LONG_DATA/FFT_files/FIR_HP_coeffs.h: 
 C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_LONG_DATA/I2C_files/TMS320.H: 
 C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_LONG_DATA/FFT_files/dsplib5535.h: 
-C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_LONG_DATA/FFT_files/LPcoeffs.h: 
+../LP_coeffs.h: 
+../HPcoeffs.h: 
 C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_LONG_DATA/I2C_files/MMA8451.h: 
 C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_LONG_DATA/I2C_files/pll.h: 
 C:/Users/claus/Documents/GitHub/P6-vibration-monitoring/DSP\ projects/HWAFFT_LONG_DATA/I2C_files/aic3204.h: 
