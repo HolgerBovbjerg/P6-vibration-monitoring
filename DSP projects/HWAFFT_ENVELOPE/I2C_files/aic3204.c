@@ -81,7 +81,7 @@ void aic3204_codec_read(Int16* left_input, Int16* right_input)
 	counter1 = 0; // monitoring real-time operation
 	
 	/* Read Digital audio inputs */
-    while(!(I2S2_IR & RcvR) ) 			// while no interrupt flag register and no 
+    while(!(I2S2_IR & RcvR) ) 			// while no interrupt flag register and no Receive flag
     {
     	counter1++; // Wait for receive interrupt
     }	

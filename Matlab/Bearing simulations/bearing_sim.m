@@ -2,7 +2,6 @@
 clear 
 clf;
 
-
 %% System setup
 fs = 48e3;          % Sample Rate (Hz)
 
@@ -18,9 +17,9 @@ fMesh = fPin*Np;    % Gear Mesh frequency (Hz)
 
 t = 0:1/fs:20-1/fs;
 
-vfIn = 0.4*sin(2*pi*fPin*t);    % Pinion waveform     
-vfOut = 0.2*sin(2*pi*fGear*t);  % Gear waveform
-vMesh = sin(2*pi*fMesh*t);      % Gear-mesh waveform
+vfIn = 1*sin(2*pi*fPin*t);    % Pinion waveform     
+vfOut = 0.4*sin(2*pi*fGear*t);  % Gear waveform
+vMesh = 0.2*sin(2*pi*fMesh*t);      % Gear-mesh waveform
 
 vNoFault = vfIn + vfOut + vMesh;                          
 %% Bearing
@@ -34,7 +33,7 @@ bpfo = n*fPin/2*(1 - d/p*cosd(thetaDeg)); % Ballpass frequency, outer race
 fImpact = 5000;
 tImpact = 0:1/fs:5e-3-1/fs;
 xImpact = 0.4*sin(2*pi*fImpact*tImpact);
-AImpact = 1;
+AImpact = 0.1;
 window  = kaiser(length(tImpact),40);
 
 xImpactWindowed = xImpact.*window';
@@ -42,10 +41,91 @@ xImpactWindowed = xImpact.*window';
 xComb = zeros(size(t));
 xComb(1:round(fs/bpfi):end) = 1;
 xBper = AImpact*conv(xComb,xImpactWindowed,'same');
-snr = 20;
-xBper = awgn(xBper,snr);
 
-%% Envelope
+snr = 50;
+xBperNoisy = awgn(xBper,snr);
+vBNoFaultNoisy = awgn(vNoFault,snr);
+vBFaultNoisy = awgn(xBper + vNoFault,snr);
+
+vBFaultNoisyHP = highpass(vBFaultNoisy,1000,fs);
+vBNoFaultNoisyHP = highpass(vBNoFaultNoisy,1000,fs);
+
+vBFaultNoisyAbs = abs(vBFaultNoisyHP);
+vBNoFaultNoisyAbs = abs(vBNoFaultNoisyHP);
+
+vBFaultNoisyEnv = lowpass(vBFaultNoisyAbs,1000,fs);
+vBNoFaultNoisyEnv = lowpass(vBNoFaultNoisyAbs,1000,fs);
+
+%% Highpass plot
+figure
+ax1 = tiledlayout(3,1);
+nexttile
+plot(t,xBperNoisy)
+xlim([0 0.05])
+xlabel('Time [s]')
+ylabel('Acceleration')
+title('Generated impacts in white noise')
+
+nexttile
+plot(t,vBFaultNoisy)
+xlim([0 0.05])
+xlabel('Time [s]')
+ylabel('Acceleration')
+title('Impacts hidden in gear noise components')
+
+nexttile
+plot(t,vBFaultNoisyHP)
+xlim([0 0.05])
+xlabel('Time [s]')
+ylabel('Acceleration')
+title('Impacts extracted from gear noise using highpass filter')
+
+exportgraphics(gcf,'bearing_highpass_simulation.pdf','ContentType','vector')
+
+
+%% Demodulation plot
+figure
+ax1 = tiledlayout(2,1);
+nexttile
+plot(t,vBFaultNoisyHP)
+xlim([0 0.05])
+ylim([-0.05 0.05])
+xlabel('Time [s]')
+ylabel('Acceleration')
+title('High pass filtered signal')
+
+nexttile
+plot(t,vBFaultNoisyAbs)
+xlim([0 0.05])
+ylim([-0.05 0.05])
+xlabel('Time [s]')
+ylabel('Acceleration')
+title('Demodulated signal')
+
+exportgraphics(gcf,'bearing_demod_simulation.pdf','ContentType','vector')
+
+%% Lowpass plot
+figure
+ax1 = tiledlayout(2,1);
+nexttile
+plot(t,vBFaultNoisyAbs)
+xlim([0 0.05])
+ylim([0 0.05])
+xlabel('Time [s]')
+ylabel('Acceleration')
+title('Demodulated signal')
+
+nexttile
+plot(t,vBFaultNoisyEnv)
+xlim([0 0.05])
+ylim([0 0.05])
+xlabel('Time [s]')
+ylabel('Acceleration')
+title('Lowpass filtered signal')
+
+exportgraphics(gcf,'bearing_lowpass_simulation.pdf','ContentType','vector')
+
+%% FFT size analysis
 N=2^10;
 figure(99)
 ax1 = tiledlayout(2,2);
@@ -59,23 +139,14 @@ for i = 1:4
     title([N + "-point FFT of envelope signal"])
     N = N*2;
 end
-%% Figures 
-figure(1)
-plot(t,xBper)
-xlim([0 0.05])
-xlabel('Time (s)')
-ylabel('Acceleration')
-title('Impacts Due to Local Fault on the Inner Race of the Bearing')
 
-vBNoFaultNoisy = awgn(vNoFault,45);
-vBFaultNoisy = awgn(xBper + vNoFault,45);
+exportgraphics(gcf,'FFT_size_analysis.pdf','ContentType','vector')
 
-figure(2)
-plot(t,vBFaultNoisy)
-xlim([0 0.05])
-xlabel('Time (s)')
-ylabel('Acceleration')
+%% Downsampled FFT analysis
 
+
+
+%% Spectrum
 figure(3)
 pspectrum([vBFaultNoisy' vBNoFaultNoisy' ],fs,'FrequencyResolution',1,'FrequencyLimits',[0 10*bpfi])
 legend('Damaged','Healthy')
@@ -83,12 +154,7 @@ title('Bearing Vibration Spectra')
 grid off
 
 %% Envelope 
-vBFaultNoisyHP = highpass(vBFaultNoisy,1000,fs);
-vBNoFaultNoisyHP = highpass(vBNoFaultNoisy,1000,fs);
-vBFaultNoisyAbs = abs(vBFaultNoisyHP);
-vBNoFaultNoisyAbs = abs(vBNoFaultNoisyHP);
-vBFaultNoisyEnv = lowpass(vBFaultNoisyAbs,500,fs);
-vBNoFaultNoisyEnv = lowpass(vBNoFaultNoisyAbs,500,fs);
+
 
 BPFIharmImpact = (0:10)*bpfi;
 BPFOharmImpact = (0:10)*bpfo;
