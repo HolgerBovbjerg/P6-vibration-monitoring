@@ -184,7 +184,7 @@ Int16 peakDetect(Int16 *data,Int16 *peakArray, Int16 length, Int16 limit)
 	return nrPeaks;
 }
 
-void printErrorMessages(Int32 expBits, Int32 fractionBits, Int16 rms, Int16 HZ, Int16 peakF, Int16 crest){
+void printErrorMessages(Int32 expBits, Int32 fractionBits, Int16 rms, Int16 HZ, Int16 peakF, Int16 crestEx, Int16 crestFra, Int16 maxV){
 	printf("%s \n \n", "---------------- TIME DOMAIN ANALYSIS ------------------");
 		
 	printf("%s %d %s \n", "The shaft frequency is: ", HZ, "Hz");
@@ -193,12 +193,14 @@ void printErrorMessages(Int32 expBits, Int32 fractionBits, Int16 rms, Int16 HZ, 
 	
 	printf("%s %ld%s%ld \n \n","The shaft frequency to peak frequency ratio is:  ", expBits,".",fractionBits);
 	
-	printf("%s %d \n", "The crest factor is: ", peakF);
+	printf("%s %d%s%d \n", "The crest factor is: ", crestEx,".",crestFra);
 	
 	printf("%s %d \n", "The measured RMS value is: ", rms);
-	if(rms > 150) { printf("Bearing condition critical. Please do further inspection to locate the fault. Replacement of bad part is needed! \n \n");}
-	else if (rms > 100 && rms < 150){ printf("Bearing condition mediocre. Consider changing the bearing \n \n");}
-	else if (rms < 100){ printf("Bearing condition good. No further action needed \n \n");}
+	
+	printf("%s %d \n", "The highest peak: ", maxV);
+	if(rms > 600) { printf("Bearing condition critical. Please do further inspection to locate the fault. Replacement of bad part is needed! \n \n");}
+	else if (rms > 450 && rms < 600){ printf("Bearing condition mediocre. Consider changing the bearing \n \n");}
+	else if (rms < 450){ printf("Bearing condition good. No further action needed \n \n");}
 		
 	printf("%s \n \n", "-------------- END OF TIME DOMAIN ANALYSIS -------------");
 	
@@ -247,7 +249,8 @@ Int32 peaksPerRev(Int16 peaks, Int16 rpm){
 	Int32 Hz = rpm/60;
 	Int32 revPerSampling = ((Hz*secondsPerMeas)); // Measured revolutions
 	Int32 peakFreq = revPerSampling/(Int32)peaks; // Revolution/peak
-	return peakFreq;
+	if (peaks == 0) return 0;
+	else return peakFreq;
 }
 
 #pragma DATA_SECTION(data_br_buf,"data_br_buf");	//Kommando der placere arrayet med bit reversed pladser et bestemt sted
@@ -288,6 +291,10 @@ void main(void) //main
 	Int16 digit = 0;
 	Int32 fractionBits = 0;
 	Int32 expBits = 0;
+	
+	Int16 crestFrac = 0;
+	Int16 crestExp = 0; 
+	
 	inits(); // Setting up stuff for I2C
 	
 	
@@ -315,8 +322,8 @@ void main(void) //main
 			real_part[0+i] = real_part[1024+i*8];
 		}
 		
-		printf("%s \n \n","----------RAW---------");
-		for(i = 0; i < 1024; i++){ printf("%hd \n", real_part[i]);}
+	//	printf("%s \n \n","----------RAW---------");
+	//	for(i = 0; i < 1024; i++){ printf("%hd \n", real_part[i]);}
 		/*for(i = 2048; i < 3072; i++){ printf("%hd \n", real_part[i]);}
 		for(i = 3072; i < 4096; i++){ printf("%hd \n", real_part[i]);}
 		for(i = 4096; i < 5120; i++){ printf("%hd \n", real_part[i]);}
@@ -330,8 +337,8 @@ void main(void) //main
 		
 		firflag = fir2(&real_part[0], HP_coeffs, &real_part[1024], dBufferer_ptr, 1024, 121);
 		
-		printf("%s \n \n","----------HP---------");
-		for(i = 1024; i < 2048; i++){ printf("%hd \n", real_part[i]);}
+	//	printf("%s \n \n","----------HP---------");
+	//	for(i = 1024; i < 2048; i++){ printf("%hd \n", real_part[i]);}
 		/*for(i = 2048-512; i < 3072-512; i++){ printf("%hd \n", real_part[i]);}
 		for(i = 3072-512; i < 4096-512; i++){ printf("%hd \n", real_part[i]);}
 		for(i = 4096-512; i < 5120-512; i++){ printf("%hd \n", real_part[i]);}
@@ -346,8 +353,8 @@ void main(void) //main
 				real_part[i] = real_part[i] * -1;
 			}	
 		}
-		printf("%s \n \n","----------ABS---------");
-		for(i = 1024; i < 2048; i++){ printf("%hd \n", real_part[i]);}
+	//	printf("%s \n \n","----------ABS---------");
+	//	for(i = 1024; i < 2048; i++){ printf("%hd \n", real_part[i]);}
 		/*for(i = 2048-512; i < 3072-512; i++){ printf("%hd \n", real_part[i]);}
 		for(i = 3072-512; i < 4096-512; i++){ printf("%hd \n", real_part[i]);}
 		for(i = 4096-512; i < 5120-512; i++){ printf("%hd \n", real_part[i]);}
@@ -358,8 +365,8 @@ void main(void) //main
 		
 		firflag = fir2(&real_part[1024], lowpass, &real_part[2048], dBufferer_ptr, 1024, 121);
 		
-		printf("%s \n \n","----------LP---------");
-		for(i = 1024+1024; i < 2048+1024; i++){ printf("%hd \n", real_part[i]);}
+	//	printf("%s \n \n","----------LP---------");
+	//	for(i = 1024+1024; i < 2048+1024; i++){ printf("%hd \n", real_part[i]);}
 		/*for(i = 2048-1024; i < 3072-1024; i++){ printf("%hd \n", real_part[i]);}
 		for(i = 3072-1024; i < 4096-1024; i++){ printf("%hd \n", real_part[i]);}
 		for(i = 4096-1024; i < 5120-1024; i++){ printf("%hd \n", real_part[i]);}
@@ -395,7 +402,7 @@ void main(void) //main
 
 	rmsValue = RMS(&real_part[2048], fft_length);
 	
-	nrOfPeaks = peakDetect(&real_part[2048], &peakIndices[0], fft_length, rmsValue*2);
+	nrOfPeaks = peakDetect(&real_part[2048], &peakIndices[0], fft_length, rmsValueRaw*3);
 	
 	peakFreq = peaksPerRev(nrOfPeaks, rpm);
 	fraction = 123;
@@ -406,18 +413,18 @@ void main(void) //main
 	
 	//printf("%s %ld%s%ld \n"," Peaks per revolution:  ", expBits,".",fractionBits);
 	
-	/*
+/*	
 	for(i = 0; i < 15; i++){
 		fraction += ((peakFreq >> (15-i) ) & 0x01) * homemadePOW(i);	
 	}
-	
+	*/
 	for(i = 0; i < 1024; i++){
 			if(real_part[8192+i] > maxValue){
 				maxValue = real_part[8192+i];
 			}
 		}
 	
-*/
+
 	//printf("%s %d %s %d \n","RMS:  " , rmsValue, "   PEAK:  ", maxValue );
 
 /*
@@ -453,16 +460,18 @@ void main(void) //main
 //			printf("%d \n", real_part[loopCounter]);
 //		}
 	}
-	printf("%s \n \n","----------FFT---------");
-	for(i = 0; i < 1024; i++){ printf("%ld \n", absolute_value[i]);}
-	CrestFactor = maxValue/rmsValue;
+	//printf("%s \n \n","----------FFT---------");
+//	for(i = 0; i < 1024; i++){ printf("%ld \n", absolute_value[i]);}
+	CrestFactor = (10*maxValue)/rmsValueRaw;
+	crestFrac = CrestFactor % 10;
+	crestExp = CrestFactor / 10; 
 	if(CrestFactor > 3)
 	{
 		// THIS IS ALSO UTTERLY FUCKING RETARDED
 		errorFlag |= 0x01;
 	}
 	//printf("%s \n", "GFUJNERFEON");
-	printErrorMessages(expBits, fractionBits, rmsValue, rpm/60, nrOfPeaks*6, CrestFactor);
+	printErrorMessages(expBits, fractionBits, rmsValueRaw, rpm/60, nrOfPeaks*6, crestExp, crestFrac, maxValue);
   printf("Breakpoint reached \n");
 }
 }

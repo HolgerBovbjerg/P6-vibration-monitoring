@@ -109,7 +109,7 @@ saveas(tl,'afterABS.png')
 
 
 %% FFT
-t = (1:1023)*(24000/8192)*8
+t = (1:1023)*(24000/8192)*2
 tl = tiledlayout(1,2)
 title(tl,'FFT on envelope data')
 nexttile
@@ -128,7 +128,7 @@ saveas(tl,'afterFFT.png')
 
 
 %% FFT
-t = (1:100)*(24000/8192)*8
+t = (1:100)*(24000/8192)*2
 tl = tiledlayout(1,2)
 title(tl,'FFT on envelope data - first 100 samples')
 nexttile
@@ -144,3 +144,186 @@ xlabel("Frequency [Hz]")
 ylabel("Amplitude")
 ylim([-10000 10*10^4]);
 saveas(tl,'zoomedFFT.png')
+
+
+%% GOOD VS BAAAD
+
+rawDataInner = csvread('raw3.csv');
+HPdataInner = csvread('hp3.csv');
+ABSdataInner = csvread('abs3.csv');
+LPDataInner = csvread('lp3.csv');
+FFTDataInner = csvread('fft3.csv');
+
+rawDataGood = csvread('rawGood.csv');
+HPdataGood = csvread('hpGood.csv');
+ABSdataGood = csvread('absGood.csv');
+LPDataGood = csvread('lpGood.csv');
+FFTDataGood = csvread('FFTgood.csv');
+
+rawDataOuter = csvread('outerRaw1.csv');
+HPdataOuter = csvread('outerHP1.csv');
+ABSdataOuter = csvread('outerABS1.csv');
+LPDataOuter = csvread('outerLP1.csv');
+outerFFT = csvread('outerFFT1.csv');
+
+%% GOOD VS BAAAD FFT
+
+t = (1:1024)*(24000/8192)*2
+tl = tiledlayout(2,2)
+title(tl,'FFT on envelope data')
+nexttile
+plot(t,abs(FFTDataGood(1:1024)))
+title("Good bearing")
+xlabel("Frequency [Hz]")
+ylabel("Amplitude")
+ylim([-10000 10*10^4]);
+nexttile
+plot(t,FFTDataInner(1:1024))
+title("Faulty bearing (on inner ring)")
+xlabel("Frequency [Hz]")
+ylabel("Amplitude")
+ylim([-10000 10*10^4]);
+
+nexttile
+plot(t,outerFFT(1:1024))
+title("Faulty bearing (outer ring)")
+xlabel("Frequency [Hz]")
+ylabel("Amplitude")
+ylim([-10000 10*10^4]);
+saveas(tl,'goodVsBadFFT.png')
+
+
+%% GOOD VS BAAAD ZOOMED FFT
+
+t = (1:100)*(24000/8192)*2
+tl = tiledlayout(2,2)
+title(tl,'FFT on envelope data - first 100 samples')
+nexttile
+plot(t,abs(FFTDataGood(1:100)))
+title("Good bearing")
+xlabel("Frequency [Hz]")
+ylabel("Amplitude")
+ylim([-10000 10*10^4]);
+nexttile
+plot(t,FFTDataInner(1:100))
+title("Faulty bearing (on inner ring)")
+xlabel("Frequency [Hz]")
+ylabel("Amplitude")
+ylim([-10000 10*10^4]);
+nexttile
+plot(t,outerFFT(1:100))
+title("Faulty bearing (outer ring)")
+xlabel("Frequency [Hz]")
+ylabel("Amplitude")
+ylim([-10000 10*10^4]);
+saveas(tl,'goodVsBadFFTZoomed.png')
+
+%% GOOD VS BAAAD AFTER HP
+
+t = (1:1024)*(8192/48000)/1024
+tl = tiledlayout(2,2)
+title(tl,'Good and faulty bearing - after HP filtering')
+nexttile
+plot(t,HPdataGood(1:1024))
+title("Good bearing")
+xlabel("Time [s]")
+ylabel("Amplitude")
+ylim([-4000 4000]);
+nexttile
+plot(t,HPdataInner(1:1024))
+title("Faulty bearing (on inner ring)")
+xlabel("Time [s]")
+ylabel("Amplitude")
+ylim([-4000 4000]);
+nexttile
+plot(t,HPdataOuter(1:1024))
+title("Faulty bearing (on outer ring)")
+xlabel("Time [s]")
+ylabel("Amplitude")
+ylim([-4000 4000]);
+saveas(tl,'goodVsBadHP.png')
+
+
+%% GOOD VS BAAAD AFTER LP
+
+t = (1:1024)*(8192/48000)/1024
+tl = tiledlayout(2,2)
+title(tl,'Good and faulty bearing - after LP filtering')
+nexttile
+plot(t,LPDataGood(1:1024))
+title("Good bearing")
+xlabel("Time [s]")
+ylabel("Amplitude")
+ylim([-100 3000]);
+nexttile
+plot(t,LPDataInner(1:1024))
+title("Faulty bearing (on inner ring)")
+xlabel("Time [s]")
+ylabel("Amplitude")
+ylim([-100 3000]);
+nexttile
+plot(t,LPDataOuter(1:1024))
+title("Faulty bearing (on outer ring)")
+xlabel("Time [s]")
+ylabel("Amplitude")
+ylim([-100 3000]);
+saveas(tl,'goodVsBadLP.png')
+
+%% GOOD VS BAAAD RAW
+
+t = (1:1024)*(8192/48000)/1024
+tl = tiledlayout(2,2)
+title(tl,'Good and faulty bearing - raw data')
+nexttile
+plot(t,rawDataGood(1:1024))
+title("Good bearing")
+xlabel("Time [s]")
+ylabel("Amplitude")
+ylim([-3500 3500]);
+nexttile
+plot(t,rawDataInner(1:1024))
+title("Faulty bearing (on inner ring)")
+xlabel("Time [s]")
+ylabel("Amplitude")
+ylim([-3500 3500]);
+nexttile
+plot(t,rawDataOuter(1:1024))
+title("Faulty bearing (on outer ring)")
+xlabel("Time [s]")
+ylabel("Amplitude")
+ylim([-3500 3500]);
+saveas(tl,'goodVsBadRaw.png')
+
+%% GOOD VS BAAAD ABS
+
+t = (1:1024)*(8192/48000)/1024
+tl = tiledlayout(2,2)
+title(tl,'Good and faulty bearing - after finding absolute value')
+nexttile
+plot(t,ABSdataGood(1:1024))
+title("Good bearing")
+xlabel("Time [s]")
+ylabel("Amplitude")
+ylim([-100 3500]);
+nexttile
+plot(t,ABSdataInner(1:1024))
+title("Faulty bearing (on inner ring)")
+xlabel("Time [s]")
+ylabel("Amplitude")
+ylim([-100 3500]);
+nexttile
+plot(t,ABSdataOuter(1:1024))
+title("Faulty bearing (on outer ring)")
+xlabel("Time [s]")
+ylabel("Amplitude")
+ylim([-100 3500]);
+saveas(tl,'goodVsBadAbs.png')
+
+%% RMS
+
+dataset1 = csvread('RMSOuter.csv');
+dataset2 = csvread('RMSOuter2.csv');
+dataset3 = csvread('RMSOuter3.csv');
+RMStest1 = rms(dataset1)
+RMStest2 = rms(dataset2)
+RMStest3 = rms(dataset3)
